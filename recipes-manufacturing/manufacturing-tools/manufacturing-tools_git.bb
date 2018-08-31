@@ -1,7 +1,7 @@
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
-SRC_URI = "git://git@stash.dss.husqvarnagroup.com:7999/sg/smart-garden-low-cost-gateway-manufacturing-scripts.git;protocol=ssh"
+SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-low-cost-gateway-manufacturing-scripts.git;protocol=https"
 
 PR = "r0"
 
