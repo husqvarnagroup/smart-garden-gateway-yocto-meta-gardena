@@ -30,12 +30,14 @@ do_install () {
 	install -d ${D}${bindir}
 	install -m 0755 ${S}/selftest.py ${D}${bindir}/selftest
 	install -m 0755 ${S}/fct-tool.py ${D}${bindir}/fct-tool
+	install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
 
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/export-gpios.service ${D}${systemd_unitdir}/system/
 
 	install -d 0755 ${D}${libdir}/python3.5/site-packages
 	install -m 0755 ${S}/cpms_client.py ${D}${libdir}/python3.5/site-packages/
+	install -m 0755 ${S}/cpms_config.py ${D}${libdir}/python3.5/site-packages/
 }
 
 SYSTEMD_SERVICE_${PN} += "export-gpios.service"
