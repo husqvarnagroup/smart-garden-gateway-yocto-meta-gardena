@@ -7,10 +7,10 @@ SRC_URI = " \
     file://export-gpios.service \
 "
 
-PR = "r2"
+PR = "r0"
 
 PV = "1.0+git${SRCPV}"
-SRCREV = "3695bd3eff8361b5426f64e24e9d20bba2a02974"
+SRCREV = "81f68d3770bc267ce37b41c9364269f496cf7ede"
 
 S = "${WORKDIR}/git"
 
