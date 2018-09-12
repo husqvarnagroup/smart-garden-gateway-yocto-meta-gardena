@@ -1,6 +1,6 @@
 LICENSE = "CLOSED"
 
-inherit systemd
+inherit systemd allarch
 
 SRC_URI = " \
     git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-low-cost-gateway-manufacturing-scripts.git;protocol=https \
