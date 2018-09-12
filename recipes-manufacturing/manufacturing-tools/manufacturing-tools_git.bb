@@ -16,6 +16,7 @@ S = "${WORKDIR}/git"
 
 FILES_${PN} += " \
     ${libdir}/python3.5/site-packages/cpms_client.py \
+    ${libdir}/python3.5/site-packages/cpms_config.py \
 "
 
 RDEPENDS_manufacturing-tools += " \
