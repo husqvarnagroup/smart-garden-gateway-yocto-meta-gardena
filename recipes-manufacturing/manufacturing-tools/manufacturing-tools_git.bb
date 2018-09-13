@@ -10,10 +10,10 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-low-cost-gatew
            file://selftest.service \
            "
 
-PR = "r1"
+PR = "r0"
 
 PV = "1.0+git${SRCPV}"
-SRCREV = "60c3211d52b7431a314938138a39d4bab6b8b9b5"
+SRCREV = "3e9c45d0fafeaf143f42e032240b4c935487a502"
 
 S = "${WORKDIR}/git"
 
