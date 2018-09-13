@@ -24,5 +24,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+fw_setenv self_test_passed 1
+
 # Set LED #3 (Power) green
 echo 1 > /sys/class/gpio/gpio27/value
