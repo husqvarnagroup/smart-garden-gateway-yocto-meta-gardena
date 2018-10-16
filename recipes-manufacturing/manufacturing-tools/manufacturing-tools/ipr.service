@@ -1,0 +1,10 @@
+[Unit]
+Description=Run IPR tool
+
+[Service]
+ExecStart=/usr/bin/ipr-tool --init-gateway-id
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+RequiredBy=multi-user.target
