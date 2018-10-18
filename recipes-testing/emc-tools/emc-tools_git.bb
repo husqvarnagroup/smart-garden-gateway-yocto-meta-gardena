@@ -10,7 +10,6 @@ S = "${WORKDIR}/git"
 
 FILES_${PN} += " \
     ${libdir}/python3.5/site-packages/emc_testing/* \
-    /tmp/gateway_autoconfig.sh \
 "
 
 RDEPENDS_emc-tools += " \
@@ -20,6 +19,7 @@ RDEPENDS_emc-tools += " \
     python3-threading \
     python3-netclient \
     python3-netserver \
+    python3-fcntl \
 "
 
 do_install () {
@@ -33,27 +33,19 @@ do_install () {
 
     # module
     install -d ${D}${libdir}/python3.5/site-packages/emc_testing
-    # TODO should we put config.py outside of site-packages?
+    # TODO should we put config.py outside of site-packages? -> probably yes, but not really worth the effort ..
     install -m 0755 ${S}/emc_testing/config.py ${D}${libdir}/python3.5/site-packages/emc_testing/config.py
     install -m 0755 ${S}/emc_testing/error_codes.py ${D}${libdir}/python3.5/site-packages/emc_testing/error_codes.py
     install -m 0755 ${S}/emc_testing/lbtool.py ${D}${libdir}/python3.5/site-packages/emc_testing/lbtool.py
     install -m 0755 ${S}/emc_testing/status_level.py ${D}${libdir}/python3.5/site-packages/emc_testing/status_level.py
 
     # lsdl-serializer
-    # TODO, once we have it for MIPS architecture
+    install -m 0755 ${S}/bin/mips/lsdl-serializer ${D}${bindir}/lsdl-serializer
 
-    # script for initial configuration
-    install -d ${D}/tmp
-    install -m 0755 ${S}/scripts/gateway_autoconfig.sh ${D}/tmp/gateway_autoconfig.sh
+
+    # script for initial auto-configuration
+    install -m 0755 ${S}/scripts/gateway_autoconfig.sh ${D}${bindir}/emc-tools-autoconfig
 
     # symlink for lbtool
-    cd ${D}${bindir}
-    ln -s -r ${D}${libdir}/python3.5/site-packages/lbtool.py ${D}${bindir}/lbtool
-}
-
-pkg_postinst_${PN} () {
-#!/bin/sh
-    # TODO this might not be the best way to do this; tmp file probably should not be in package
-    /tmp/gateway_autoconfig.sh /usr/lib/python3.5/site-packages/emc_testing/config.py
-    rm /tmp/gateway_autoconfig.sh
+    ln -s -r ${D}${libdir}/python3.5/site-packages/emc-testing/lbtool.py ${D}${bindir}/lbtool
 }
