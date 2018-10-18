@@ -47,5 +47,5 @@ do_install () {
     install -m 0755 ${S}/scripts/gateway_autoconfig.sh ${D}${bindir}/emc-tools-autoconfig
 
     # symlink for lbtool
-    ln -s -r ${D}${libdir}/python3.5/site-packages/emc-testing/lbtool.py ${D}${bindir}/lbtool
+    ln -s -r ${D}${libdir}/python3.5/site-packages/emc_testing/lbtool.py ${D}${bindir}/lbtool
 }
