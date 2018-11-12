@@ -8,8 +8,10 @@ PV = "1.0+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
+inherit python3-dir
+
 FILES_${PN} += " \
-    ${libdir}/python3.5/site-packages/emc_testing/* \
+    ${PYTHON_SITEPACKAGES_DIR}/emc_testing/* \
 "
 
 RDEPENDS_emc-tools += " \
@@ -32,12 +34,12 @@ do_install () {
     install -m 0755 ${S}/watercontrol.py ${D}${bindir}/watercontrol
 
     # module
-    install -d ${D}${libdir}/python3.5/site-packages/emc_testing
+    install -d ${D}${PYTHON_SITEPACKAGES_DIR}/emc_testing
     # TODO should we put config.py outside of site-packages? -> probably yes, but not really worth the effort ..
-    install -m 0755 ${S}/emc_testing/config.py ${D}${libdir}/python3.5/site-packages/emc_testing/config.py
-    install -m 0755 ${S}/emc_testing/error_codes.py ${D}${libdir}/python3.5/site-packages/emc_testing/error_codes.py
-    install -m 0755 ${S}/emc_testing/lbtool.py ${D}${libdir}/python3.5/site-packages/emc_testing/lbtool.py
-    install -m 0755 ${S}/emc_testing/status_level.py ${D}${libdir}/python3.5/site-packages/emc_testing/status_level.py
+    install -m 0755 ${S}/emc_testing/config.py ${D}${PYTHON_SITEPACKAGES_DIR}/emc_testing/config.py
+    install -m 0755 ${S}/emc_testing/error_codes.py ${D}${PYTHON_SITEPACKAGES_DIR}/emc_testing/error_codes.py
+    install -m 0755 ${S}/emc_testing/lbtool.py ${D}${PYTHON_SITEPACKAGES_DIR}/emc_testing/lbtool.py
+    install -m 0755 ${S}/emc_testing/status_level.py ${D}${PYTHON_SITEPACKAGES_DIR}/emc_testing/status_level.py
 
     # lsdl-serializer
     install -m 0755 ${S}/bin/mips/lsdl-serializer ${D}${bindir}/lsdl-serializer
@@ -47,5 +49,5 @@ do_install () {
     install -m 0755 ${S}/scripts/gateway_autoconfig.sh ${D}${bindir}/emc-tools-autoconfig
 
     # symlink for lbtool
-    ln -s -r ${D}${libdir}/python3.5/site-packages/emc_testing/lbtool.py ${D}${bindir}/lbtool
+    ln -s -r ${D}${PYTHON_SITEPACKAGES_DIR}/emc_testing/lbtool.py ${D}${bindir}/lbtool
 }
