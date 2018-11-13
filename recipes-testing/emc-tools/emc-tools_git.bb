@@ -44,7 +44,6 @@ do_install () {
     # lsdl-serializer
     install -m 0755 ${S}/bin/mips/lsdl-serializer ${D}${bindir}/lsdl-serializer
 
-
     # script for initial auto-configuration
     install -m 0755 ${S}/scripts/gateway_autoconfig.sh ${D}${bindir}/emc-tools-autoconfig
 
