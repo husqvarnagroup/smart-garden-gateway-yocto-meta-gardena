@@ -28,6 +28,7 @@ RDEPENDS_${PN} += " \
     python3-json \
     python3-threading \
     python3-unittest \
+    fct-tool \
 "
 
 do_install () {
@@ -50,3 +51,13 @@ do_install () {
 SYSTEMD_SERVICE_${PN} += "export-gpios.service"
 SYSTEMD_SERVICE_${PN} += "ipr.service"
 SYSTEMD_SERVICE_${PN} += "selftest.service"
+
+PACKAGES =+ "fct-tool"
+PROVIDES =+ "fct-tool"
+
+FILES_fct-tool += "${bindir}/fct-tool"
+
+RDEPENDS_fct-tool += " \
+    python3-core \
+    python3-datetime \
+"
