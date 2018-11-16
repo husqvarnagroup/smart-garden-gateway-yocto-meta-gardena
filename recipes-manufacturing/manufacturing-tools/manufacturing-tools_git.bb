@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 
 inherit systemd allarch python3-dir
 
-SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-low-cost-gateway-manufacturing-scripts.git;protocol=https \
+SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
            file://export-gpios.service \
            file://ipr.service \
            file://selftest-check \
