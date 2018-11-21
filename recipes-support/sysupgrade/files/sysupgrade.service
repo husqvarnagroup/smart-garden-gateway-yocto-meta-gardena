@@ -1,0 +1,10 @@
+[Unit]
+Description=Data migration
+
+[Service]
+ExecStart=/usr/bin/sysupgrade
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+RequiredBy=basic.target
