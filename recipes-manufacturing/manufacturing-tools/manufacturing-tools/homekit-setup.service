@@ -1,0 +1,11 @@
+[Unit]
+Description=Run HomeKit setup during manufacturing
+Requires=ipr.service
+After=ipr.service
+
+[Service]
+ExecStart=/usr/bin/homekit-tool --init-setup-tokens
+Type=oneshot
+
+[Install]
+RequiredBy=multi-user.target
