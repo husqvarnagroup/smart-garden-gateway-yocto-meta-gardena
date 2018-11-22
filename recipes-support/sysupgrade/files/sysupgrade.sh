@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -u
 
 # Check upgrade flag to figure out if upgrade logic needs to run
 #
