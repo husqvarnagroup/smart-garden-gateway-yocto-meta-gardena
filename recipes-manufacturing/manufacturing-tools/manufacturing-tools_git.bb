@@ -8,6 +8,8 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufa
            file://ipr.service \
            file://selftest-check \
            file://selftest.service \
+           file://fctcheck \
+           file://fctcheck.service \
            file://homekit-setup.service \
            "
 
@@ -41,11 +43,13 @@ do_install () {
 	install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
 	install -m 0755 ${S}/homekit-tool.py ${D}${bindir}/homekit-tool
 	install -m 0755 ${WORKDIR}/selftest-check ${D}${bindir}
+	install -m 0755 ${WORKDIR}/fctcheck ${D}${bindir}
 
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/export-gpios.service ${D}${systemd_unitdir}/system/
 	install -m 0644 ${WORKDIR}/ipr.service ${D}${systemd_unitdir}/system/
 	install -m 0644 ${WORKDIR}/selftest.service ${D}${systemd_unitdir}/system/
+	install -m 0644 ${WORKDIR}/fctcheck.service ${D}${systemd_unitdir}/system/
 	install -m 0644 ${WORKDIR}/homekit-setup.service ${D}${systemd_unitdir}/system/
 
 	install -d 0755 ${D}${PYTHON_SITEPACKAGES_DIR}
@@ -58,6 +62,7 @@ do_install () {
 SYSTEMD_SERVICE_${PN} += "export-gpios.service"
 SYSTEMD_SERVICE_${PN} += "ipr.service"
 SYSTEMD_SERVICE_${PN} += "selftest.service"
+SYSTEMD_SERVICE_${PN} += "fctcheck.service"
 SYSTEMD_SERVICE_${PN} += "homekit-setup.service"
 
 PACKAGES =+ "fct-tool"
