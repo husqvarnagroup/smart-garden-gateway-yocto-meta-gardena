@@ -10,13 +10,14 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufa
            file://selftest.service \
            file://fctcheck \
            file://fctcheck.service \
+           file://homekit-setup \
            file://homekit-setup.service \
            "
 
 PR = "r0"
 
 PV = "1.1+git${SRCPV}"
-SRCREV = "96c315be743fe89cca53e19018089939c9ac7c7c"
+SRCREV = "2d133b10ce4614397cb34268bccda6c70a37a96b"
 
 S = "${WORKDIR}/git"
 
@@ -42,6 +43,7 @@ do_install () {
 	install -m 0755 ${S}/fct-tool.py ${D}${bindir}/fct-tool
 	install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
 	install -m 0755 ${S}/homekit-tool.py ${D}${bindir}/homekit-tool
+	install -m 0755 ${WORKDIR}/homekit-setup ${D}${bindir}
 	install -m 0755 ${WORKDIR}/selftest-check ${D}${bindir}
 	install -m 0755 ${WORKDIR}/fctcheck ${D}${bindir}
 
