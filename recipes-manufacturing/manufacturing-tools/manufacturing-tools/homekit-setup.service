@@ -4,7 +4,7 @@ Requires=ipr.service
 After=ipr.service
 
 [Service]
-ExecStart=/usr/bin/homekit-tool --init-setup-tokens
+ExecStart=/usr/bin/homekit-setup
 Type=oneshot
 
 [Install]
