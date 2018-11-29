@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# Run the homekit setup script in case it has never been run
+# (successfully) before but the IPR setup did.
+# This is expected to happen exactly once during manufacturing.
+
+set -u
+
+hk_setup_done="$(fw_printenv -n hk_setup_done 2>/dev/null || echo 0)"
+if [ "${hk_setup_done}" = "1" ]; then
+    # quit because the HomeKit setup is already done
+    exit 0
+fi
+
+/usr/bin/homekit-tool --init-setup-tokens
