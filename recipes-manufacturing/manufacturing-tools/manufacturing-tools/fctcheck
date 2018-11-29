@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Check if FCT has been finalized.
+
+set -u
+
+fct_statusfile=/etc/fct_finalized
+
+fct_finalized=$(fw_printenv -n fct_finalized)
+if [ $? -eq 0 ] && [ "${fct_finalized}" = "1" ]; then
+    [ -f $fct_statusfile ] || touch $fct_statusfile
+else
+    rm -f $fct_statusfile
+fi

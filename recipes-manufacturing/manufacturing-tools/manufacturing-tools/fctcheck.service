@@ -1,0 +1,10 @@
+[Unit]
+Description=Run FCT finalized check
+
+[Service]
+ExecStart=/usr/bin/fctcheck
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+RequiredBy=multi-user.target
