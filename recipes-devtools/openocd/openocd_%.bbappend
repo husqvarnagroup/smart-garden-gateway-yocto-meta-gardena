@@ -1,7 +1,10 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += "file://gardena_radio.cfg \
-            file://gardena_nrf52.cfg"
+SRC_URI += " \
+    file://0001-jtag-sysfsgpio-clean-up-swd-gpios.patch \
+    file://gardena_radio.cfg \
+    file://gardena_nrf52.cfg \
+"
 
 # We are using upstream and most patches in the base .bb are already upstreamed.
 SRC_URI_remove = "file://0001-Add-fallthrough-comments.patch \
