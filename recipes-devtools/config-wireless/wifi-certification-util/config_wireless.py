@@ -50,34 +50,15 @@ class Hostapdconf():  # pylint: disable=too-many-instance-attributes
         self.wmm_enabled = "0"
         self.country_code = ""
 
-    def set_channel(self, channel):
-        """Set channel"""
-        # TODO: add regulatory checks e.g. germany 1-13
-        # channel 0 = Auto Channel if CONFIG_ACS selected
-        if not channel or (0 > int(channel) > 14):
-            logging.error("Invalid channel: %s", channel)
-
-        self.channel = channel
-
-    def set_ssid(self, ssid):
-        """Set visible SSID string."""
-        self.ssid = ssid
-
     def set_interface(self, interface):
-        """Set WLAN interface."""
-        # interfaces = netifaces.interfaces() # TODO: netifaces can only be installed via pip
-        # if interface not in interfaces:
-        #    logging.error("Interface not found, possible interfaces: %s", interfaces)
+        """Set WLAN interface. Returns None on error."""
+        interfaces = open("/proc/net/dev").read().splitlines()
+        for sys_interface in interfaces:
+            if sys_interface.split()[0][:-1] == interface:
+                self.interface = interface
+                return True
 
-        self.interface = interface
-
-    def set_ht_capab(self, ht_capab):
-        """Set ht capabilities supported by wlan adapter."""
-        self.ht_capab = ht_capab
-
-    def set_beacon_rate(self, beacon_rate):
-        """Set beacon rate."""
-        self.beacon_rate = beacon_rate
+        return None
 
     def set_txpower(self, txpower):
         """Set TX power on wlan adapter."""
@@ -92,10 +73,6 @@ class Hostapdconf():  # pylint: disable=too-many-instance-attributes
             self.wmm_enabled = "1"
 
         self.hw_mode = hw_mode
-
-    def set_country_code(self, country_code):
-        """Set country code."""
-        self.country_code = country_code
 
     def write_file(self, file):
         """Create hostpad.conf file."""
@@ -186,7 +163,7 @@ def set_interface_ip_address(conf, network="192.168.25.0", netmask="255.255.255.
     system("ip addr add %s/%s dev %s" % (first, used_network.prefixlen, conf.interface))
 
 
-def main():  # pylint: disable=too-many-statements
+def main():  # pylint: disable=too-many-statements,too-many-branches
     """Main routine."""
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(title="WLAN modes", dest='mode')
@@ -197,9 +174,8 @@ def main():  # pylint: disable=too-many-statements
 
     parser.add_argument('-c', '--channel',
                         help="Select WLAN channel. (default 1)",
-                        choices=["1", "2", "3", "4", "5", "6", "7",
-                                 "8", "9", "10", "11", "12", "13", "14"],
-                        default=1)
+                        choices=range(1, 15), metavar="<c>",
+                        default=1, type=int)
 
     tx_mode_parser = subparsers.add_parser("tx_mode")
 
@@ -215,14 +191,13 @@ def main():  # pylint: disable=too-many-statements
     tx_mode_parser.add_argument('-ht', '--ht-capab',
                                 help="HT capabilities (default HT20), e.g. 'HT20', "
                                      "'HT40', 'GF', 'SHORT-GI-40'",
-                                default="HT20",
-                                dest='ht_capab')
+                                default="HT20")
 
     tx_mode_parser.add_argument('-tx', '--txpower',
                                 help="Set Transmit power of WLAN adapter. (default 20 dBm)",
-                                default=20)
+                                default=20, type=int)
 
-    # TODO: enable again, our hostapd do not support it for some reasone
+    # TODO: enable again, our hostapd do not support it for some reason
     tx_mode_parser.add_argument('--beacon_rate',
                                 help="legacy: <rate> * 100kbps. HT-MCS: <ht:rate>.\n"
                                      "Example: --beacon_rate 10 -> 1Mbps, \n"
@@ -238,13 +213,12 @@ def main():  # pylint: disable=too-many-statements
                                 help="Enable RX Only mode for <n> seconds. (default 60)",
                                 metavar="<n>", default=60, type=int)
 
-    logging_format = "[%(asctime)-15s %(filename)s:%(lineno)4s - %(funcName)20s() ] %(message)s"
-    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG, format=logging_format)
+    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
     args = parser.parse_args()
     logging.info("Args: %s", args)
     if getuid() != 0:
         logging.error("Run this script as root")
-        # exit(1)
+        exit(1)
 
     if args.mode == 'rx_mode':
         signal.signal(signal.SIGINT, signal_handler_rx_mode)
@@ -313,16 +287,18 @@ def main():  # pylint: disable=too-many-statements
             subprocess.check_call(["systemctl", "stop", "dnsmasq"])
 
         conf = Hostapdconf()
-        conf.set_channel(args.channel)
+        conf.channel = args.channel
         conf.set_hw_mode(args.hw_mode)
 
-        conf.set_ssid(args.ssid)
-        conf.set_interface(args.device)
-        conf.set_ht_capab(args.ht_capab)
+        conf.ssid = args.ssid
+        if not conf.set_interface(args.device):
+            logging.error("Interface not found: %s", args.devices)
+            exit(1)
+        conf.ht_capab = args.ht_capab
         conf.set_txpower(args.txpower)
-        conf.set_country_code(args.country_code)
+        conf.country_code = args.country_code
 
-        conf.set_beacon_rate(args.beacon_rate)
+        conf.beacon_rate = args.beacon_rate
 
         set_interface_ip_address(conf)
 
