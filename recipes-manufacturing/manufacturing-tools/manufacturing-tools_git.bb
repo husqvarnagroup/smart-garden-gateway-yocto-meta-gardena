@@ -5,6 +5,7 @@ inherit systemd allarch python3-dir
 
 SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
            file://export-gpios.service \
+           file://ipr-setup \
            file://ipr.service \
            file://selftest-check \
            file://selftest.service \
@@ -16,8 +17,8 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufa
 
 PR = "r0"
 
-PV = "1.2+git${SRCPV}"
-SRCREV = "1458dc254a7f186b03f90cea0a63cfb16a6dd76c"
+PV = "1.3+git${SRCPV}"
+SRCREV = "7fd88704d583f4a843bd01ebeb8082a9ecbe576c"
 
 S = "${WORKDIR}/git"
 
@@ -43,6 +44,7 @@ do_install () {
 	install -m 0755 ${S}/fct-tool.py ${D}${bindir}/fct-tool
 	install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
 	install -m 0755 ${S}/homekit-tool.py ${D}${bindir}/homekit-tool
+	install -m 0755 ${WORKDIR}/ipr-setup ${D}${bindir}
 	install -m 0755 ${WORKDIR}/homekit-setup ${D}${bindir}
 	install -m 0755 ${WORKDIR}/selftest-check ${D}${bindir}
 	install -m 0755 ${WORKDIR}/fctcheck ${D}${bindir}

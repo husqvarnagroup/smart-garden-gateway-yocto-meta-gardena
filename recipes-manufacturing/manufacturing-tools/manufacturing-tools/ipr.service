@@ -2,7 +2,7 @@
 Description=Run IPR tool
 
 [Service]
-ExecStart=/usr/bin/ipr-tool --init-gateway-id
+ExecStart=/usr/bin/ipr-setup
 Type=oneshot
 RemainAfterExit=true
 
