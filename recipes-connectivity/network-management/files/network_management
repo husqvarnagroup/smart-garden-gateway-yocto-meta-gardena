@@ -7,7 +7,7 @@ HOMEKIT_SOCKET="/tmp/wifi_interface"
 WIFI_CONFIG_FILE="/etc/wpa_supplicant/wpa_supplicant-wlan0.conf"
 WPA_SERVICE="wpa_supplicant@wlan0"
 DHCP_SERVICE="dhcpcd"
-VPN_SERVICE="openvpn@sg-cos"
+VPN_SERVICE="openvpn@sg-cos-prod"
 
 FIRST_RUN=1
 BUTTON_PRESSED=0
