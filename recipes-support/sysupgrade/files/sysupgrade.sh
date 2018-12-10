@@ -17,6 +17,12 @@ set -u
 #  * Deleting this file (/usr/bin/sysupgrade) will prevent it from ever running
 #    again. A factory reset will be needed.
 
+if [ ! -f /etc/os-release.old ]; then
+    cp /etc/os-release /etc/os-release.old
+    echo "First startup - nothing to do"
+    exit 0;
+fi
+
 if cmp -s /etc/os-release.old /etc/os-release; then
     echo "System not changed since last startup"
     exit 0;
