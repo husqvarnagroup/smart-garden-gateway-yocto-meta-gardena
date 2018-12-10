@@ -1,5 +1,6 @@
 [Unit]
 Description=Data migration
+DefaultDependencies=no
 
 [Service]
 ExecStart=/usr/bin/sysupgrade
