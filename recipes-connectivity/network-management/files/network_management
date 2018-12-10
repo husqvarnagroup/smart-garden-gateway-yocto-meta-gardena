@@ -121,7 +121,7 @@ ap_is_running() {
 }
 
 button_check() {
-    BTN_GPIO=/sys/class/gpio/pioA24
+    BTN_GPIO=/sys/class/gpio/gpio11
     BTN_VAL=$BTN_GPIO/value
 
     # Make sure the button GPIO is exported
