@@ -14,6 +14,10 @@ PR = "r1"
 
 S = "${WORKDIR}/"
 
+FILES_${PN} += " \
+    ${systemd_unitdir}/system/network_management@.service \
+"
+
 SRC_URI = " \
     file://network_management@.service \
     file://network_management.sh \
