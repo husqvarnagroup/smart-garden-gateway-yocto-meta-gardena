@@ -20,8 +20,8 @@ SRC_URI = " \
 "
 
 do_install() {
-    install -m 700 -d ${D}${bindir}
-    install -m 700 ${S}network_management.sh ${D}${bindir}/network_management
+    install -d ${D}${bindir}
+    install -m 755 ${S}network_management.sh ${D}${bindir}/network_management
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/network_management.service ${D}${systemd_unitdir}/system/
