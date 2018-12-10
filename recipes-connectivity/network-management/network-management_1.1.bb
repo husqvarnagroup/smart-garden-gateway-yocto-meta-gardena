@@ -15,7 +15,7 @@ PR = "r1"
 S = "${WORKDIR}/"
 
 SRC_URI = " \
-    file://network_management.service \
+    file://network_management@.service \
     file://network_management \
 "
 
@@ -24,7 +24,7 @@ do_install() {
     install -m 755 ${S}network_management.sh ${D}${bindir}/network_management
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/network_management.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/network_management@.service ${D}${systemd_unitdir}/system/
 }
 
 inherit allarch systemd
