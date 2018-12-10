@@ -1,7 +1,7 @@
 [Unit]
 Description=Simple network management service
-Wants=dhcpcd.service openvpn@sg-cos.service
-After=network.target dhcpcd.service openvpn@sg-cos.service accessory-server.service
+Wants=dhcpcd.service openvpn@sg-cos-%i.service
+After=network.target dhcpcd.service openvpn@sg-cos-%i.service accessory-server.service
 
 [Service]
 Type=simple

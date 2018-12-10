@@ -10,7 +10,7 @@ RDEPENDS_${PN} += " \
     openvpn \
 "
 
-PR = "r0"
+PR = "r1"
 
 S = "${WORKDIR}/"
 
@@ -29,5 +29,5 @@ do_install() {
 
 inherit allarch systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "network_management.service"
+SYSTEMD_SERVICE_${PN} = "network_management@prod.service"
 SYSTEMD_AUTO_ENABLE = "disable"
