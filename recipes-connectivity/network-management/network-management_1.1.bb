@@ -16,7 +16,7 @@ S = "${WORKDIR}/"
 
 SRC_URI = " \
     file://network_management@.service \
-    file://network_management \
+    file://network_management.sh \
 "
 
 do_install() {
