@@ -16,6 +16,8 @@ set -u
 #  * For debugging purposes, the intermediate files in /tmp are not deleted
 #  * Deleting this file (/usr/bin/sysupgrade) will prevent it from ever running
 #    again. A factory reset will be needed.
+#
+# Credits: Heavily inspired by sysupgrade from OpenWrt (https://github.com/openwrt/openwrt/blob/master/package/base-files/files/sbin/sysupgrade)
 
 if [ ! -f /etc/os-release.old ]; then
     cp /etc/os-release /etc/os-release.old
