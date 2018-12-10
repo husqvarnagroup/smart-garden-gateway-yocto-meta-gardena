@@ -43,9 +43,6 @@ find /media/rfs/rw/upperdir \( -type f -o -type l -o -type c \) | sed 's|/media/
 # Create a list of files to be deleted
 diff /tmp/sysupgrade.to-migrate /tmp/sysupgrade.changed | grep ^+/ | cut -c 2- > /tmp/sysupgrade.to-delete
 
-# Create a list of files NOT to be deleted for debugging purposes
-diff /tmp/sysupgrade.to-delete /tmp/sysupgrade.to-migrate | grep ^+/ | cut -c 2- > /tmp/sysupgrade.to-not-delete
-
 # Actually delete the files
 while IFS= read -r full_path; do rm -- "/media/rfs/rw/upperdir${full_path}" ; done < /tmp/sysupgrade.to-delete
 
