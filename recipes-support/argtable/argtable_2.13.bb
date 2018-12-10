@@ -9,11 +9,14 @@ PR = "r0"
 
 DEPENDS = "libtool-cross"
 
-CRUDE_VERSION_STRING = "2-13"
+PV_MAJOR = "${@d.getVar('PV').split('.')[0]}"
+PV_MINOR = "${@d.getVar('PV').split('.')[1]}"
 
-SRC_URI = "${SOURCEFORGE_MIRROR}/argtable/argtable${CRUDE_VERSION_STRING}.tar.gz"
+VERSION_STRING = "${PV_MAJOR}-${PV_MINOR}"
 
-S="${WORKDIR}/argtable${CRUDE_VERSION_STRING}"
+SRC_URI = "${SOURCEFORGE_MIRROR}/${PN}/${PN}${VERSION_STRING}.tar.gz"
+
+S="${WORKDIR}/${PN}${VERSION_STRING}"
 
 inherit autotools
 
