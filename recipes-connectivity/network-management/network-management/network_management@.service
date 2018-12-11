@@ -1,0 +1,13 @@
+[Unit]
+Description=Simple network management service
+Wants=dhcpcd.service openvpn@%i.service
+After=network.target dhcpcd.service openvpn@%i.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/network_management
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

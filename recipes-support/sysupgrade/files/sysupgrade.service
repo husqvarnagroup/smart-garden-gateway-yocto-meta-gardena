@@ -1,5 +1,8 @@
 [Unit]
 Description=Data migration
+DefaultDependencies=no
+Requires=local-fs.target
+After=local-fs.target
 
 [Service]
 ExecStart=/usr/bin/sysupgrade
@@ -7,4 +10,4 @@ Type=oneshot
 RemainAfterExit=true
 
 [Install]
-RequiredBy=basic.target
+WantedBy=basic.target
