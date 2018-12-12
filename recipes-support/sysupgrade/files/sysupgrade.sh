@@ -48,6 +48,10 @@ diff /tmp/sysupgrade.to-migrate /tmp/sysupgrade.changed | grep ^+/ | cut -c 2- >
 # Actually delete the files
 while IFS= read -r full_path; do rm -- "/media/rfs/rw/upperdir${full_path}" ; done < /tmp/sysupgrade.to-delete
 
+# The merged directory does not always correctly reflect the fact we just deleted many files in the upperdir.
+# Remount the rootfs to "commit" the changes.
+mount / -o remount
+
 # TODO: Implement data migration using scripts (SG-10427)
 # ...
 
