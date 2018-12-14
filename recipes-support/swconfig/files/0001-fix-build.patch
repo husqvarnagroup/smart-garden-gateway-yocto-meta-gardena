@@ -1,0 +1,98 @@
+--- a/Makefile
++++ b/Makefile
+@@ -1,7 +1,7 @@
+ ifndef CFLAGS
+ CFLAGS = -O2 -g -I ../src
+ endif
+-LIBS=-lnl -lnl-genl
++LIBS=-lnl-3 -lnl-genl-3
+ 
+ all: swconfig
+ 
+@@ -12,5 +12,5 @@ libsw.a: swlib.o
+ 	$(AR) rcu $@ swlib.o
+ 	$(RANLIB) $@
+ 
+-swconfig: libsw.a cli.o uci.o
+-	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS) -L./ -lsw
++swconfig: libsw.a cli.o
++	$(CC) $(LDFLAGS) -o $@ $^ -L./ -lsw $(LIBS)
+--- a/cli.c
++++ b/cli.c
+@@ -23,7 +23,7 @@
+ #include <getopt.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+-#include <uci.h>
++#include <stdbool.h>
+ 
+ #include <linux/types.h>
+ #include <linux/netlink.h>
+@@ -38,7 +38,6 @@ enum {
+ 	CMD_NONE,
+ 	CMD_GET,
+ 	CMD_SET,
+-	CMD_LOAD,
+ 	CMD_HELP,
+ 	CMD_SHOW,
+ 	CMD_PORTMAP,
+@@ -202,36 +201,10 @@ static void
+ print_usage(void)
+ {
+ 	printf("swconfig list\n");
+-	printf("swconfig dev <dev> [port <port>|vlan <vlan>] (help|set <key> <value>|get <key>|load <config>|show)\n");
++	printf("swconfig dev <dev> [port <port>|vlan <vlan>] (help|set <key> <value>|get <key>|show)\n");
+ 	exit(1);
+ }
+ 
+-static void
+-swconfig_load_uci(struct switch_dev *dev, const char *name)
+-{
+-	struct uci_context *ctx;
+-	struct uci_package *p = NULL;
+-	int ret = -1;
+-
+-	ctx = uci_alloc_context();
+-	if (!ctx)
+-		return;
+-
+-	uci_load(ctx, name, &p);
+-	if (!p) {
+-		uci_perror(ctx, "Failed to load config file: ");
+-		goto out;
+-	}
+-
+-	ret = swlib_apply_from_uci(dev, p);
+-	if (ret < 0)
+-		fprintf(stderr, "Failed to apply configuration for switch '%s'\n", dev->dev_name);
+-
+-out:
+-	uci_free_context(ctx);
+-	exit(ret);
+-}
+-
+ int main(int argc, char **argv)
+ {
+ 	int retval = 0;
+@@ -280,11 +253,6 @@ int main(int argc, char **argv)
+ 		} else if (!strcmp(arg, "get") && i+1 < argc) {
+ 			cmd = CMD_GET;
+ 			ckey = argv[++i];
+-		} else if (!strcmp(arg, "load") && i+1 < argc) {
+-			if ((cport >= 0) || (cvlan >= 0))
+-				print_usage();
+-			cmd = CMD_LOAD;
+-			ckey = argv[++i];
+ 		} else if (!strcmp(arg, "portmap")) {
+ 			if (i + 1 < argc)
+ 				csegment = argv[++i];
+@@ -356,9 +324,6 @@ int main(int argc, char **argv)
+ 		print_attr_val(a, &val);
+ 		putchar('\n');
+ 		break;
+-	case CMD_LOAD:
+-		swconfig_load_uci(dev, ckey);
+-		break;
+ 	case CMD_HELP:
+ 		list_attributes(dev);
+ 		break;
