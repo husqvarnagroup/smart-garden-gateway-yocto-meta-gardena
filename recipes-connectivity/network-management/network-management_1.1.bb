@@ -9,6 +9,7 @@ RDEPENDS_${PN} += " \
     inotify-tools \
     netcat-openbsd \
     openvpn \
+    swconfig \
 "
 
 PR = "r2"
