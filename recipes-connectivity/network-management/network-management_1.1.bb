@@ -9,6 +9,7 @@ RDEPENDS_${PN} += " \
     inotify-tools \
     netcat-openbsd \
     openvpn \
+    procps \
     swconfig \
 "
 
