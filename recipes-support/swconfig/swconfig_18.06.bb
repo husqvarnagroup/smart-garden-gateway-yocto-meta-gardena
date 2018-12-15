@@ -6,13 +6,15 @@ SRC_URI = "\
     file://0001-fix-build.patch \
 "
 
-PR = "r1"
+PR = "r2"
 PV = "18.06+git${SRCPV}"
 SRCREV = "70255e3d624cd393612069aae0a859d1acbbeeae"
 S = "${WORKDIR}/git/package/network/config/swconfig/src"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=94d55d512a9ba36caa9b7df079bae19f"
 
 CFLAGS_append = " -I ${WORKDIR}/include -I ${STAGING_INCDIR}/libnl3"
+
+do_configure[depends] += "virtual/kernel:do_shared_workdir"
 
 do_configure() {
 	mkdir -p "${WORKDIR}/include/linux"
