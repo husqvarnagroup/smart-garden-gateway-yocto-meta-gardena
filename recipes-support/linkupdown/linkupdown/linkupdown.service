@@ -7,3 +7,6 @@ ExecStartPre=/bin/mkdir -p /var/run/linkupdown
 ExecStart=/usr/bin/linkupdown
 RestartSec=5
 Restart=always
+
+[Install]
+WantedBy=multi-user.target
