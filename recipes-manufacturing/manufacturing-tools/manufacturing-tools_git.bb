@@ -17,8 +17,8 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufa
 
 PR = "r0"
 
-PV = "1.8+git${SRCPV}"
-SRCREV = "00e78eef1731cacdcb04b635f73cfae2349952f5"
+PV = "1.9+git${SRCPV}"
+SRCREV = "8e209b207a076d5e10869649cc7323c3a1336022"
 
 S = "${WORKDIR}/git"
 
