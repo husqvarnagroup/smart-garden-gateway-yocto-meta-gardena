@@ -5,7 +5,3 @@ Before=serial-getty@ttyS0.service
 [Service]
 ExecStart=/usr/bin/ipr-setup
 Type=oneshot
-RemainAfterExit=true
-
-[Install]
-RequiredBy=serial-getty@ttyS0.service
