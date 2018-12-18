@@ -55,11 +55,11 @@ start_ap() {
     # WAC server stops automatically after 15 minutes
     ###
     stop_networking
-    echo -n '{"action":"start_ap"}' | nc -uU -q1 -- "$HOMEKIT_SOCKET" || true
+    echo -n '{"action":"start_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET" || true
 }
 
 stop_ap() {
-    echo -n '{"action":"stop_ap"}' | nc -uU -q1 -- "$HOMEKIT_SOCKET" || true
+    echo -n '{"action":"stop_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET" || true
     # add delay to ensure accessory-server has stopped the wifi interface
     sleep 2
     start_networking
