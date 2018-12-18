@@ -12,7 +12,7 @@ RDEPENDS_${PN} += " \
     swconfig \
 "
 
-PR = "r3"
+PR = "r4"
 
 S = "${WORKDIR}/"
 
