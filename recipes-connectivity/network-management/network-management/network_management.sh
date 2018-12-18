@@ -55,7 +55,7 @@ start_ap() {
     # WAC server stops automatically after 15 minutes
     ###
     stop_networking
-    echo -n '{"action":"start_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET" || true
+    echo -n '{"action":"start_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET"
 }
 
 stop_ap() {
@@ -203,13 +203,14 @@ while true; do
     if is_first_run; then
         if ! wifi_config_exists && ! eth_up; then
             info "No Wi-Fi config is present, no cable connection. Starting the Access Point mode."
-            # wait some time, for accessory server to be ready
-            sleep 10
-            start_ap
+            if start_ap;then
+                FIRST_RUN=0
+            else
+                info "failed to start AP, try again later"
+            fi
         fi
     fi
 
-    FIRST_RUN=0
     BUTTON_PRESSED=0
     if ! sleep 1; then
         # Process was killed by the button check
