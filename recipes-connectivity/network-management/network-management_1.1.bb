@@ -9,7 +9,6 @@ RDEPENDS_${PN} += " \
     inotify-tools \
     socat \
     openvpn \
-    swconfig \
 "
 
 PR = "r4"
