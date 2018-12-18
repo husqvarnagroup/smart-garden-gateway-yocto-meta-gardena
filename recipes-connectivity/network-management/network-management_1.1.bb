@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2
 
 RDEPENDS_${PN} += " \
     inotify-tools \
-    netcat-openbsd \
+    socat \
     openvpn \
     swconfig \
 "
