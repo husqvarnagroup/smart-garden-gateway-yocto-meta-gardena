@@ -91,12 +91,8 @@ wifi_config_exists() {
     [ -f "$WIFI_CONFIG_FILE" ]
 }
 
-eth_is_up() {
-    swconfig dev switch0 port 0 get link 2>&1 | grep -q link:up
-}
-
 read_eth_carrier() {
-    if eth_is_up; then
+    if [ "$(cat /sys/class/net/eth0/carrier)" = "1" ]; then
         ETH_CARRIER=1
     else
         ETH_CARRIER=0
