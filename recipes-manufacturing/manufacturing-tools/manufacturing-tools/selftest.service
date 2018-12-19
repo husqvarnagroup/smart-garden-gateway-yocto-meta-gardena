@@ -1,9 +1,13 @@
 [Unit]
 Description=Run selftest during manufacturing
 Requires=ipr.service export-gpios.service
-After=ipr.service export-gpios.service
+After=ipr.service export-gpios.service homekit-setup.service
 Before=serial-getty@ttyS0.service
 
 [Service]
 ExecStart=/usr/bin/selftest-check
 Type=oneshot
+
+[Install]
+WantedBy=serial-getty@ttyS0.service
+Wants=ipr.service export-gpios.service homekit-setup.service

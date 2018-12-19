@@ -1,6 +1,7 @@
 [Unit]
 Description=Run HomeKit setup during manufacturing
 Requires=ipr.service
+Before=serial-getty@ttyS0.service
 After=ipr.service
 
 [Service]
@@ -8,4 +9,5 @@ ExecStart=/usr/bin/homekit-setup
 Type=oneshot
 
 [Install]
-RequiredBy=multi-user.target
+Wants=ipr.service
+WantedBy=serial-getty@ttyS0.service
