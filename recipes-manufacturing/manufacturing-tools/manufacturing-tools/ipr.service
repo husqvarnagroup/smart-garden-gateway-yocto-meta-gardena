@@ -2,11 +2,11 @@
 Description=Run IPR tool
 Before=serial-getty@ttyS0.service
 After=export-gpios.service
+Wants=export-gpios.service
 
 [Service]
 ExecStart=/usr/bin/ipr-setup
 Type=oneshot
 
 [Install]
-Wants=export-gpios.service
 WantedBy=serial-getty@ttyS0.service
