@@ -8,6 +8,7 @@ Wants=ipr.service
 [Service]
 ExecStart=/usr/bin/homekit-setup
 Type=oneshot
+ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then fct-tool --set-leds red; fi'
 
 [Install]
 WantedBy=serial-getty@ttyS0.service
