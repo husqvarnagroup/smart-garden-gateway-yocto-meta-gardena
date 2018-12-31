@@ -1,0 +1,12 @@
+[Unit]
+Description=GARDENA smart Gateway config interface
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/gateway-config-interface
+WorkingDirectory=/usr/share/gateway-config-interface
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
