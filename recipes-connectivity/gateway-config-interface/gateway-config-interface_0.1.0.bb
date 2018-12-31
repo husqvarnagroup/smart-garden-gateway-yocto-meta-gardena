@@ -7,12 +7,11 @@ inherit cargo
 
 # how to get gateway-config-interface could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/gateway-config-interface/0.1.0"
-#SRC_URI += "git://ssh///git@stash.dss.husqvarnagroup.com/7999/~adrian.friedli/gateway-config-interface.git;protocol=ssh"
-SRC_URI = "git:///home/adi/repos/gardena/gateway/gateway-config-interface;protocol=file"
-SRCREV = "69d5c48c337270c967ab5345f4365fe6c474ec84"
+SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-interface.git;protocol=https"
+SRCREV = "6ffa1d9324a9cad07befeec4a14581fcc1fc3d8f"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR=""
-PV_append = ".AUTOINC+69d5c48c33"
+PV_append = ".AUTOINC+6ffa1d9324"
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
@@ -191,7 +190,10 @@ crate://crates.io/ws2_32-sys/0.2.1 \
 
 
 
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28"
+# FIXME: update generateme with the real MD5 of the license file
+LIC_FILES_CHKSUM=" \
+file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
+"
 
 SUMMARY = "GARDENA smart Gateway config interface"
 HOMEPAGE = "https://www.gardena.com/"
