@@ -44,31 +44,31 @@ identify () {
     time4=71
     time5=50
 
-    led_flash green3 &
-    led_flash red3
+    led_flash smartgw:internet:green &
+    led_flash smartgw:internet:red
 
-    flash green3 $time1 &
-    flash red3 $time1
+    flash smartgw:internet:green $time1 &
+    flash smartgw:internet:red $time1
     /bin/usleep $((time0 + 4 * time1 * 1000))
 
-    flash green3 $time2 &
-    flash red3 $time2
+    flash smartgw:internet:green $time2 &
+    flash smartgw:internet:red $time2
     /bin/usleep $((time0 + 4 * time1 * 1000))
 
-    flash green3 $time3 &
-    flash red3 $time3
+    flash smartgw:internet:green $time3 &
+    flash smartgw:internet:red $time3
     /bin/usleep $((time0 + 4 * (time1 + time2) * 1000))
 
-    flash green3 $time4 &
-    flash red3 $time4
+    flash smartgw:internet:green $time4 &
+    flash smartgw:internet:red $time4
     /bin/usleep $((time0 + 4 * (time1 + time2 + time3) * 1000))
 
-    flash green3 $time5 &
-    flash red3 $time5
+    flash smartgw:internet:green $time5 &
+    flash smartgw:internet:red $time5
     /bin/usleep $((time0 + 4 * (time1 + time2 + time3 + time4) * 1000))
 
-    led_off red3 &
-    led_on green3
+    led_off smartgw:internet:red &
+    led_on smartgw:internet:green
 }
 
 INDICATOR_STATUS="$2"

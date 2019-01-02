@@ -8,33 +8,33 @@ led=/usr/bin/led-indicatorc
 shadoway_status_file=/run/shadoway/led_status
 
 led_green_on() {
-    $led red1 off
-    $led green1 on
-    $led blue1 off
+    $led smartgw:internet:red off
+    $led smartgw:internet:green on
+    $led smartgw:internet:blue off
 }
 
 led_red_on() {
-    $led red1 on
-    $led green1 off
-    $led blue1 off
+    $led smartgw:internet:red on
+    $led smartgw:internet:green off
+    $led smartgw:internet:blue off
 }
 
 led_red_blink() {
-    $led red1 flash
-    $led green1 off
-    $led blue1 off
+    $led smartgw:internet:red flash
+    $led smartgw:internet:green off
+    $led smartgw:internet:blue off
 }
 
 led_yellow_on() {
-    $led blue1 off
-    $led red1 on
-    $led green1 on
+    $led smartgw:internet:blue off
+    $led smartgw:internet:red on
+    $led smartgw:internet:green on
 }
 
 led_yellow_blink() {
-    $led blue1 off
-    $led red1 flash
-    $led green1 flash
+    $led smartgw:internet:blue off
+    $led smartgw:internet:red flash
+    $led smartgw:internet:green flash
 }
 
 has_ip() {
@@ -47,7 +47,7 @@ is_hotspot() {
 }
 
 vpn_connected() {
-    ip route | grep -q '^default.* dev vpn0'
+    ip route | grep -q '^10.* via 10.* dev vpn0'
 }
 
 shadoway_status() {
