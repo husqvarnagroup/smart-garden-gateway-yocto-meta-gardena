@@ -19,7 +19,7 @@ SRC_URI = "\
 S = "${WORKDIR}/"
 
 do_compile() {
-    ${CC} ${WORKDIR}/led-indicator.c -o led-indicator
+    ${CC} ${WORKDIR}/led-indicator.c -o led-indicator -Wall -Wextra -Wpedantic -Werror
 }
 
 do_install() {
