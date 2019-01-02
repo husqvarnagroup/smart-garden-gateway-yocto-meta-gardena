@@ -4,8 +4,8 @@ set -eu -o pipefail
 
 # Internet LED daemon for SGGW
 
-led=/usr/bin/led-indicator
-shadoway_status_file=/usr/lib/seluxit/logs/led.txt
+led=/usr/bin/led-indicatorc
+shadoway_status_file=/run/shadoway/led_status
 
 led_green_on() {
     $led red1 off
