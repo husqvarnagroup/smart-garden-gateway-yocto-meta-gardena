@@ -7,7 +7,7 @@ PV = "1.3"
 PR = "r0"
 
 SRC_URI = "\
-    file://led-control.c \
+    file://led-indicator.c \
     file://internet-led \
     file://internet-led.service \
     file://stop-power-led.service \
@@ -22,7 +22,7 @@ FILES_${PN} = " \
 "
 
 do_compile() {
-    ${CC} ${WORKDIR}/led-control.c -o led-indicator
+    ${CC} ${WORKDIR}/led-indicator.c -o led-indicator
 }
 
 do_install() {
