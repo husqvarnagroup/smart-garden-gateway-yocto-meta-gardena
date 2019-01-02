@@ -2,7 +2,6 @@
 Description=Export relevant GPIOs
 
 [Service]
-ExecStart=/usr/bin/fct-tool --initialize-leds
 ExecStart=/usr/bin/fct-tool --initialize-button
 Type=oneshot
 RemainAfterExit=true
