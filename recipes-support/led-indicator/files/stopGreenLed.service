@@ -1,0 +1,13 @@
+[Unit]
+Description=Stop blinking boot LED
+Before=configure.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/led-indicator red3 off
+ExecStart=/usr/bin/led-indicator blue3 off
+ExecStart=/usr/bin/led-indicator green3 on
+
+[Install]
+WantedBy=multi-user.target
+
