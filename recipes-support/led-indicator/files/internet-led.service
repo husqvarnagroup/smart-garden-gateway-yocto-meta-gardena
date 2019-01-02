@@ -1,10 +1,10 @@
 [Unit]
-Description=Internet LED indication service
+Description=Internet LED indication
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/lib/seluxit/scripts/internet-led
+ExecStart=/usr/bin/internet-ledd
 Restart=on-failure
 RestartSec=5s
 

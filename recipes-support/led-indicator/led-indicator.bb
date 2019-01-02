@@ -12,8 +12,8 @@ SRC_URI = "\
     file://LICENSE \
     file://led-control.c \
     file://internet-led \
-    file://internetLED.service \
-    file://stopGreenLed.service \
+    file://internet-led.service \
+    file://stop-power-led.service \
 "
 
 S = "${WORKDIR}/"
@@ -36,8 +36,8 @@ do_install() {
     install -m 700 ${S}internet-led ${D}${libdir}/seluxit/scripts
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/stopGreenLed.service ${D}${systemd_unitdir}/system/
-    install -m 0644 ${WORKDIR}/internetLED.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/stop-power-led.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/internet-led.service ${D}${systemd_unitdir}/system/
 }
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
@@ -46,5 +46,5 @@ PACKAGES = "${PN}"
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "stopGreenLed.service internetLED.service"
+SYSTEMD_SERVICE_${PN} = "stop-power-led.service internet-led.service"
 SYSTEMD_AUTO_ENABLE = "enable"
