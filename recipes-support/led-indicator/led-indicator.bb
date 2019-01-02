@@ -25,8 +25,8 @@ do_compile() {
 do_install() {
     install -d ${D}${bindir}
     install -m 755 ${S}led-indicatorc.sh ${D}${bindir}/led-indicatorc
-
     install -m 755 ${S}internet-ledd.sh ${D}${bindir}/internet-ledd
+    install -m 755 ${WORKDIR}/led-indicator ${D}${bindir}/
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/stop-power-led.service ${D}${systemd_unitdir}/system
