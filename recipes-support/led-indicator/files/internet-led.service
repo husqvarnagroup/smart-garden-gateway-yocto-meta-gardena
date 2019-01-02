@@ -1,0 +1,13 @@
+[Unit]
+Description=Internet LED indication
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/internet-ledd
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+

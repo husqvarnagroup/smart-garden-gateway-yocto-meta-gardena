@@ -1,0 +1,13 @@
+[Unit]
+Description=Stop blinking boot LED
+Before=configure.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/led-indicator smartgw:power:red off
+ExecStart=/usr/bin/led-indicator smartgw:power:blue off
+ExecStart=/usr/bin/led-indicator smartgw:power:green on
+
+[Install]
+WantedBy=multi-user.target
+
