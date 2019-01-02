@@ -1,15 +1,12 @@
-DESCRIPTION = "Small led helper"
-LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=83621dfdfe7ffabe338547ea7957e56f"
-MAINTAINER = "Seluxit ApS <info@seluxit.com>"
-HOMEPAGE = "http://www.seluxit.com"
+DESCRIPTION = "LED indicator"
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 PV = "1.3"
 
 PR = "r0"
 
 SRC_URI = "\
-    file://LICENSE \
     file://led-control.c \
     file://internet-led \
     file://internet-led.service \
