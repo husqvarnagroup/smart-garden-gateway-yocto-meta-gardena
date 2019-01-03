@@ -8,10 +8,10 @@ inherit cargo
 # how to get gateway-config-interface could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/gateway-config-interface/0.1.1"
 SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-interface.git;protocol=https"
-SRCREV = "751679ed253ee2b3afe475f7bee66b5402bae37f"
+SRCREV = "dcdd582f4943ea371be60967ec03442d61391e2e"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR=""
-PV_append = ".AUTOINC+751679ed25"
+PV_append = ".AUTOINC+dcdd582f49"
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
