@@ -8,8 +8,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-const char* led_green = "smartgw:internet:green";
-const char* led_red = "smartgw:internet:red";
+const char* led_green = "smartgw:power:green";
+const char* led_red = "smartgw:power:red";
 
 static void usage(FILE *stream, char const *program_name) {
     fprintf(stream, "USAGE: %s identify OR <LED name> <on|off|flash>\n", program_name);
