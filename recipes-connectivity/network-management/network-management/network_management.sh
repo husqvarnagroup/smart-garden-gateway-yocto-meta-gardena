@@ -40,11 +40,11 @@ start_networking() {
         start_wifi
     fi
     systemctl start "$DHCP_SERVICE"
-    systemctl start "$VPN_SERVICE"
+    systemctl start "$VPN_SERVICE" || true
 }
 
 stop_networking() {
-    systemctl stop "$VPN_SERVICE"
+    systemctl stop "$VPN_SERVICE" || true
     systemctl stop "$DHCP_SERVICE"
     stop_wifi
 }
