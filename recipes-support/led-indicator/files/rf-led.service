@@ -1,0 +1,11 @@
+[Unit]
+Description=RF LED setup
+After=ppp.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rf-led-setup
+
+[Install]
+WantedBy=multi-user.target
+
