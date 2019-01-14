@@ -1,0 +1,13 @@
+[Unit]
+Description=Ethernet LED configuration
+DefaultDependencies=no
+Requires=local-fs.target
+After=local-fs.target
+Before=network-pre.target
+
+[Service]
+ExecStart=/usr/bin/ethernet-led-setup
+Type=oneshot
+
+[Install]
+WantedBy=basic.target
