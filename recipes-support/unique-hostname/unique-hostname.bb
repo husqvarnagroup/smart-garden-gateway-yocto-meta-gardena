@@ -9,6 +9,7 @@ PR = "r0"
 SRC_URI = "\
     file://unique-hostname.sh \
     file://unique-hostname.service \
+    file://keep.d/unique-hostname \
 "
 
 S = "${WORKDIR}/"
@@ -19,6 +20,9 @@ do_install() {
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/unique-hostname.service ${D}${systemd_unitdir}/system
+
+    install -d ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${WORKDIR}/keep.d/unique-hostname ${D}${base_libdir}/upgrade/keep.d
 }
 
 inherit systemd
