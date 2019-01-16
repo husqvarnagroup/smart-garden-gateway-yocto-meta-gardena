@@ -33,6 +33,7 @@ fi
 fw_printenv -n swupdate_done 1>/dev/null 2>&-
 if [ $? -ne 0 ]; then
     echo "WARNING: System got updated by other means than SWUpdate!" >&2
+else
     fw_setenv swupdate_done
 fi
 
