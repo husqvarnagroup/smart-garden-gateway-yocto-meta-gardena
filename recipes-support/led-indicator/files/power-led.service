@@ -1,0 +1,12 @@
+[Unit]
+Description=Control power LED during boot process
+DefaultDependencies=no
+Before=basic.target sysinit.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/bin/power-ledd
+
+[Install]
+WantedBy=basic.target
