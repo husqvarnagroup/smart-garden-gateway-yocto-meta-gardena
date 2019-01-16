@@ -62,5 +62,7 @@ diff /etc/os-release.old /etc/os-release
 
 # Prevent this script from running on the next startup
 cp /etc/os-release /etc/os-release.old
+sync
 
-echo "Finished data migration"
+echo "Finished data migration, restarting"
+reboot
