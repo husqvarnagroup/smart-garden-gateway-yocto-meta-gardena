@@ -6,12 +6,12 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get gateway-config-interface could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/gateway-config-interface/0.1.1"
+# SRC_URI += "crate://crates.io/gateway-config-interface/0.1.2"
 SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-interface.git;protocol=https"
-SRCREV = "dcdd582f4943ea371be60967ec03442d61391e2e"
+SRCREV = "31d6f892a7901e9bd1d0ff13a11c6065773bb870"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR=""
-PV_append = ".AUTOINC+dcdd582f49"
+PV_append = ".AUTOINC+31d6f892a7"
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
@@ -128,6 +128,7 @@ crate://crates.io/scopeguard/0.3.3 \
 crate://crates.io/semver-parser/0.7.0 \
 crate://crates.io/semver/0.9.0 \
 crate://crates.io/serde/1.0.83 \
+crate://crates.io/serde_derive/1.0.84 \
 crate://crates.io/serde_json/1.0.33 \
 crate://crates.io/serde_urlencoded/0.5.4 \
 crate://crates.io/sha1/0.6.0 \
