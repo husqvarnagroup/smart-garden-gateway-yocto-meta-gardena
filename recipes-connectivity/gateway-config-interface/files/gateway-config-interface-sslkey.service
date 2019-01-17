@@ -1,0 +1,12 @@
+[Unit]
+Description=SSL Key Generation
+RequiresMountsFor=/var /var/lib
+ConditionPathExists=|!/etc/gateway-config-interface/key.pem
+ConditionPathExists=|!/etc/gateway-config-interface/cert.pem
+
+[Service]
+Environment="SSLKEY_DIR=/etc/gateway-config-interface"
+Type=oneshot
+ExecStart=/bin/mkdir -p ${SSLKEY_DIR}
+ExecStart=/usr/bin/openssl req -x509 -newkey rsa:3072 -keyout ${SSLKEY_DIR}/key.pem -out ${SSLKEY_DIR}/cert.pem -sha256 -days 36524 -nodes -subj '/CN=10.0.0.1'
+RemainAfterExit=yes
