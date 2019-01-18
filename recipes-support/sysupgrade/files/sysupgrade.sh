@@ -33,6 +33,7 @@ fi
 fw_printenv -n swupdate_done 1>/dev/null 2>&-
 if [ $? -ne 0 ]; then
     echo "WARNING: System got updated by other means than SWUpdate!" >&2
+else
     fw_setenv swupdate_done
 fi
 
@@ -61,5 +62,7 @@ diff /etc/os-release.old /etc/os-release
 
 # Prevent this script from running on the next startup
 cp /etc/os-release /etc/os-release.old
+sync
 
-echo "Finished data migration"
+echo "Finished data migration, restarting"
+reboot
