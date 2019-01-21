@@ -6,12 +6,12 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get gateway-config-interface could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/gateway-config-interface/0.1.2"
+# SRC_URI += "crate://crates.io/gateway-config-interface/0.1.3"
 SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-interface.git;protocol=https"
-SRCREV = "31d6f892a7901e9bd1d0ff13a11c6065773bb870"
+SRCREV = "349f20c5c3b35e9bccc5dbd77ccc7940838d1f87"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR=""
-PV_append = ".AUTOINC+31d6f892a7"
+
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
