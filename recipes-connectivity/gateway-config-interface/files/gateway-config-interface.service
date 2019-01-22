@@ -1,6 +1,6 @@
 [Unit]
 Description=GARDENA smart Gateway config interface
-Wants=gateway-config-interface-sslkey.service
+Requires=gateway-config-interface-sslkey.service
 After=network.target gateway-config-interface-sslkey.service
 
 [Service]
