@@ -80,6 +80,13 @@ PROVIDES =+ "fct-tool"
 FILES_fct-tool += "${bindir}/fct-tool"
 
 RDEPENDS_fct-tool += " \
+    iw \
+    openocd \
     python3-core \
     python3-datetime \
+    systemctl \
+"
+
+RCONFLICTS_fct-tool += " \
+    procps \
 "
