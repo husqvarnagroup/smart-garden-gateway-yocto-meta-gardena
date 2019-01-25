@@ -84,7 +84,7 @@ RDEPENDS_fct-tool += " \
     openocd \
     python3-core \
     python3-datetime \
-    systemctl \
+    systemd \
 "
 
 RCONFLICTS_fct-tool += " \
