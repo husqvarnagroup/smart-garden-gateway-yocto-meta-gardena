@@ -204,23 +204,23 @@ while true; do
 	FIRST_RUN=0
 	if ! wifi_config_exists && ! eth_up; then
             info "No Wi-Fi config is present, no cable connection. Starting the Access Point mode."
-	    # wait for HomeKit service to provide socket
-	    # note: we can't simply start this service after the
-	    # accessory server service, as the accessory server
-	    # service already depends on this one
-	    if ! [ -S $HOMEKIT_SOCKET ]; then
-		info "Waiting for HomeKit socket ..."
-		delay=0
-		while ! [ -S $HOMEKIT_SOCKET ] && [ $delay -lt $HOMEKIT_TIMEOUT ] ; do
-		    delay=$((delay + 1))
-		    # shellcheck disable=SC2039
-		    echo -n .
-		    sleep 1
-		done
-		echo
-	    fi
+            # wait for HomeKit service to provide socket
+            # note: we can't simply start this service after the
+            # accessory server service, as the accessory server
+            # service already depends on this one
+            if ! [ -S $HOMEKIT_SOCKET ]; then
+                info "Waiting for HomeKit socket ..."
+                delay=0
+                while ! [ -S $HOMEKIT_SOCKET ] && [ $delay -lt $HOMEKIT_TIMEOUT ] ; do
+                    delay=$((delay + 1))
+                    # shellcheck disable=SC2039
+                    echo -n .
+                    sleep 1
+                done
+                echo
+            fi
 
-	    if ! start_ap; then
+            if ! start_ap; then
                 info "failed to start AP, try again later"
             fi
         fi
