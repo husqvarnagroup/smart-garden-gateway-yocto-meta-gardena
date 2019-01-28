@@ -4,6 +4,7 @@ set -eu -o pipefail
 
 DEBUG=1
 HOMEKIT_SOCKET="/tmp/wifi_interface"
+HOMEKIT_TIMEOUT=30
 WIFI_CONFIG_FILE="/etc/wpa_supplicant/wpa_supplicant-wlan0.conf"
 WPA_SERVICE="wpa_supplicant@wlan0"
 DHCP_SERVICE="dhcpcd"
@@ -55,10 +56,12 @@ start_ap() {
     # WAC server stops automatically after 15 minutes
     ###
     stop_networking
+    # shellcheck disable=SC2039
     echo -n '{"action":"start_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET"
 }
 
 stop_ap() {
+    # shellcheck disable=SC2039
     echo -n '{"action":"stop_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET" || true
     # add delay to ensure accessory-server has stopped the wifi interface
     sleep 2
@@ -121,12 +124,13 @@ ap_is_running() {
 }
 
 button_check() {
-    BTN_GPIO=/sys/class/gpio/gpio11
+    BTN_GPIO_PIN=11
+    BTN_GPIO=/sys/class/gpio/gpio${BTN_GPIO_PIN}
     BTN_VAL=$BTN_GPIO/value
 
     # Make sure the button GPIO is exported
     if [ ! -d $BTN_GPIO ]; then
-        echo 24 > /sys/class/gpio/export;
+        echo $BTN_GPIO_PIN > /sys/class/gpio/export
     fi
     echo none > "$BTN_GPIO/edge"
     echo both > "$BTN_GPIO/edge"
@@ -197,11 +201,26 @@ while true; do
 
     # Check only on first run
     if is_first_run; then
-        if ! wifi_config_exists && ! eth_up; then
+	FIRST_RUN=0
+	if ! wifi_config_exists && ! eth_up; then
             info "No Wi-Fi config is present, no cable connection. Starting the Access Point mode."
-            if start_ap;then
-                FIRST_RUN=0
-            else
+	    # wait for HomeKit service to provide socket
+	    # note: we can't simply start this service after the
+	    # accessory server service, as the accessory server
+	    # service already depends on this one
+	    if ! [ -S $HOMEKIT_SOCKET ]; then
+		info "Waiting for HomeKit socket ..."
+		delay=0
+		while ! [ -S $HOMEKIT_SOCKET ] && [ $delay -lt $HOMEKIT_TIMEOUT ] ; do
+		    delay=$((delay + 1))
+		    # shellcheck disable=SC2039
+		    echo -n .
+		    sleep 1
+		done
+		echo
+	    fi
+
+	    if ! start_ap; then
                 info "failed to start AP, try again later"
             fi
         fi
