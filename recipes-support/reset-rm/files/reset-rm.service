@@ -1,0 +1,12 @@
+[Unit]
+Description=Reset Radio Module on boot
+Before=ppp.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/reset-rm
+# give RM time to boot before starting dependent services
+ExecStartPost=/bin/sleep 2
+
+[Install]
+WantedBy=basic.target
