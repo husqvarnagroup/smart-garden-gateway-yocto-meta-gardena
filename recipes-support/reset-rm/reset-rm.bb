@@ -13,10 +13,6 @@ SRC_URI = "\
 
 S = "${WORKDIR}/"
 
-FILES_${PN} += " \
-    ${base_libdir}/upgrade/keep.d \
-"
-
 do_install() {
     install -d ${D}${bindir}
     install -m 755 ${S}reset-rm.sh ${D}${bindir}/reset-rm
