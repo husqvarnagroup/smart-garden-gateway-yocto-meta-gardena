@@ -11,7 +11,7 @@ RDEPENDS_${PN} += " \
     openvpn \
 "
 
-PR = "r4"
+PR = "r5"
 
 S = "${WORKDIR}/"
 
