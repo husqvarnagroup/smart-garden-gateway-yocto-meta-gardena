@@ -13,7 +13,7 @@ SRC_URI += " \
 "
 
 PR = "r0"
-SRCREV = "6d8b9d67f8c2871b1beff9591299655099"
+SRCREV = "bd0696e1c0ef723da69b9e1c80e675d43ee93f62"
 PV = "1.0+git${SRCPV}"
 
 do_install() {
