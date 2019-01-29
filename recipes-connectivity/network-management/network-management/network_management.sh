@@ -87,6 +87,7 @@ set_wifi_config() {
 
 remove_wifi_config() {
     rm -f -- "$WIFI_CONFIG_FILE"
+    start_ap
 }
 
 
