@@ -1,4 +1,4 @@
-PR = "r1"
+PR = "r0"
 
 DEPENDS += "openssl"
 RDEPENDS_${PN} += "openssl openssl-bin openssl-conf"
@@ -12,8 +12,8 @@ SRC_URI += "\
 do_install () {
     cargo_do_install
 
-    install -d ${D}/usr/share/gateway-config-interface
-    install -m 0644 ${S}/index.html ${D}/usr/share/gateway-config-interface
+    install -d ${D}/usr/share/gateway-config-interface/www
+    install -m 0644 ${S}/www/simple.html ${D}/usr/share/gateway-config-interface/www
     ln -s /etc/gateway-config-interface/key.pem /etc/gateway-config-interface/cert.pem ${D}/usr/share/gateway-config-interface
 
     install -d ${D}${systemd_unitdir}/system
