@@ -9,7 +9,7 @@ RDEPENDS_${PN} += " \
 "
 
 SRC_URI += " \
-    git://git@stash.dss.husqvarnagroup.com/scm/sg/smart-garden-lemonbeat-tools.git;protocol=ssh \
+    git://git@stash.dss.husqvarnagroup.com:7999/sg/smart-garden-lemonbeat-tools.git;protocol=ssh \
 "
 
 PR = "r0"
