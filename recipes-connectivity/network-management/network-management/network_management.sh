@@ -204,8 +204,8 @@ while true; do
 
     # Check only on first run
     if is_first_run; then
-	FIRST_RUN=0
-	if ! wifi_config_exists && ! eth_up; then
+    FIRST_RUN=0
+    if ! wifi_config_exists && ! eth_up; then
             info "No Wi-Fi config is present, no cable connection. Starting the Access Point mode."
             # wait for HomeKit service to provide socket
             # note: we can't simply start this service after the
