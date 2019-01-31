@@ -1,0 +1,13 @@
+[Unit]
+Description=Backend component for the GARDENA smart Gateway config interface
+Requires=gateway-config-backend-sslkey.service
+After=network.target gateway-config-backend-sslkey.service
+
+[Service]
+ExecStart=/usr/bin/gateway-config-backend
+WorkingDirectory=/usr/share/gateway-config-interface
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

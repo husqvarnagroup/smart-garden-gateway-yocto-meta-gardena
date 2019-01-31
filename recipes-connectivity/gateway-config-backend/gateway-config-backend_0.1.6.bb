@@ -5,10 +5,10 @@ inherit cargo
 # If this is git based prefer versioned ones if they exist
 # DEFAULT_PREFERENCE = "-1"
 
-# how to get gateway-config-interface could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/gateway-config-interface/0.1.4"
-SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-interface.git;protocol=https"
-SRCREV = "6b9f5d82f1bfd37b4dff3a9731d2496c67c140e6"
+# how to get gateway-config-backend could be as easy as but default to a git checkout:
+# SRC_URI += "crate://crates.io/gateway-config-backend/0.1.6"
+SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-backend.git;protocol=https"
+SRCREV = "5be8885867afc498b54df816f34d1f4a2d8ac6e4"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR=""
 
@@ -196,12 +196,12 @@ LIC_FILES_CHKSUM=" \
 file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
 "
 
-SUMMARY = "GARDENA smart Gateway config interface"
+SUMMARY = "Backend component for the GARDENA smart Gateway config interface"
 HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
 
 # includes this file if it exists but does not fail
 # this is useful for anything you may want to override from
 # what cargo-bitbake generates.
-include gateway-config-interface-${PV}.inc
-include gateway-config-interface.inc
+include gateway-config-backend-${PV}.inc
+include gateway-config-backend.inc
