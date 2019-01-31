@@ -1,7 +1,7 @@
 PR = "r0"
 
 DEPENDS += "openssl"
-RDEPENDS_${PN} += "openssl openssl-bin openssl-conf"
+RDEPENDS_${PN} += "gateway-config-frontend openssl openssl-bin openssl-conf"
 
 SRC_URI += "\
     file://gateway-config-backend-sslkey.service \
