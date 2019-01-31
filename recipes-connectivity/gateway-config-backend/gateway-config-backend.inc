@@ -12,9 +12,9 @@ SRC_URI += "\
 do_install () {
     cargo_do_install
 
-    install -d ${D}/usr/share/gateway-config-interface/www
-    install -m 0644 ${S}/www/simple.html ${D}/usr/share/gateway-config-interface/www
-    ln -s /etc/gateway-config-interface/key.pem /etc/gateway-config-interface/cert.pem ${D}/usr/share/gateway-config-interface
+    install -d ${D}${datadir}/gateway-config-interface/www
+    install -m 0644 ${S}/www/simple.html ${D}${datadir}/gateway-config-interface/www
+    ln -s ${sysconfdir}/gateway-config-interface/key.pem ${sysconfdir}/gateway-config-interface/cert.pem ${D}${datadir}/gateway-config-interface
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/gateway-config-backend-sslkey.service ${D}${systemd_unitdir}/system
@@ -25,7 +25,7 @@ do_install () {
 }
 
 FILES_${PN} += "\
-    /usr/share/gateway-config-interface \
+    ${datadir}/gateway-config-interface \
     ${systemd_unitdir}/system/gateway-config-backend-sslkey.service \
     ${base_libdir}/upgrade/keep.d/gateway-config-backend \
     "
