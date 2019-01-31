@@ -6,9 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get gateway-config-backend could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/gateway-config-backend/0.1.5"
+# SRC_URI += "crate://crates.io/gateway-config-backend/0.1.6"
 SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-backend.git;protocol=https"
-SRCREV = "a3d9d35bf115d6cf38b9f71336979a4de680b5b5"
+SRCREV = "5be8885867afc498b54df816f34d1f4a2d8ac6e4"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR=""
 
