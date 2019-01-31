@@ -9,12 +9,14 @@ RDEPENDS_${PN} += " \
 "
 
 SRC_URI += " \
-    git://git@stash.dss.husqvarnagroup.com:7999/sg/smart-garden-lemonbeat-tools.git;protocol=ssh \
+    git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-lemonbeat-tools.git;protocol=https \
 "
 
-PR = "r0"
+PR = "r1"
 SRCREV = "bd0696e1c0ef723da69b9e1c80e675d43ee93f62"
 PV = "1.0+git${SRCPV}"
+
+S = "${WORKDIR}/git"
 
 do_install() {
     install -d ${D}${bindir}
