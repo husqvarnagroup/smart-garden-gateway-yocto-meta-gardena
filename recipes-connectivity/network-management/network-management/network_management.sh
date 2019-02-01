@@ -52,6 +52,11 @@ stop_networking() {
 }
 
 start_ap() {
+    if eth_up; then
+        info "LAN connected, not starting AP"
+        return 1
+    fi
+
     ###
     # Notify Homekit accessory server to start the access point
     # WAC server stops automatically after 15 minutes
@@ -86,9 +91,7 @@ set_wifi_config() {
 
 remove_wifi_config() {
     rm -f -- "$WIFI_CONFIG_FILE"
-    if ! eth_up; then
-        start_ap
-    fi
+    start_ap || true
 }
 
 
@@ -183,7 +186,7 @@ while true; do
     if button_pressed; then
         if ! eth_up && ! has_ip_address wlan0 && ! ap_is_running; then
             info "Button pressed, no LAN, no WLAN, (re-)starting AP."
-            start_ap
+            start_ap || true
         else
             info "Button pressed, ignoring."
         fi
