@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 
 set -eu -o pipefail
 
@@ -56,12 +57,10 @@ start_ap() {
     # WAC server stops automatically after 15 minutes
     ###
     stop_networking
-    # shellcheck disable=SC2039
     echo -n '{"action":"start_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET"
 }
 
 stop_ap() {
-    # shellcheck disable=SC2039
     echo -n '{"action":"stop_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET" || true
     # add delay to ensure accessory-server has stopped the wifi interface
     sleep 2
@@ -216,7 +215,6 @@ while true; do
                 delay=0
                 while ! [ -S $HOMEKIT_SOCKET ] && [ $delay -lt $HOMEKIT_TIMEOUT ] ; do
                     delay=$((delay + 1))
-                    # shellcheck disable=SC2039
                     echo -n .
                     sleep 1
                 done
