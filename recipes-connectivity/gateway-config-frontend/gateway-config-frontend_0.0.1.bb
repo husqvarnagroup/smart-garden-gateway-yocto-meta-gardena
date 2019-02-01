@@ -10,12 +10,14 @@ SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-frontend.gi
 SRCREV = "067183cf2486b6208dc9185d00938673f5452e86"
 S = "${WORKDIR}/git"
 
+WWWDIR = "${datadir}/gateway-config-interface/www"
+
 do_install () {
-    install -d ${D}${datadir}/gateway-config-interface/www
-    cp -r ${S}/* ${D}${datadir}/gateway-config-interface/www
-    find ${D}${datadir}/gateway-config-interface/www \( -type d -exec chmod 00755 '{}' + \) -o \( -type f -exec chmod 00644 '{}' + \)
+    install -d ${D}${WWWDIR}
+    cp -dr ${S}/* ${D}${WWWDIR}
+    find ${D}${WWWDIR} \( -type d \! -perm 0755 -exec chmod 00755 -- '{}' + \) -o \( -type f \! -perm 0644 -exec chmod 00644 -- '{}' + \)
 }
 
 FILES_${PN} += "\
-    ${datadir}/gateway-config-interface/www \
+    ${WWWDIR} \
     "
