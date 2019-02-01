@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 
 set -eu -o pipefail
 
@@ -51,17 +52,20 @@ stop_networking() {
 }
 
 start_ap() {
+    if eth_up; then
+        info "LAN connected, not starting AP"
+        return 1
+    fi
+
     ###
     # Notify Homekit accessory server to start the access point
     # WAC server stops automatically after 15 minutes
     ###
     stop_networking
-    # shellcheck disable=SC2039
     echo -n '{"action":"start_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET"
 }
 
 stop_ap() {
-    # shellcheck disable=SC2039
     echo -n '{"action":"stop_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET" || true
     # add delay to ensure accessory-server has stopped the wifi interface
     sleep 2
@@ -87,9 +91,7 @@ set_wifi_config() {
 
 remove_wifi_config() {
     rm -f -- "$WIFI_CONFIG_FILE"
-    if ! eth_up; then
-        start_ap
-    fi
+    start_ap || true
 }
 
 
@@ -184,7 +186,7 @@ while true; do
     if button_pressed; then
         if ! eth_up && ! has_ip_address wlan0 && ! ap_is_running; then
             info "Button pressed, no LAN, no WLAN, (re-)starting AP."
-            start_ap
+            start_ap || true
         else
             info "Button pressed, ignoring."
         fi
@@ -216,7 +218,6 @@ while true; do
                 delay=0
                 while ! [ -S $HOMEKIT_SOCKET ] && [ $delay -lt $HOMEKIT_TIMEOUT ] ; do
                     delay=$((delay + 1))
-                    # shellcheck disable=SC2039
                     echo -n .
                     sleep 1
                 done
