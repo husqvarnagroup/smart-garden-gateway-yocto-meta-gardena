@@ -37,6 +37,10 @@ stop_wifi() {
     systemctl stop "$WPA_SERVICE"
 }
 
+restart_wifi() {
+    systemctl restart "$WPA_SERVICE"
+}
+
 start_networking() {
     if ! eth_up; then
         start_wifi
@@ -79,7 +83,7 @@ set_wifi_config() {
         encryption="key_mgmt=NONE"
     else
         encryption="key_mgmt=WPA-PSK
-    psk=\"$2\""
+        psk=\"$2\""
     fi
 
     echo "network={
@@ -87,6 +91,18 @@ set_wifi_config() {
     scan_ssid=1
     ${encryption}
 }" > "$WIFI_CONFIG_FILE"
+
+    {
+        # Fork to background and use delay for the client to get the response.
+        sleep 1
+        if ap_is_running; then
+            # stop ap and start networking
+            stop_ap || true
+        elif ! eth_up; then
+            # reconnect to newly configured Wi-Fi
+            restart_wifi || true
+        fi
+    } &
 }
 
 remove_wifi_config() {
@@ -206,8 +222,8 @@ while true; do
 
     # Check only on first run
     if is_first_run; then
-    FIRST_RUN=0
-    if ! wifi_config_exists && ! eth_up; then
+        FIRST_RUN=0
+        if ! wifi_config_exists && ! eth_up; then
             info "No Wi-Fi config is present, no cable connection. Starting the Access Point mode."
             # wait for HomeKit service to provide socket
             # note: we can't simply start this service after the
