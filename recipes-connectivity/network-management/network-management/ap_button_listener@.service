@@ -1,0 +1,12 @@
+[Unit]
+Description=Listener Service for the AP Button
+Requires=network_management@%i.service
+After=network_management@%i.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ap_button_listener
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
