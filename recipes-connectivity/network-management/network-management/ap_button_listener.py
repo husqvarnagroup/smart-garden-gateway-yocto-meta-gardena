@@ -7,10 +7,10 @@ import subprocess
 
 def start_ap():
     command = "/usr/bin/network_management start_ap"
-    print("Button pressed. Executing: {}".format(command))
+    print("Button pressed. Executing: {}".format(command), flush=True)
     res = subprocess.run(command, shell=True)
     if res.returncode != 0:
-        print("Command exited with return code {}.".format(res.returncode))
+        print("Command exited with return code {}.".format(res.returncode), flush=True)
 
 
 def flush(device):
