@@ -6,9 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get gateway-config-backend could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/gateway-config-backend/0.1.7"
+# SRC_URI += "crate://crates.io/gateway-config-backend/0.1.8"
 SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-backend.git;protocol=https"
-SRCREV = "391c3375f5d70f5e963ec0b15a79dab6bed5b758"
+SRCREV = "220584cbfb11546e118281f11ad2fe5b046b5dd6"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR=""
 
@@ -191,9 +191,9 @@ crate://crates.io/ws2_32-sys/0.2.1 \
 
 
 
-# FIXME: update generateme with the real MD5 of the license file
 LIC_FILES_CHKSUM=" \
 file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
+file://third_party_licenses;md5=516686f60d3d94d28d11e4c087d07515 \
 "
 
 SUMMARY = "Backend component for the GARDENA smart Gateway config interface"
