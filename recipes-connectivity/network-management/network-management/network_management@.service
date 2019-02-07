@@ -1,7 +1,7 @@
 [Unit]
 Description=Simple network management service
 Wants=dhcpcd.service openvpn@%i.service
-After=network.target dhcpcd.service openvpn@%i.service export-gpios.service
+After=network.target dhcpcd.service openvpn@%i.service
 
 [Service]
 Type=simple

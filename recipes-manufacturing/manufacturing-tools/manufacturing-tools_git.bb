@@ -4,7 +4,6 @@ LICENSE = "CLOSED"
 inherit systemd allarch python3-dir
 
 SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
-           file://export-gpios.service \
            file://ipr-setup \
            file://ipr.service \
            file://selftest-check \
@@ -16,10 +15,10 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufa
            file://keep.d/fctcheck \
            "
 
-PR = "r1"
+PR = "r0"
 
-PV = "3.4+git${SRCPV}"
-SRCREV = "e601d649971678969a20f870a43e5b1c734ce09e"
+PV = "3.5+git${SRCPV}"
+SRCREV = "20fcd9c2333b8b3445c8ed3358567d7411a2c11a"
 
 S = "${WORKDIR}/git"
 
@@ -32,12 +31,12 @@ FILES_${PN} += " \
 "
 
 RDEPENDS_${PN} += " \
+    fct-tool \
     python3-core \
     python3-datetime \
     python3-json \
     python3-threading \
     python3-unittest \
-    fct-tool \
 "
 
 do_install () {
@@ -52,7 +51,6 @@ do_install () {
     install -m 0755 ${WORKDIR}/fctcheck ${D}${bindir}
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/export-gpios.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/ipr.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/selftest.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/fctcheck.service ${D}${systemd_unitdir}/system/
@@ -68,7 +66,6 @@ do_install () {
     install -m 0644 ${WORKDIR}/keep.d/fctcheck ${D}${base_libdir}/upgrade/keep.d
 }
 
-SYSTEMD_SERVICE_${PN} += "export-gpios.service"
 SYSTEMD_SERVICE_${PN} += "ipr.service"
 SYSTEMD_SERVICE_${PN} += "selftest.service"
 SYSTEMD_SERVICE_${PN} += "fctcheck.service"
@@ -84,6 +81,7 @@ RDEPENDS_fct-tool += " \
     openocd \
     python3-core \
     python3-datetime \
+    python3-evdev \
     systemd \
 "
 
