@@ -31,12 +31,12 @@ FILES_${PN} += " \
 "
 
 RDEPENDS_${PN} += " \
+    fct-tool \
     python3-core \
     python3-datetime \
     python3-json \
     python3-threading \
     python3-unittest \
-    fct-tool \
 "
 
 do_install () {
@@ -81,6 +81,7 @@ RDEPENDS_fct-tool += " \
     openocd \
     python3-core \
     python3-datetime \
+    python3-evdev \
     systemd \
 "
 
