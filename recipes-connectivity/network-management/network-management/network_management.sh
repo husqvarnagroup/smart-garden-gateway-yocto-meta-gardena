@@ -108,7 +108,7 @@ set_wifi_config() {
 remove_wifi_config() {
     rm -f -- "$WIFI_CONFIG_FILE"
     # Wait to start the AP, so that the client gets the response.
-    { sleep 1; start_ap || true; } &
+    { sleep 1; stop_wifi || true; start_ap || true; } &
 }
 
 wifi_config_exists() {
