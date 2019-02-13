@@ -12,7 +12,7 @@ SRC_URI = " \
 "
 
 PR = "r0"
-PV = "0.6"
+PV = "0.8"
 
 RDEPENDS_${PN} = "initscripts-readonly-rootfs-overlay"
 
@@ -32,6 +32,9 @@ do_install () {
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/sysupgrade.service ${D}${systemd_unitdir}/system
+
+    # Create persistent log dir
+    install -d ${D}${localstatedir}/lib/sysupgrade
 }
 
 SYSTEMD_SERVICE_${PN} += "sysupgrade.service"
