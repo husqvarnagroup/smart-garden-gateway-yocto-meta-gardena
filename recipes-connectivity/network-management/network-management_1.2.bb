@@ -1,4 +1,4 @@
-DESCRIPTION = "Gardena OpenVPN"
+DESCRIPTION = "Gardena Network Management"
 MAINTAINER = "Gardena GmbH"
 HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
@@ -9,6 +9,7 @@ RDEPENDS_${PN} += " \
     openvpn \
     python3-evdev \
     socat \
+    wpa-supplicant-passphrase \
 "
 
 PR = "r0"
