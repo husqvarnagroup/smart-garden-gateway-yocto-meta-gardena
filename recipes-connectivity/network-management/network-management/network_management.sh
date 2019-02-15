@@ -76,6 +76,17 @@ stop_ap() {
     start_networking
 }
 
+derive_psk() {
+    ssid=$1
+    passphrase=$2
+
+    if [ "$(echo -n "$passphrase" | wc -c)" -eq 64 ]; then
+        echo "$passphrase"
+    else
+        wpa_passphrase "$ssid" "$passphrase" | sed -ne 's/^\s*psk=\(.*\)$/\1/p'
+    fi
+}
+
 set_wifi_config() {
     mkdir -p /etc/wpa_supplicant
 
@@ -83,7 +94,7 @@ set_wifi_config() {
         encryption="key_mgmt=NONE"
     else
         encryption="key_mgmt=WPA-PSK
-    psk=\"$2\""
+    psk=$(derive_psk "$1" "$2")"
     fi
 
     echo "network={
