@@ -14,7 +14,7 @@ fn run_purger() {
     )
 }
 
-fn setup() {
+fn setup_fakeroot() {
     if unsafe { libc::getuid() } != 0 {
         println!("Running test with fakeroot.");
         let args: Vec<_> = ::std::env::args().collect();
@@ -22,7 +22,9 @@ fn setup() {
         let status = command_builder.args(args).status().unwrap();
         ::std::process::exit(status.code().unwrap());
     }
+}
 
+fn setup_test_data() {
     let status = std::process::Command::new("sh")
         .arg("test-fixtures/integration_test/setup.sh")
         .status()
@@ -30,13 +32,18 @@ fn setup() {
     assert!(status.success());
 }
 
-fn verify() {
-    let dir = Path::new("tmp/upperdir");
+fn verify_test_data() {
+    let status = std::process::Command::new("sh")
+        .arg("test-fixtures/integration_test/verify.sh")
+        .status()
+        .expect("Failed to verify test.");
+    assert!(status.success());
 }
 
 #[test]
 fn integration_test() {
-    setup();
+    setup_fakeroot();
+    setup_test_data();
     run_purger();
-    verify();
+    verify_test_data();
 }

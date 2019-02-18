@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -eu
 
 rm -rf tmp
 mkdir -p tmp
@@ -16,7 +16,9 @@ for x in dir_new_keep dir_new_remove dir_new; do
     mkdir -p upperdir/$x
 done
 
-mkdir -p lowerdir/whiteout_dir
+for x in whiteout_dir whiteout_dir_keep; do
+    mkdir -p lowerdir/$x
+done
 
 # files
 
@@ -28,7 +30,9 @@ for x in file_new_keep file_new_remove dir_overlayed/file_keep dir_new/file_keep
     touch upperdir/$x
 done
 
-touch lowerdir/whiteout_file
+for x in whiteout_file whiteout_file_keep; do
+    touch lowerdir/$x
+done
 
 # symlinks
 
@@ -52,8 +56,9 @@ done
 
 # whiteouts
 
-mknod upperdir/whiteout_dir c 0 0
-mknod upperdir/whiteout_file c 0 0
+for x in whiteout_dir whiteout_dir_keep whiteout_file whiteout_file_keep; do
+    mknod upperdir/$x c 0 0
+done
 
 # opaque dirs
 
@@ -64,6 +69,8 @@ xattr -w trusted.overlay.opaque y upperdir/dir_opaque
 
 chmod a-rwx upperdir/dir_overlayed
 chmod a+rwx upperdir/dir_new
+
+# TODO time stamps
 
 # extended attributes
 
