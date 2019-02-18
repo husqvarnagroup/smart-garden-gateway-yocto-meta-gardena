@@ -1,0 +1,20 @@
+[package]
+name = "overlayfs-purge"
+version = "0.1.0"
+authors = ["Adrian Friedli <adrian.friedli@husqvarnagroup.com>"]
+description = "Filesystem overlay cleaner for system upgrades"
+homepage = "https://www.gardena.com/"
+license = "Proprietary"
+
+[dependencies]
+globset = "0.4"
+xattr = "0.2"
+
+[dev-dependencies]
+libc = "0.2"
+
+[profile.release]
+#opt-level = 'z'
+lto = true
+codegen-units = 1
+#panic = 'abort'
