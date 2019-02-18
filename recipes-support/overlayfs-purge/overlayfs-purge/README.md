@@ -2,13 +2,18 @@
 
 This tool removes files in an upperdir from an Overlay Filesystem while keeping some files. The files to keep can be specified by multiple config files. It is intended for a cleanup whenever a lowerdir has been updated to keep a minimal set of files. The overlayfs does not have to be mounted, only the lowerdir and the upperdir must be available.
 
-See [Overlayfs specification](https://www.kernel.org/doc/Documentation/filesystems/overlayfs.txt).
+See [Overlayfs specification].
 
-## Overlayfs Assumptions
+## Assumptions
 
-* The "redirect_dir" feature is not enabled.
-* The metadata only copy up feature is not enabled.
-* There are no special attributes like the immutable flag.
+* The "redirect_dir" feature in Overlayfs is not enabled.
+* The metadata only copy up feature in Overlayfs is not enabled.
+* File attributes, like the immutable flag, are not used, see [chattr(1)].
+* ACLs are not used, see [setfacl(1)].
+
+[Overlayfs specification]: https://www.kernel.org/doc/Documentation/filesystems/overlayfs.txt
+[chattr(1)]: https://manpages.debian.org/stretch/e2fsprogs/chattr.1.en.html
+[setfacl(1)]: https://manpages.debian.org/stretch/acl/setfacl.1.en.html
 
 ## Files to Keep
 
@@ -19,7 +24,9 @@ This tool looks in the following config files for patterns:
 
 Each config file contains one glob pattern per line for each file to keep. Each line usually starts with a '/'. Lines starting with zero or more whitespace characters followed by a '#' as well as lines only containing zero or more whitespace characters are ignored.
 
-See [glob::Pattern](https://docs.rs/glob/0.2/glob/struct.Pattern.html) documentation for a list of supported glob patterns.
+See the [glob::Pattern documentation] for a list of supported glob patterns.
+
+[glob::Pattern documentation]: https://docs.rs/glob/0.2/glob/struct.Pattern.html
 
 ## Files in the Upperdir
 
