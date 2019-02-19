@@ -1,6 +1,6 @@
-mod lib;
+extern crate overlayfs_purge;
 
-use lib::run;
+use overlayfs_purge::run;
 use std::path::Path;
 
 fn main() {

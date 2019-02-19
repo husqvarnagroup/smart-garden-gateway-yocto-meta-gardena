@@ -65,15 +65,19 @@ done
 xattr -w trusted.overlay.opaque y upperdir/dir_opaque_keep
 xattr -w trusted.overlay.opaque y upperdir/dir_opaque
 
-## permissions
+# permissions and ownership
 
-chmod a-rwx upperdir/dir_overlayed
-chmod a+rwx upperdir/dir_new
-
-# TODO time stamps
+chmod a-rwx,+s upperdir/dir_overlayed
+chmod g+rwx,+t upperdir/dir_new
+chmod o+rwx,+t lowerdir/dir_overlayed
+chown 100:101 upperdir/dir_overlayed
+chown 200:201 upperdir/dir_new
+chown 300:301 lowerdir/dir_overlayed
 
 # extended attributes
 
 xattr -w user.test hello upperdir/dir_overlayed
 xattr -w user.test hello upperdir/dir_new
 xattr -w user.cat meow lowerdir/dir_overlayed
+xattr -w user.asdf 1234 upperdir/dir_overlayed
+xattr -w user.asdf 5678 lowerdir/dir_overlayed

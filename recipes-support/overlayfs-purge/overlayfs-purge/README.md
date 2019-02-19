@@ -1,4 +1,4 @@
-# Purge an Overlayfs Upperdir
+# Purging an Overlayfs Upperdir
 
 This tool removes files in an upperdir from an Overlay Filesystem while keeping some files. The files to keep can be specified by multiple config files. It is intended for a cleanup whenever a lowerdir has been updated to keep a minimal set of files. The overlayfs does not have to be mounted, only the lowerdir and the upperdir must be available.
 
@@ -10,12 +10,14 @@ See [Overlayfs specification].
 * The metadata only copy up feature in Overlayfs is not enabled.
 * File attributes, like the immutable flag, are not used, see [chattr(1)].
 * ACLs are not used, see [setfacl(1)].
+* SELinux is not used.
+* Timestamps in file metadata of directories are not important.
 
 [Overlayfs specification]: https://www.kernel.org/doc/Documentation/filesystems/overlayfs.txt
 [chattr(1)]: https://manpages.debian.org/stretch/e2fsprogs/chattr.1.en.html
 [setfacl(1)]: https://manpages.debian.org/stretch/acl/setfacl.1.en.html
 
-## Files to Keep
+## Keeping Files
 
 This tool looks in the following config files for patterns:
 
@@ -34,6 +36,6 @@ See the [glob::Pattern documentation] for a list of supported glob patterns.
 * Every other non-directory file in the uppderdir matching a glob pattern is kept and its attributes and extended attributes are unchanged. Even if the lowerdir contains a directory at that path.
 * Every directory matching a glob pattern is kept and its extended attribute "trusted.overlay.opaque" is removed. Any other attributes and extended attributes are unchanged. Even if the lowerdir contains a non-direcory file at that path.
 * For every non-matching directory which cannot be purged because it contains matching components:
-  * If the lowerdir contains a directory at the same path all attributes and extended attributes from the directory in the lowerdir are copied to the directory in the upperdir and the extended attribute "trusted.overlay.opaque" is removed.
+  * If the lowerdir contains a directory at the same path all attributes (user, group and access permissions, but not times) and extended attributes from the directory in the lowerdir are copied to the directory in the upperdir and the extended attribute "trusted.overlay.opaque" is removed.
   * If the lowerdir does not contain a directory at the same path only the extended attribute "trusted.overlay.opaque" is removed. Any other attributes and extended attributes are unchanged.
 * Everything else is removed.

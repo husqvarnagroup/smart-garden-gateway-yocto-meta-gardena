@@ -46,8 +46,14 @@ for x in dir_opaque_keep dir_opaque; do
     test "$(xattr -p trusted.overlay.opaque $x 2>/dev/null || true)" != "y"
 done
 
-# TODO permissions
+# permissions and ownership
 
-# TODO time stamps
+test "$(stat -c "%a %u %g" dir_overlayed)" = "1757 300 301"
+test "$(stat -c "%a %u %g" dir_new)" = "1775 200 201"
 
-# TODO extended attributes
+# extended attributes
+
+test "$(xattr -p user.test dir_overlayed 2>/dev/null || true)" = ""
+test "$(xattr -p user.cat dir_overlayed 2>/dev/null)" = "meow"
+test "$(xattr -p user.test dir_new 2>/dev/null)" = "hello"
+test "$(xattr -p user.asdf dir_overlayed 2>/dev/null)" = "5678"
