@@ -22,6 +22,8 @@ pub enum Error {
     Io(::std::io::Error),
     #[fail(display = "UNIX Error: {}", _0)]
     Unix(nix::Error),
+    #[fail(display = "Error: extended attribute vanished while reading")]
+    XattrVanished,
     #[fail(display = "Error: {}", _0)]
     Other(String),
 }
@@ -191,15 +193,13 @@ fn copy_metadata(lower_dir: &Path, upper_dir: &Path, stripped_path: &Path) -> Re
             &upper_path,
             x,
             xattr::get(&lower_path, x)?
-                .ok_or_else(|| Error::Other("xattr vanished while reading".to_string()))?
+                .ok_or(Error::XattrVanished)?
                 .as_slice(),
         )?;
     }
     for x in lower_xattrs.intersection(&upper_xattrs) {
-        let lower_xattr = xattr::get(&lower_path, x)?
-            .ok_or_else(|| Error::Other("xattr vanished while reading".to_string()))?;
-        let upper_xattr = xattr::get(&upper_path, x)?
-            .ok_or_else(|| Error::Other("xattr vanished while reading".to_string()))?;
+        let lower_xattr = xattr::get(&lower_path, x)?.ok_or(Error::XattrVanished)?;
+        let upper_xattr = xattr::get(&upper_path, x)?.ok_or(Error::XattrVanished)?;
         if lower_xattr != upper_xattr {
             println!("updating xattr {:?}: {:?}", x, stripped_path);
             xattr::set(&upper_path, x, lower_xattr.as_slice())?;
