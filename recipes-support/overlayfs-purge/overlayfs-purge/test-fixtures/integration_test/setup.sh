@@ -60,10 +60,14 @@ for x in whiteout_dir whiteout_dir_keep whiteout_file whiteout_file_keep; do
     mknod upperdir/$x c 0 0
 done
 
-# opaque dirs
+# overlayfs attributes
 
 xattr -w trusted.overlay.opaque y upperdir/dir_opaque_keep
 xattr -w trusted.overlay.opaque y upperdir/dir_opaque
+
+for x in dir_overlayed_keep dir_new_keep file_overlayed_keep file_new_keep; do
+    xattr -w trusted.overlay.fubar blubb upperdir/$x
+done
 
 # permissions and ownership
 

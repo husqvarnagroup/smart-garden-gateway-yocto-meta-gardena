@@ -12,6 +12,7 @@ See [Overlayfs specification].
 * ACLs are not used, see [setfacl(1)].
 * SELinux is not used.
 * Timestamps in file metadata of directories are not important.
+* The contents of the lowerdir and upperdir directories are not changed by any other process while this tool is running.
 
 [Overlayfs specification]: https://www.kernel.org/doc/Documentation/filesystems/overlayfs.txt
 [chattr(1)]: https://manpages.debian.org/stretch/e2fsprogs/chattr.1.en.html
@@ -33,9 +34,7 @@ See the [glob::Pattern documentation] for a list of supported glob patterns.
 ## Files in the Upperdir
 
 * Every character device with device number 0/0 (whiteout) is removed, even if it matches a glob pattern.
-* Every other non-directory file in the uppderdir matching a glob pattern is kept and its attributes and extended attributes are unchanged. Even if the lowerdir contains a directory at that path.
-* Every directory matching a glob pattern is kept and its extended attribute "trusted.overlay.opaque" is removed. Any other attributes and extended attributes are unchanged. Even if the lowerdir contains a non-direcory file at that path.
-* For every non-matching directory which cannot be purged because it contains matching components:
-  * If the lowerdir contains a directory at the same path all attributes (user, group and access permissions, but not times) and extended attributes from the directory in the lowerdir are copied to the directory in the upperdir and the extended attribute "trusted.overlay.opaque" is removed.
-  * If the lowerdir does not contain a directory at the same path only the extended attribute "trusted.overlay.opaque" is removed. Any other attributes and extended attributes are unchanged.
+* Every other regular file, special file or directory in the uppderdir matching a glob pattern is kept and its attributes and extended attributes are unchanged (see exception below).
+* For every non-matching directory which cannot be purged because it contains matching components if the lowerdir contains a directory at the same path all attributes (user, group and access permissions, but not times) and extended attributes from the directory in the lowerdir are copied to the directory in the upperdir.
 * Everything else is removed.
+* For every regular file or directory in the upperdir all extended attributes with names starting with "trusted.overlay." are removed.

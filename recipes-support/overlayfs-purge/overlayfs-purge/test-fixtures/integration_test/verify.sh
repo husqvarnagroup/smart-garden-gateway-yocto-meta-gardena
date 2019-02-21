@@ -40,10 +40,14 @@ for x in whiteout_dir whiteout_dir_keep whiteout_file whiteout_file_keep; do
     ! test -e $x
 done
 
-# opaque dirs
+# overlayfs attributes
 
 for x in dir_opaque_keep dir_opaque; do
     test "$(xattr -p trusted.overlay.opaque $x 2>/dev/null || true)" != "y"
+done
+
+for x in dir_overlayed_keep dir_new_keep file_overlayed_keep file_new_keep; do
+    test "$(xattr -p trusted.overlay.fubar $x 2>/dev/null || true)" = ""
 done
 
 # permissions and ownership
