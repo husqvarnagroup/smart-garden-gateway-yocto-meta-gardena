@@ -7,11 +7,11 @@ homepage = "https://www.gardena.com/"
 license = "Proprietary"
 
 [dependencies]
+failure = "0.1"
+failure_derive = "0.1"
 globset = "0.4"
+nix = "0.13"
 xattr = "0.2"
-
-[dev-dependencies]
-libc = "0.2"
 
 [profile.release]
 #opt-level = 'z'

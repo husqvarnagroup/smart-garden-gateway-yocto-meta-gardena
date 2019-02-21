@@ -1,4 +1,4 @@
-extern crate libc;
+extern crate nix;
 extern crate overlayfs_purge;
 extern crate xattr;
 
@@ -15,7 +15,7 @@ fn run_purger() {
 }
 
 fn setup_fakeroot() {
-    if unsafe { libc::getuid() } != 0 {
+    if nix::unistd::getuid().as_raw() != 0 {
         println!("Running test with fakeroot.");
         let args: Vec<_> = ::std::env::args().collect();
         let mut command_builder = std::process::Command::new("fakeroot");

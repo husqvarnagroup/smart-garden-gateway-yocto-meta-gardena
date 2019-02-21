@@ -40,14 +40,24 @@ for x in whiteout_dir whiteout_dir_keep whiteout_file whiteout_file_keep; do
     ! test -e $x
 done
 
-# opaque dirs
+# overlayfs attributes
 
 for x in dir_opaque_keep dir_opaque; do
     test "$(xattr -p trusted.overlay.opaque $x 2>/dev/null || true)" != "y"
 done
 
-# TODO permissions
+for x in dir_overlayed_keep dir_new_keep file_overlayed_keep file_new_keep; do
+    test "$(xattr -p trusted.overlay.fubar $x 2>/dev/null || true)" = ""
+done
 
-# TODO time stamps
+# permissions and ownership
 
-# TODO extended attributes
+test "$(stat -c "%a %u %g" dir_overlayed)" = "1757 300 301"
+test "$(stat -c "%a %u %g" dir_new)" = "1775 200 201"
+
+# extended attributes
+
+test "$(xattr -p user.test dir_overlayed 2>/dev/null || true)" = ""
+test "$(xattr -p user.cat dir_overlayed 2>/dev/null)" = "meow"
+test "$(xattr -p user.test dir_new 2>/dev/null)" = "hello"
+test "$(xattr -p user.asdf dir_overlayed 2>/dev/null)" = "5678"
