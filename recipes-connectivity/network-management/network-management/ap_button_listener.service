@@ -1,7 +1,7 @@
 [Unit]
 Description=Listener Service for the AP Button
-Requires=network_management@%i.service
-After=network_management@%i.service
+Requires=network_management.service
+After=network_management.service
 
 [Service]
 Type=simple

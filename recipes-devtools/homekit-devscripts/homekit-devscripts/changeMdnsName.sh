@@ -10,4 +10,4 @@ cat > /etc/homekit.conf << EOF
 mdns_name = $mdns_name
 EOF
 
-systemctl restart accessory-server@prod
+systemctl restart accessory-server

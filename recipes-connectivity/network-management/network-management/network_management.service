@@ -1,7 +1,7 @@
 [Unit]
 Description=Simple network management service
-Wants=dhcpcd.service openvpn@%i.service fctcheck.service
-After=network.target dhcpcd.service openvpn@%i.service fctcheck.service
+Wants=dhcpcd.service openvpn.service fctcheck.service
+After=network.target dhcpcd.service openvpn.service fctcheck.service
 ConditionPathExists=/etc/fct_finalized
 
 [Service]

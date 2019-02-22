@@ -3,6 +3,6 @@
 
 set -eu -o pipefail
 
-systemctl stop accessory-server@prod
+systemctl stop accessory-server
 rm -rf /var/lib/HomeKitStore
-systemctl start accessory-server@prod
+systemctl start accessory-server

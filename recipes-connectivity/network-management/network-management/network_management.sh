@@ -9,7 +9,7 @@ HOMEKIT_TIMEOUT=30
 WIFI_CONFIG_FILE="/etc/wpa_supplicant/wpa_supplicant-wlan0.conf"
 WPA_SERVICE="wpa_supplicant@wlan0"
 DHCP_SERVICE="dhcpcd"
-VPN_SERVICE="openvpn@prod"
+VPN_SERVICE="openvpn"
 
 ETH_CARRIER_OLD=-1
 ETH_CARRIER=0
