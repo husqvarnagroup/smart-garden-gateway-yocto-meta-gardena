@@ -1,10 +1,10 @@
 LICENSE = "CLOSED"
 
 SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-emc-testing-tools.git;protocol=https"
-SRCREV = "5215840192f23cc869fbe1f4cb7fe170c1d9dbaf"
+SRCREV = "715b1847f34ac0e2fe8114e686c01382b9a68dae"
 
-PR = "r1"
-PV = "1.0+git${SRCPV}"
+PR = "r0"
+PV = "1.1+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
@@ -18,6 +18,7 @@ FILES_${PN} += " \
 
 RDEPENDS_emc-tools += " \
     lsdl-serializer \
+    python3-lemonbeat \
     python3-core \
     python3-misc \
     python3-xml \
@@ -39,8 +40,6 @@ do_install () {
 
     # Lemonbeat library
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${S}/lemonbeat.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat.py
-    install -m 0755 ${S}/lsdl_serializer.py ${D}${PYTHON_SITEPACKAGES_DIR}/lsdl_serializer.py
 
     # EMC testing module
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}/emc_testing
