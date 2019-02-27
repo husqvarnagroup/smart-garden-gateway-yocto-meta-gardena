@@ -17,7 +17,6 @@ FILES_${PN} += " \
 "
 
 RDEPENDS_emc-tools += " \
-    lsdl-serializer \
     python3-lemonbeat \
     python3-core \
     python3-misc \
