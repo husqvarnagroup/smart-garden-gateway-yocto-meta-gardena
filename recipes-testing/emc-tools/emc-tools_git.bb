@@ -1,10 +1,10 @@
 LICENSE = "CLOSED"
 
 SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-emc-testing-tools.git;protocol=https"
-SRCREV = "715b1847f34ac0e2fe8114e686c01382b9a68dae"
+SRCREV = "d07026dd6e69e2c88cc877331a2341084f231158"
 
 PR = "r0"
-PV = "1.1+git${SRCPV}"
+PV = "1.2+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
