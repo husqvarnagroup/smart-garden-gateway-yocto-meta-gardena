@@ -1,7 +1,9 @@
 [Unit]
 Description=Backend component for the GARDENA smart Gateway config interface
 Requires=gateway-config-backend-sslkey.service
-After=network.target gateway-config-backend-sslkey.service
+After=network.target gateway-config-backend-sslkey.service fctcheck.service
+Wants=fctcheck.service
+ConditionPathExists=/etc/fct_finalized
 
 [Service]
 ExecStart=/usr/bin/gateway-config-backend
