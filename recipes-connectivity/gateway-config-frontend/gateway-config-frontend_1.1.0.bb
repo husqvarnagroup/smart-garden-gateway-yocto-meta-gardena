@@ -4,13 +4,13 @@ LICENSE = "Proprietary"
 
 LIC_FILES_CHKSUM = " \
     file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://third-party-licenses.txt;md5=2f8fdc4b51b68e73c3501d1856688848 \
+    file://third-party-licenses.txt;md5=1b70a7e2103115a9c6133426c88df0eb \
     "
 
 PR = "r0"
 
 SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-frontend.git;protocol=https;branch=build"
-SRCREV = "31a4adc267459c5c983156e355825a6a27ad8200"
+SRCREV = "bf75cbec662f00363076a3ddc0c604974bcb0053"
 S = "${WORKDIR}/git"
 
 WWWDIR = "${datadir}/gateway-config-interface/www"
