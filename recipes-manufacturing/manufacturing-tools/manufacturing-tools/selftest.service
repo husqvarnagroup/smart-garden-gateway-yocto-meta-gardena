@@ -1,8 +1,8 @@
 [Unit]
 Description=Run selftest during manufacturing
 Requires=ipr.service
-After=ipr.service homekit-setup.service
-Wants=ipr.service homekit-setup.service
+After=ipr.service homekit-setup.service fctcheck.service
+Wants=ipr.service homekit-setup.service fctcheck.service
 Before=serial-getty@ttyS0.service
 
 [Service]

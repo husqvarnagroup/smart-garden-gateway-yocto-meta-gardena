@@ -17,6 +17,10 @@ exit_error()
 
 self_test_passed="$(fw_printenv -n self_test_passed 2>/dev/null || echo 0)"
 if [ "${self_test_passed}" = "1" ]; then
+    # set LEDs to green if we're still in manufacturing
+    if [ ! -f /etc/fct_finalized ]; then
+        /usr/bin/fct-tool --set-leds green
+    fi
     # Quit because the selftest has already been passed in the past.
     exit 0
 fi
