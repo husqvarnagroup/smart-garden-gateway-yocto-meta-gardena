@@ -10,7 +10,7 @@ LIC_FILES_CHKSUM = " \
 PR = "r0"
 
 SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-frontend.git;protocol=https;branch=build"
-SRCREV = "bf75cbec662f00363076a3ddc0c604974bcb0053"
+SRCREV = "4982c6dc9b3c5dec805c9f42de45c767373db93e"
 S = "${WORKDIR}/git"
 
 WWWDIR = "${datadir}/gateway-config-interface/www"
