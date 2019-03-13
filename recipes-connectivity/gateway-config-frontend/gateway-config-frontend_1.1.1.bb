@@ -4,7 +4,7 @@ LICENSE = "Proprietary"
 
 LIC_FILES_CHKSUM = " \
     file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://third-party-licenses.txt;md5=1b70a7e2103115a9c6133426c88df0eb \
+    file://third-party-licenses.txt;md5=9c9cbbeaae65647901fda25528939836 \
     "
 
 PR = "r0"
