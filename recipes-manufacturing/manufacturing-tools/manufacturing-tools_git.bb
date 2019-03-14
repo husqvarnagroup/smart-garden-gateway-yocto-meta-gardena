@@ -26,13 +26,9 @@ S = "${WORKDIR}/git"
 
 FILES_${PN} += " \
     ${PYTHON_SITEPACKAGES_DIR}/bootstrap.py \
-    ${PYTHON_SITEPACKAGES_DIR}/__pycache__/bootstrap.cpython-35.pyc \
     ${PYTHON_SITEPACKAGES_DIR}/util.py \
-    ${PYTHON_SITEPACKAGES_DIR}/__pycache__/util.cpython-35.pyc \
     ${PYTHON_SITEPACKAGES_DIR}/cpms_client.py \
-    ${PYTHON_SITEPACKAGES_DIR}/__pycache__/cpms_client.cpython-35.pyc \
     ${PYTHON_SITEPACKAGES_DIR}/cpms_config.py \
-    ${PYTHON_SITEPACKAGES_DIR}/__pycache__/cpms_config.cpython-35.pyc \
     ${base_libdir}/upgrade/keep.d \
 "
 
@@ -44,10 +40,6 @@ RDEPENDS_${PN} += " \
     python3-threading \
     python3-unittest \
 "
-
-do_compile() {
-    python3 -m compileall .
-}
 
 do_install () {
     install -d ${D}${bindir}
@@ -67,18 +59,17 @@ do_install () {
     install -m 0644 ${WORKDIR}/homekit-setup.service ${D}${systemd_unitdir}/system/
 
     install -d 0755 ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -d 0755 ${D}${PYTHON_SITEPACKAGES_DIR}/__pycache__
-    install -pm 0755 ${S}/util.py ${D}${PYTHON_SITEPACKAGES_DIR}/
-    install -pm 0755 ${S}/__pycache__/util.cpython-35.pyc ${D}${PYTHON_SITEPACKAGES_DIR}/__pycache__/
-    install -pm 0755 ${S}/bootstrap.py ${D}${PYTHON_SITEPACKAGES_DIR}/
-    install -pm 0755 ${S}/__pycache__/bootstrap.cpython-35.pyc ${D}${PYTHON_SITEPACKAGES_DIR}/__pycache__/
-    install -pm 0755 ${S}/cpms_client.py ${D}${PYTHON_SITEPACKAGES_DIR}/
-    install -pm 0755 ${S}/__pycache__/cpms_client.cpython-35.pyc ${D}${PYTHON_SITEPACKAGES_DIR}/__pycache__/
-    install -pm 0755 ${S}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}/
-    install -pm 0755 ${S}/__pycache__/cpms_config.cpython-35.pyc ${D}${PYTHON_SITEPACKAGES_DIR}/__pycache__/
+    install -m 0755 ${S}/util.py ${D}${PYTHON_SITEPACKAGES_DIR}/
+    install -m 0755 ${S}/bootstrap.py ${D}${PYTHON_SITEPACKAGES_DIR}/
+    install -m 0755 ${S}/cpms_client.py ${D}${PYTHON_SITEPACKAGES_DIR}/
+    install -m 0755 ${S}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}/
 
     install -d ${D}${base_libdir}/upgrade/keep.d
     install -m 0644 ${WORKDIR}/keep.d/fctcheck ${D}${base_libdir}/upgrade/keep.d
+}
+
+pkg_postinst_${PN} () {
+    cd $D${PYTHON_SITEPACKAGES_DIR} && python3 -m compileall .
 }
 
 SYSTEMD_SERVICE_${PN} += "ipr.service"
