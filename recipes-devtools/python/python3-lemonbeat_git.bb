@@ -8,9 +8,9 @@ SRC_URI += " \
 "
 
 PR = "r0"
-PV = "0.1.0+git${SRCPV}"
+PV = "2019-03-15+git${SRCPV}"
 
-SRCREV = "4bd3c8feec2fcf12f7ee424c3fe6a4a88b72512b"
+SRCREV = "5d0c9d92affc88d444760f4dd460c1512ac49863"
 
 S = "${WORKDIR}/git"
 
@@ -24,17 +24,7 @@ RDEPENDS_${PN} += " \
 
 do_install() {
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat
-    install -m 0755 ${S}/lemonbeat/configuration.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/defines.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/device_description.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/device.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/firmware.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/gateway.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/__init__.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/lsdl_serializer.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/message.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/partner.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
-    install -m 0755 ${S}/lemonbeat/types.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
+    install -m 0755 ${S}/lemonbeat/*.py ${D}${PYTHON_SITEPACKAGES_DIR}/lemonbeat/
 }
 
 FILES_${PN} += " \
