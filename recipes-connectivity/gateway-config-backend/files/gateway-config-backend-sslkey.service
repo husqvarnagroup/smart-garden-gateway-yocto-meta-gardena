@@ -1,8 +1,8 @@
 [Unit]
 Description=SSL Key Generation for the GARDENA smart Gateway config interface
 RequiresMountsFor=/var /var/lib
-ConditionPathExists=|!/etc/gateway-config-interface/key.pem
-ConditionPathExists=|!/etc/gateway-config-interface/cert.pem
+ConditionFileNotEmpty=|!/etc/gateway-config-interface/key.pem
+ConditionFileNotEmpty=|!/etc/gateway-config-interface/cert.pem
 
 [Service]
 Environment="SSLKEY_DIR=/etc/gateway-config-interface"
