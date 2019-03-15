@@ -10,6 +10,7 @@ Type=oneshot
 ExecStart=/bin/mkdir -p ${SSLKEY_DIR}
 ExecStart=/bin/rm -f ${SSLKEY_DIR}/key.pem ${SSLKEY_DIR}/cert.pem
 ExecStart=/usr/bin/openssl req -x509 -newkey rsa:3072 -keyout ${SSLKEY_DIR}/key.pem.tmp -out ${SSLKEY_DIR}/cert.pem.tmp -sha256 -days 36524 -nodes -subj '/CN=10.0.0.1'
+ExecStart=/bin/sync
 ExecStart=/bin/mv ${SSLKEY_DIR}/key.pem.tmp ${SSLKEY_DIR}/key.pem
 ExecStart=/bin/mv ${SSLKEY_DIR}/cert.pem.tmp ${SSLKEY_DIR}/cert.pem
 RemainAfterExit=yes
