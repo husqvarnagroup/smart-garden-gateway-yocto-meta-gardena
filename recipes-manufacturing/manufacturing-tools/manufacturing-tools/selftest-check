@@ -35,6 +35,12 @@ if [ $? -ne 0 ]; then
     exit_error "Selftest failed!"
 fi
 
+# As soon as the LEDs are green, the gateway can be removed from power during
+# manufacturing. This will likely happen faster than the 30 seconds configured
+# in /proc/sys/vm/dirty_expire_centisecs. Calling sync ensures our data to be
+# save once the LEDs turn green.
+sync
+
 fw_setenv self_test_passed 1
 
 fct-tool --set-leds green
