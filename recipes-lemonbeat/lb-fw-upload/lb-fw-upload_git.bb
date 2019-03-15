@@ -3,9 +3,9 @@ LICENSE = "CLOSED"
 
 RDEPENDS_${PN} += " \
     lsdl-serializer-lib \
+    python3-crcmod \
     python3-lemonbeat \
     python3-multiprocessing \
-    python3-crc16 \
 "
 
 SRC_URI += " \
@@ -13,8 +13,8 @@ SRC_URI += " \
 "
 
 PR = "r0"
-SRCREV = "8438131ca2a7b30df2b1450cbb56a759f95fe28f"
-PV = "1.1+git${SRCPV}"
+SRCREV = "70492063110af4e5ff653b20f3245fd84b782c66"
+PV = "2019-03-15+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
