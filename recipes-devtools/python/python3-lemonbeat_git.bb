@@ -8,9 +8,9 @@ SRC_URI += " \
 "
 
 PR = "r0"
-PV = "2019-03-26+git${SRCPV}"
+PV = "2019-04-05+git${SRCPV}"
 
-SRCREV = "630a06189a036b0ccc81478e1cd94da82f5b3654"
+SRCREV = "ec2f4c8cc74f6acb5b50830e444cb0525befc7e6"
 
 S = "${WORKDIR}/git"
 
