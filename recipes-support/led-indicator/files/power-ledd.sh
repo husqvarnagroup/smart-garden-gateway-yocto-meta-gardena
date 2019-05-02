@@ -4,7 +4,6 @@
 
 set -eu -o pipefail
 
-
 LED=/sys/class/leds/smartgw:power:
 
 # green blinking during boot
@@ -48,8 +47,6 @@ while true; do
         echo timer > ${LED}red/trigger
         echo 1700 > ${LED}red/delay_on
         echo 300 > ${LED}red/delay_off
-        # unrecoverable, so we might as well exit
-        exit 0
     fi
     sleep 60
 done
