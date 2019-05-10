@@ -7,6 +7,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2
 PV = "1.0"
 PR = "r0"
 
+RDEPENDS_${PN} = "iptables iptables-modules"
+
 SRC_URI = "\
     file://firewall.sh \
     file://firewall.service \

@@ -3,7 +3,7 @@
 # Author: Adrian Friedli <adrian.friedli@husqvarnagroup.com>
 # Author: Andreas Müller <andreas.mueller@husqvarnagroup.com>
 #
-# Copyright (c) 2018 Gardena GmbH
+# Copyright (c) 2019 Gardena GmbH
 
 set -eu -o pipefail
 
