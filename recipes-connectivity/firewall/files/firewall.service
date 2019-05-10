@@ -1,0 +1,11 @@
+[Unit]
+Description=install simple iptable rules
+Before=network.target
+After=network-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/firewall
+
+[Install]
+WantedBy=multi-user.target
