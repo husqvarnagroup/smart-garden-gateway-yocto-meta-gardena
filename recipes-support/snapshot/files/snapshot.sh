@@ -1,6 +1,9 @@
+#!/bin/sh
+
 rm -rf /tmp/snapshot
+rm -f /tmp/snapshot.tgz
 mkdir /tmp/snapshot /tmp/snapshot/shadoway/
-cd /tmp/
+cd /tmp/ || exit 1
 
 ##################################
 # Shadoway stuff                 #
@@ -50,7 +53,7 @@ mkdir /tmp/snapshot/runtime
 /bin/ps > /tmp/snapshot/runtime/ps
 /usr/bin/top -bn1 > /tmp/snapshot/runtime/top
 mkdir -p /tmp/snapshot/runtime/proc
-( cd /proc; \
+( cd /proc || exit 1; \
   for pid in [0-9]*; do \
     mkdir -p "/tmp/snapshot/runtime/proc/${pid}"; \
     cp "${pid}/status" "/tmp/snapshot/runtime/proc/${pid}"; \
@@ -67,7 +70,7 @@ cp /etc/sysupgrade.conf /tmp/snapshot/runtime/user/
 /usr/bin/opkg list-installed > /tmp/snapshot/runtime/user/opkg-list-installed
 
 ##################################
-# Send data to caller            #
+# Create tarball & delete files  #
 ##################################
-tar cfz - ./snapshot
+tar cfz snapshot.tgz ./snapshot
 rm -rf /tmp/snapshot
