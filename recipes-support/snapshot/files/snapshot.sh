@@ -72,5 +72,5 @@ cp /etc/sysupgrade.conf /tmp/snapshot/runtime/user/
 ##################################
 # Create tarball & delete files  #
 ##################################
-tar cfz snapshot.tgz ./snapshot
+tar cfz "$(/sbin/fw_printenv -n gatewayid)_snapshot.tar.gz" ./snapshot
 rm -rf /tmp/snapshot
