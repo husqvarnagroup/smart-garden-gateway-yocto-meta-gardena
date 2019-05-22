@@ -2,7 +2,7 @@
 
 rm -rf /tmp/snapshot
 rm -f /tmp/snapshot.tgz
-mkdir /tmp/snapshot /tmp/snapshot/shadoway/
+mkdir /tmp/snapshot
 cd /tmp/ || exit 1
 
 ##################################
@@ -16,6 +16,12 @@ else
   echo 'led_status not (yet) available' > /tmp/snapshot/shadoway/shadoway-led_status
 fi
 cp /etc/seluxit_env /tmp/snapshot/shadoway/
+# remove network key from snapshot for real customers
+# shellcheck disable=SC1091
+. /etc/seluxit_env
+if [ "$SELUXIT_ENV" != "qa" ] && [ "$SELUXIT_ENV" != "dev" ]; then
+    rm -f /tmp/snapshot/shadoway/work/Network_management/Network_key.json
+fi
 
 ##################################
 # Generic base image information #
