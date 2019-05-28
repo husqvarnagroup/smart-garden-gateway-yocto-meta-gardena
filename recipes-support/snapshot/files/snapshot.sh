@@ -16,10 +16,11 @@ else
   echo 'led_status not (yet) available' > /tmp/snapshot/shadoway/shadoway-led_status
 fi
 cp /etc/seluxit_env /tmp/snapshot/shadoway/
-# remove network key from snapshot for real customers
+# remove password & network key from snapshot for real customers
 # shellcheck disable=SC1091
 . /etc/seluxit_env
 if [ "$SELUXIT_ENV" != "qa" ] && [ "$SELUXIT_ENV" != "dev" ]; then
+    sed -i '/"network_key"\|"password"/d' /tmp/snapshot/shadoway/work/Gateway.json
     rm -f /tmp/snapshot/shadoway/work/Network_management/Network_key.json
 fi
 
