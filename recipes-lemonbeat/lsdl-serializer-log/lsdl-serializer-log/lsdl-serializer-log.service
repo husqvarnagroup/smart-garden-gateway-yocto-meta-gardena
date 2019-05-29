@@ -1,0 +1,13 @@
+[Unit]
+Description=lsdl-serializer logging
+Before=shadoway.service
+
+[Service]
+EnvironmentFile=/etc/seluxit_env
+ExecStart=/usr/bin/lsdl-serializer-log
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+RequiredBy=multi-user.target
+WantedBy=shadoway.service
