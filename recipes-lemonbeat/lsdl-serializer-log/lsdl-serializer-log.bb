@@ -1,7 +1,7 @@
 DESCRIPTION = "Logger for lsdl-serializer, to be used via LD_PRELOAD"
 LICENSE = "CLOSED"
 
-PV = "0.1"
+PV = "0.2"
 
 PR = "r0"
 
