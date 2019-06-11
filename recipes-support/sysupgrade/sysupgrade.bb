@@ -12,9 +12,9 @@ SRC_URI = " \
 "
 
 PR = "r0"
-PV = "0.8"
+PV = "1.0"
 
-RDEPENDS_${PN} = "initscripts-readonly-rootfs-overlay"
+RDEPENDS_${PN} = "initscripts-readonly-rootfs-overlay overlayfs-purge"
 
 FILES_${PN} += " \
     ${base_libdir}/upgrade/keep.d \

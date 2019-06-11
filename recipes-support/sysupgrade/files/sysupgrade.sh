@@ -37,17 +37,8 @@ else
     fw_setenv swupdate_done
 fi
 
-# Gather a list of all files which must be preserved
-find $(sed -ne '/^[[:space:]]*$/d; /^#/d; p' /etc/sysupgrade.conf /lib/upgrade/keep.d/* 2>/dev/null) -type f -o -type l | sort > /tmp/sysupgrade.to-migrate
-
-# Gather a list of all files which are actually different from the ro rootfs
-find /media/rfs/rw/upperdir \( -type f -o -type l -o -type c \) | sed 's|/media/rfs/rw/upperdir||g' | sort > /tmp/sysupgrade.changed
-
-# Create a list of files to be deleted
-diff /tmp/sysupgrade.to-migrate /tmp/sysupgrade.changed | grep ^+/ | cut -c 2- > /tmp/sysupgrade.to-delete
-
-# Actually delete the files
-while IFS= read -r full_path; do rm -- "/media/rfs/rw/upperdir${full_path}" ; done < /tmp/sysupgrade.to-delete
+# Keep output for inspection after reboot
+/usr/bin/overlayfs-purge -f >/var/lib/sysupgrade/stdout.txt 2>/var/lib/sysupgrade/stderr.txt
 
 # The merged directory does not always correctly reflect the fact we just deleted many files in the upperdir.
 # Remount the rootfs to "commit" the changes.
@@ -62,9 +53,6 @@ diff /etc/os-release.old /etc/os-release
 
 # Prevent this script from running on the next startup
 cp /etc/os-release /etc/os-release.old
-
-# Keep files for inspection after reboot
-mv /tmp/sysupgrade.* /var/lib/sysupgrade
 
 sync
 
