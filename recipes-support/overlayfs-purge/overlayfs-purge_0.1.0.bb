@@ -44,8 +44,8 @@ crate://crates.io/winapi/0.3.6 \
 crate://crates.io/xattr/0.2.2 \
 "
 
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SUMMARY = "Filesystem overlay cleaner for system upgrades"
 HOMEPAGE = "https://www.gardena.com/"
-LICENSE = "Proprietary"
+LICENSE = "MIT"
