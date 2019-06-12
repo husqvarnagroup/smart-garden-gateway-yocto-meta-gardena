@@ -22,12 +22,12 @@ set -u
 if [ ! -f /etc/os-release.old ]; then
     cp /etc/os-release /etc/os-release.old
     echo "First startup - nothing to do"
-    exit 0;
+    exit 0
 fi
 
 if cmp -s /etc/os-release.old /etc/os-release; then
     echo "System not changed since last startup"
-    exit 0;
+    exit 0
 fi
 
 fw_printenv -n swupdate_done 1>/dev/null 2>&-
