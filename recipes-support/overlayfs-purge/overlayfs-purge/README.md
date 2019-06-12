@@ -23,11 +23,13 @@ See [Overlayfs specification].
 This tool looks in the following config files for patterns:
 
 * "/etc/sysupgrade.conf"
-* Any file directly under "/lib/upgrade/keep.d/"
+* Any file directly under "/lib/upgrade/keep.d"
 
 Each config file contains one glob pattern per line for each file to keep. Each line usually starts with a '/'. Lines starting with zero or more whitespace characters followed by a '#' as well as lines only containing zero or more whitespace characters are ignored.
 
 See the [glob::Pattern documentation] for a list of supported glob patterns.
+
+Please note: Listed directories must *not* end with a trailing slash!
 
 [glob::Pattern documentation]: https://docs.rs/glob/0.2/glob/struct.Pattern.html
 
