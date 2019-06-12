@@ -38,7 +38,7 @@ else
 fi
 
 # Keep output for inspection after reboot
-/usr/bin/overlayfs-purge -f >/var/lib/sysupgrade/stdout.txt 2>/var/lib/sysupgrade/stderr.txt
+/usr/bin/overlayfs-purge -f >/tmp/overlayfs-purge-stdout.log 2>/tmp/overlayfs-purge-stderr.log
 
 # The merged directory does not always correctly reflect the fact we just deleted many files in the upperdir.
 # Remount the rootfs to "commit" the changes.
@@ -53,6 +53,9 @@ diff /etc/os-release.old /etc/os-release
 
 # Prevent this script from running on the next startup
 cp /etc/os-release /etc/os-release.old
+
+# Keep files for inspection after reboot
+mv /tmp/overlayfs-purge-*.log /var/lib/sysupgrade
 
 sync
 

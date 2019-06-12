@@ -12,7 +12,7 @@ SRC_URI = " \
 "
 
 PR = "r0"
-PV = "1.0"
+PV = "1.1"
 
 RDEPENDS_${PN} = "initscripts-readonly-rootfs-overlay overlayfs-purge"
 
