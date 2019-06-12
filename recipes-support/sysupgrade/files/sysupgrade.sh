@@ -12,8 +12,6 @@ set -u
 #          E.g. U-Boot falling back an old version on the second bootslot.
 #
 # Known limitations:
-#  * This script does not (yet) delete any directories
-#  * For debugging purposes, the intermediate files in /tmp are not deleted
 #  * Deleting this file (/usr/bin/sysupgrade) will prevent it from ever running
 #    again. A factory reset will be needed.
 #
