@@ -7,6 +7,7 @@ DEBUG=1
 HOMEKIT_SOCKET="/tmp/wifi_interface"
 HOMEKIT_TIMEOUT=30
 WIFI_CONFIG_FILE="/etc/wpa_supplicant/wpa_supplicant-wlan0.conf"
+WIFI_CONFIG_FILE_TMP="${WIFI_CONFIG_FILE}.tmp"
 WPA_SERVICE="wpa_supplicant@wlan0"
 DHCP_SERVICE="dhcpcd"
 VPN_SERVICE="openvpn"
@@ -66,11 +67,11 @@ start_ap() {
     # WAC server stops automatically after 15 minutes
     ###
     stop_networking
-    echo -n '{"action":"start_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET"
+    printf '{"action":"start_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET"
 }
 
 stop_ap() {
-    echo -n '{"action":"stop_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET" || true
+    printf '{"action":"stop_ap"}' | socat - unix-sendto:"$HOMEKIT_SOCKET" || true
     # add delay to ensure accessory-server has stopped the wifi interface
     sleep 2
     start_networking
@@ -80,7 +81,7 @@ derive_psk() {
     ssid=$1
     passphrase=$2
 
-    if [ "$(echo -n "$passphrase" | wc -c)" -eq 64 ]; then
+    if [ "$(printf "%s" "$passphrase" | wc -c)" -eq 64 ]; then
         echo "$passphrase"
     else
         wpa_passphrase "$ssid" "$passphrase" | sed -ne 's/^\s*psk=\(.*\)$/\1/p'
@@ -101,7 +102,9 @@ set_wifi_config() {
     ssid=\"$1\"
     scan_ssid=1
     ${encryption}
-}" > "$WIFI_CONFIG_FILE"
+}" > "$WIFI_CONFIG_FILE_TMP"
+    sync
+    mv $WIFI_CONFIG_FILE_TMP $WIFI_CONFIG_FILE
 
     {
         # Fork to background and use delay for the client to get the response.
@@ -156,7 +159,7 @@ wait_for_homekit_socket() {
         delay=0
         while ! [ -S $HOMEKIT_SOCKET ] && [ $delay -lt $HOMEKIT_TIMEOUT ] ; do
             delay=$((delay + 1))
-            echo -n .
+            printf .
             sleep 1
         done
         echo
