@@ -7,6 +7,7 @@ DEBUG=1
 HOMEKIT_SOCKET="/tmp/wifi_interface"
 HOMEKIT_TIMEOUT=30
 WIFI_CONFIG_FILE="/etc/wpa_supplicant/wpa_supplicant-wlan0.conf"
+WIFI_CONFIG_FILE_TMP="${WIFI_CONFIG_FILE}.tmp"
 WPA_SERVICE="wpa_supplicant@wlan0"
 DHCP_SERVICE="dhcpcd"
 VPN_SERVICE="openvpn"
@@ -101,7 +102,9 @@ set_wifi_config() {
     ssid=\"$1\"
     scan_ssid=1
     ${encryption}
-}" > "$WIFI_CONFIG_FILE"
+}" > "$WIFI_CONFIG_FILE_TMP"
+    sync
+    mv $WIFI_CONFIG_FILE_TMP $WIFI_CONFIG_FILE
 
     {
         # Fork to background and use delay for the client to get the response.
