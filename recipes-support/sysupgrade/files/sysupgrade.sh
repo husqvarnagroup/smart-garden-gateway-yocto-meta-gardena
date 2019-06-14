@@ -18,7 +18,9 @@ set -u
 # Credits: Heavily inspired by sysupgrade from OpenWrt (https://github.com/openwrt/openwrt/blob/master/package/base-files/files/sbin/sysupgrade)
 
 if [ ! -f /etc/os-release.old ]; then
-    cp /etc/os-release /etc/os-release.old
+    cp /etc/os-release /etc/os-release.old.tmp
+    sync
+    mv /etc/os-release.old.tmp /etc/os-release.old
     echo "First startup - nothing to do"
     exit 0
 fi
@@ -50,7 +52,9 @@ touch /etc/os-release.old
 diff /etc/os-release.old /etc/os-release
 
 # Prevent this script from running on the next startup
-cp /etc/os-release /etc/os-release.old
+cp /etc/os-release /etc/os-release.old.tmp
+sync
+mv /etc/os-release.old.tmp /etc/os-release.old
 
 # Keep files for inspection after reboot
 mv /tmp/overlayfs-purge-*.log /var/lib/sysupgrade
