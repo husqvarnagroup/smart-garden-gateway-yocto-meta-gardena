@@ -11,7 +11,7 @@ SRC_URI = " \
     file://sysupgrade.sh \
 "
 
-PR = "r0"
+PR = "r1"
 PV = "1.2"
 
 RDEPENDS_${PN} = "initscripts-readonly-rootfs-overlay overlayfs-purge"
