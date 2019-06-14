@@ -31,6 +31,7 @@ if cmp -s /etc/os-release.old /etc/os-release; then
 fi
 
 fw_printenv -n swupdate_done 1>/dev/null 2>&-
+# shellcheck disable=SC2181
 if [ $? -ne 0 ]; then
     echo "WARNING: System got updated by other means than SWUpdate!" >&2
 else
