@@ -10,30 +10,30 @@
 LED_FNAME=/sys/class/leds/$1
 
 led_on () {
-	[ -z $1 ] || LED_FNAME=/sys/class/leds/$1
+	[ -z "$1" ] || LED_FNAME=/sys/class/leds/$1
 
-	echo "oneshot" > ${LED_FNAME}/trigger
-	echo 1 > ${LED_FNAME}/brightness
+	echo "oneshot" > "${LED_FNAME}/trigger"
+	echo 1 > "${LED_FNAME}/brightness"
 }
 
 led_off () {
-	[ -z $1 ] || LED_FNAME=/sys/class/leds/$1
+	[ -z "$1" ] || LED_FNAME=/sys/class/leds/$1
 
-	echo "oneshot" > ${LED_FNAME}/trigger
-	echo 0 > ${LED_FNAME}/brightness
+	echo "oneshot" > "${LED_FNAME}/trigger"
+	echo 0 > "${LED_FNAME}/brightness"
 }
 
 led_flash () {
-	[ -z $1 ] || LED_FNAME=/sys/class/leds/$1
+	[ -z "$1" ] || LED_FNAME=/sys/class/leds/$1
 
-	echo "timer" > ${LED_FNAME}/trigger
+	echo "timer" > "${LED_FNAME}/trigger"
 	#echo "300" > ${LED_FNAME}/delay_on
 	#echo "500" > ${LED_FNAME}/delay_off
 }
 
 flash() {
-    echo "$2" > /sys/class/leds/$1/delay_off
-    echo "$2" > /sys/class/leds/$1/delay_on
+    echo "$2" > "/sys/class/leds/$1/delay_off"
+    echo "$2" > "/sys/class/leds/$1/delay_on"
 }
 
 identify () {
@@ -85,7 +85,7 @@ elif [ "z${INDICATOR_STATUS}" = "zidentify" ]; then
 	identify &
 	exit 0
 else
-	echo "USAGE: $(basename $0) <LED name> <on|off|flash>"
+	echo "USAGE: $(basename "$0") <LED name> <on|off|flash>"
 	exit 1
 fi
 
