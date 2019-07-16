@@ -5,13 +5,19 @@ DEPENDS = "python3-native"
 
 inherit systemd allarch python3-dir python3native
 
-SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
+# SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
+#
+SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https;branch=SG-12284-EOL-test \
            file://ipr-setup \
            file://ipr.service \
            file://selftest-check \
            file://selftest.service \
            file://fctcheck \
            file://fctcheck.service \
+           file://eoltest-check.sh \
+           file://eoltest-check.service \
+           file://eoltest-run.sh \
+           file://eoltest.service \
            file://homekit-setup \
            file://homekit-setup.service \
            file://keep.d/fctcheck \
@@ -19,14 +25,15 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufa
 
 PR = "r1"
 
-PV = "20190617+git${SRCPV}"
-SRCREV = "e2275aabdd103797df635e85fe43ef55e8930724"
+PV = "20190717+git${SRCPV}"
+SRCREV = "617e0cf1139cdc395010b5bfe4f9fd2ac38b0fd9"
 
 S = "${WORKDIR}/git"
 
 FILES_${PN} += " \
     ${PYTHON_SITEPACKAGES_DIR}/bootstrap.py \
     ${PYTHON_SITEPACKAGES_DIR}/util.py \
+    ${PYTHON_SITEPACKAGES_DIR}/testing.py \
     ${PYTHON_SITEPACKAGES_DIR}/cpms_client.py \
     ${PYTHON_SITEPACKAGES_DIR}/cpms_config.py \
     ${base_libdir}/upgrade/keep.d \
@@ -44,6 +51,7 @@ RDEPENDS_${PN} += " \
 do_install () {
     install -d ${D}${bindir}
     install -m 0755 ${S}/selftest.py ${D}${bindir}/selftest
+    install -m 0755 ${S}/eoltest.py ${D}${bindir}/eoltest
     install -m 0755 ${S}/fct-tool.py ${D}${bindir}/fct-tool
     install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
     install -m 0755 ${S}/homekit-tool.py ${D}${bindir}/homekit-tool
@@ -51,15 +59,20 @@ do_install () {
     install -m 0755 ${WORKDIR}/homekit-setup ${D}${bindir}
     install -m 0755 ${WORKDIR}/selftest-check ${D}${bindir}
     install -m 0755 ${WORKDIR}/fctcheck ${D}${bindir}
+    install -m 0755 ${WORKDIR}/eoltest-check.sh ${D}${bindir}/eoltest-check
+    install -m 0755 ${WORKDIR}/eoltest-run.sh ${D}${bindir}/eoltest-run
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/ipr.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/selftest.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/fctcheck.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/eoltest-check.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/eoltest.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/homekit-setup.service ${D}${systemd_unitdir}/system/
 
     install -d 0755 ${D}${PYTHON_SITEPACKAGES_DIR}
     install -m 0755 ${S}/util.py ${D}${PYTHON_SITEPACKAGES_DIR}/
+    install -m 0755 ${S}/testing.py ${D}${PYTHON_SITEPACKAGES_DIR}/
     install -m 0755 ${S}/bootstrap.py ${D}${PYTHON_SITEPACKAGES_DIR}/
     install -m 0755 ${S}/cpms_client.py ${D}${PYTHON_SITEPACKAGES_DIR}/
     install -m 0755 ${S}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}/
@@ -75,6 +88,8 @@ pkg_postinst_${PN} () {
 SYSTEMD_SERVICE_${PN} += "ipr.service"
 SYSTEMD_SERVICE_${PN} += "selftest.service"
 SYSTEMD_SERVICE_${PN} += "fctcheck.service"
+SYSTEMD_SERVICE_${PN} += "eoltest-check.service"
+SYSTEMD_SERVICE_${PN} += "eoltest.service"
 SYSTEMD_SERVICE_${PN} += "homekit-setup.service"
 
 PACKAGES =+ "fct-tool"

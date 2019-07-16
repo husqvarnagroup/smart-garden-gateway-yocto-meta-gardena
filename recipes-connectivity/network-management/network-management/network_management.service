@@ -1,8 +1,9 @@
 [Unit]
 Description=Simple network management service
-Wants=dhcpcd.service openvpn.service fctcheck.service
-After=network.target dhcpcd.service openvpn.service fctcheck.service
+Wants=dhcpcd.service openvpn.service fctcheck.service eoltest-check.service
+After=network.target dhcpcd.service openvpn.service fctcheck.service eoltest-check.service
 ConditionPathExists=/etc/fct_finalized
+ConditionPathExists=/etc/eol_test_passed
 
 [Service]
 Type=simple

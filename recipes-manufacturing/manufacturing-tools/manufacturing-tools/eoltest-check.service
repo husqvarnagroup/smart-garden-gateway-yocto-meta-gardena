@@ -1,0 +1,14 @@
+[Unit]
+Description=Check EOL test status and update status file
+Requires=ipr.service fctcheck.service
+After=ipr.service homekit-setup.service fctcheck.service network-online.target
+Wants=ipr.service homekit-setup.service fctcheck.service network-online.target
+
+[Service]
+ExecStart=/usr/bin/eoltest-check
+Type=oneshot
+# unexpected error → all red
+ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then fct-tool --set-leds red; fi'
+
+[Install]
+WantedBy=serial-getty@ttyS0.service
