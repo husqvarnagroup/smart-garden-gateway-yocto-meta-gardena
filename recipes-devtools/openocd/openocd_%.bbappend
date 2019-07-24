@@ -1,9 +1,10 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PR_append = ".0"
+PR_append = ".1"
 
 SRC_URI += " \
     file://0001-jtag-sysfsgpio-clean-up-swd-gpios.patch \
+    file://0002-libgpiod.patch \
     file://gardena_radio.cfg \
     file://gardena_nrf52.cfg \
 "
@@ -66,6 +67,10 @@ PACKAGECONFIG ?= "sysfsgpio internal-jimtcl"
 EXTRA_OECONF_remove = "--enable-ftdi"
 RDEPENDS_${PN}_remove  = "libusb1"
 DEPENDS_remove = "libusb-compat libftdi"
+
+EXTRA_OECONF_append = " --enable-gpiod "
+DEPENDS_append = " libgpiod "
+RDEPENDS_${PN}_append  = " libgpiod "
 
 do_install_append () {
     install -m 0644 ${WORKDIR}/gardena_radio.cfg ${D}${datadir}/openocd/scripts/board/

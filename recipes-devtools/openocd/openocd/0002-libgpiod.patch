@@ -1,0 +1,755 @@
+commit c5b8142fcfca5b7eba9e959af2881279ad9026b1
+Author: Michael Zimmermann <michael.zimmermann@grandcentrix.net>
+Date:   Tue Jul 23 19:16:58 2019 +0200
+
+    add libgpiod jtag driver
+
+diff --git a/configure.ac b/configure.ac
+index d4338dfb..0d42270d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -328,12 +328,20 @@ AC_ARG_ENABLE([sysfsgpio],
+   AS_HELP_STRING([--enable-sysfsgpio], [Enable building support for programming driven via sysfs gpios.]),
+   [build_sysfsgpio=$enableval], [build_sysfsgpio=no])
+ 
++AC_ARG_ENABLE([gpiod],
++  AS_HELP_STRING([--enable-gpiod], [Enable building support for programming driven via libgpiod.]),
++  [build_gpiod=$enableval], [build_gpiod=no])
++
+ AS_CASE([$host_os],
+   [linux*], [],
+   [
+     AS_IF([test "x$build_sysfsgpio" = "xyes"], [
+       AC_MSG_ERROR([sysfsgpio is only available on linux])
+     ])
++
++    AS_IF([test "x$build_gpiod" = "xyes"], [
++      AC_MSG_ERROR([gpiod is only available on linux])
++    ])
+ ])
+ 
+ AC_ARG_ENABLE([minidriver_dummy],
+@@ -599,6 +607,13 @@ AS_IF([test "x$build_target64" = "xyes"], [
+   AC_DEFINE([BUILD_TARGET64], [0], [0 if you don't want 64-bit addresses.])
+ ])
+ 
++AS_IF([test "x$build_gpiod" = "xyes"], [
++  build_bitbang=yes
++  AC_DEFINE([BUILD_GPIOD], [1], [1 if you want the gpiod driver.])
++  PKG_CHECK_MODULES([LIBGPIOD], [libgpiod], [use_libgpiod=yes], [use_libgpiod=no])
++], [
++  AC_DEFINE([BUILD_GPIOD], [0], [0 if you don't want gpiod driver.])
++])
+ 
+ PKG_CHECK_MODULES([LIBUSB1], [libusb-1.0], [
+ 	use_libusb1=yes
+@@ -712,6 +727,7 @@ AM_CONDITIONAL([OOCD_TRACE], [test "x$build_oocd_trace" = "xyes"])
+ AM_CONDITIONAL([REMOTE_BITBANG], [test "x$build_remote_bitbang" = "xyes"])
+ AM_CONDITIONAL([BUSPIRATE], [test "x$build_buspirate" = "xyes"])
+ AM_CONDITIONAL([SYSFSGPIO], [test "x$build_sysfsgpio" = "xyes"])
++AM_CONDITIONAL([GPIOD], [test "x$build_gpiod" = "xyes"])
+ AM_CONDITIONAL([USE_LIBUSB0], [test "x$use_libusb0" = "xyes"])
+ AM_CONDITIONAL([USE_LIBUSB1], [test "x$use_libusb1" = "xyes"])
+ AM_CONDITIONAL([IS_CYGWIN], [test "x$is_cygwin" = "xyes"])
+@@ -723,6 +739,7 @@ AM_CONDITIONAL([USE_LIBFTDI], [test "x$use_libftdi" = "xyes"])
+ AM_CONDITIONAL([USE_HIDAPI], [test "x$use_hidapi" = "xyes"])
+ AM_CONDITIONAL([USE_LIBJAYLINK], [test "x$use_libjaylink" = "xyes"])
+ AM_CONDITIONAL([TARGET64], [test "x$build_target64" = "xyes"])
++AM_CONDITIONAL([USE_LIBGPIOD], [test "x$use_libgpiod" = "xyes"])
+ 
+ AM_CONDITIONAL([MINIDRIVER], [test "x$build_minidriver" = "xyes"])
+ AM_CONDITIONAL([MINIDRIVER_DUMMY], [test "x$build_minidriver_dummy" = "xyes"])
+diff --git a/src/jtag/drivers/Makefile.am b/src/jtag/drivers/Makefile.am
+index ccef018b..8f5622d1 100644
+--- a/src/jtag/drivers/Makefile.am
++++ b/src/jtag/drivers/Makefile.am
+@@ -50,6 +50,11 @@ if USE_LIBJAYLINK
+ %C%_libocdjtagdrivers_la_LIBADD += $(LIBJAYLINK_LIBS)
+ endif
+ 
++if USE_LIBGPIOD
++%C%_libocdjtagdrivers_la_CPPFLAGS += $(LIBGPIOD_CFLAGS)
++%C%_libocdjtagdrivers_la_LIBADD += $(LIBGPIOD_LIBS)
++endif
++
+ if JLINK
+ DRIVERFILES += %D%/jlink.c
+ if INTERNAL_LIBJAYLINK
+@@ -144,6 +149,9 @@ endif
+ if SYSFSGPIO
+ DRIVERFILES += %D%/sysfsgpio.c
+ endif
++if GPIOD
++DRIVERFILES += %D%/gpiod.c
++endif
+ if BCM2835GPIO
+ DRIVERFILES += %D%/bcm2835gpio.c
+ endif
+diff --git a/src/jtag/drivers/gpiod.c b/src/jtag/drivers/gpiod.c
+new file mode 100644
+index 00000000..faa26277
+--- /dev/null
++++ b/src/jtag/drivers/gpiod.c
+@@ -0,0 +1,638 @@
++/***************************************************************************
++ *   Copyright (C) 2012 by Creative Product Design, marc @ cpdesign.com.au *
++ *                                                                         *
++ *   This program is free software; you can redistribute it and/or modify  *
++ *   it under the terms of the GNU General Public License as published by  *
++ *   the Free Software Foundation; either version 2 of the License, or     *
++ *   (at your option) any later version.                                   *
++ *                                                                         *
++ *   This program is distributed in the hope that it will be useful,       *
++ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
++ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
++ *   GNU General Public License for more details.                          *
++ *                                                                         *
++ *   You should have received a copy of the GNU General Public License     *
++ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
++ ***************************************************************************/
++
++/**
++ * @file
++ * This driver implements a bitbang jtag interface using gpio lines via
++ * gpiod.
++ * The aim of this driver implementation is use system GPIOs but avoid the
++ * need for a additional kernel driver.
++ * (Note memory mapped IO is another option, however it doesn't mix well with
++ * the kernel gpiolib driver - which makes sense I guess.)
++ *
++ * A gpio is required for tck, tms, tdi and tdo. One or both of srst and trst
++ * must be also be specified. The required jtag gpios are specified via the
++ * gpiod_jtag_nums command or the relevant gpiod_XXX_num commang.
++ * The srst and trst gpios are set via the gpiod_srst_num and
++ * gpiod_trst_num respectively. GPIO numbering follows the kernel
++ * convention of starting from 0.
++ *
++ * The gpios should not be in use by another entity, and must not be requested
++ * by a kernel driver without also being exported by it (otherwise they can't
++ * be requested by gpiod).
++ *
++ * Further work could address:
++ *  -srst and trst open drain/ push pull
++ *  -configurable active high/low for srst & trst
++ */
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include <jtag/interface.h>
++#include <gpiod.h>
++#include "bitbang.h"
++
++#define COMMAND_COPY_STR(in, out) \
++	do { \
++		char *retval_macro_tmp = strdup((in)); \
++		if (retval_macro_tmp == NULL) { \
++			command_print(CMD_CTX, stringify(out) \
++				" option value ('%s') caused out-of-memory error", (in)); \
++			return ERROR_BUF_TOO_SMALL; \
++		} \
++		if ((out)) free((out)); \
++		(out) = retval_macro_tmp; \
++	} while (0)
++
++static int do_request(struct gpiod_line *line, int is_output, int value)
++{
++	int ret;
++
++	if (gpiod_line_is_requested(line)) {
++		gpiod_line_release(line);
++	}
++
++	struct gpiod_line_request_config config = {
++		.consumer = "openocd",
++		.request_type = is_output ? GPIOD_LINE_REQUEST_DIRECTION_OUTPUT :
++		                            GPIOD_LINE_REQUEST_DIRECTION_INPUT,
++		.flags = 0,
++	};
++
++	ret = gpiod_line_request(line, &config, value ? 1 : 0);
++	if (ret) {
++		LOG_ERROR("Couldn't request line %s", gpiod_line_name(line));
++		return ERROR_FAIL;
++	}
++
++	return ERROR_OK;
++}
++
++/*
++ * Exports and sets up direction for gpio.
++ * If the gpio is an output, it is initialized according to init_high,
++ * otherwise it is ignored.
++ *
++ * If the gpio is already exported we just show a warning and continue; if
++ * openocd happened to crash (or was killed by user) then the gpios will not
++ * have been cleaned up.
++ */
++static int setup_gpio(struct gpiod_line **pline, const char *name, int is_output, int init_high)
++{
++	int ret;
++	char chipname[40];
++	unsigned int offset;
++	struct gpiod_line *line;
++
++	if (!pline)
++		return ERROR_FAIL;
++
++	ret = gpiod_ctxless_find_line(name, chipname, sizeof(chipname), &offset);
++	if (ret != 1) {
++		LOG_ERROR("Couldn't find line for gpio %s: %d", name, ret);
++		return ERROR_FAIL;
++	}
++
++	line = gpiod_line_get(chipname, offset);
++	if (!line) {
++		LOG_ERROR("Couldn't get line for chip %s offset %u", chipname, offset);
++		return ERROR_FAIL;
++	}
++	*pline = line;
++
++	return do_request(line, is_output, init_high);
++}
++
++/* names for each gpio. NULL values are invalid */
++static char *tck_gpio = NULL;
++static char *tms_gpio = NULL;
++static char *tdi_gpio = NULL;
++static char *tdo_gpio = NULL;
++static char *trst_gpio = NULL;
++static char *srst_gpio = NULL;
++static char *swclk_gpio = NULL;
++static char *swdio_gpio = NULL;
++
++/*
++ * file descriptors for /sys/class/gpio/gpioXX/value
++ * Set up during init.
++ */
++static struct gpiod_line *tck_state = NULL;
++static struct gpiod_line *tms_state = NULL;
++static struct gpiod_line *tdi_state = NULL;
++static struct gpiod_line *tdo_state = NULL;
++static struct gpiod_line *trst_state = NULL;
++static struct gpiod_line *srst_state = NULL;
++static struct gpiod_line *swclk_state = NULL;
++static struct gpiod_line *swdio_state = NULL;
++
++static int last_swclk;
++static int last_swdio;
++static bool last_stored;
++static bool swdio_input;
++
++static void gpiod_swdio_drive(bool is_output)
++{
++	int ret;
++
++	ret = do_request(swdio_state, is_output, 1);
++	if (ret != ERROR_OK) {
++		LOG_ERROR("Couldn't set direction for gpio %s", swdio_gpio);
++	}
++
++	last_stored = false;
++	swdio_input = !is_output;
++}
++
++static int gpiod_swdio_read(void)
++{
++	int ret = gpiod_line_get_value(swdio_state);
++
++	if (ret < 0) {
++		LOG_WARNING("reading swdio failed");
++		return 0;
++	}
++
++	return ret;
++}
++
++static void gpiod_swdio_write(int swclk, int swdio)
++{
++	int ret;
++
++	if (!swdio_input) {
++		if (!last_stored || (swdio != last_swdio)) {
++			ret = gpiod_line_set_value(swdio_state, swdio ? 1 : 0);
++			if (ret)
++				LOG_WARNING("writing swdio failed");
++		}
++	}
++
++	/* write swclk last */
++	if (!last_stored || (swclk != last_swclk)) {
++		ret = gpiod_line_set_value(swclk_state, swclk ? 1 : 0);
++		if (ret)
++			LOG_WARNING("writing swclk failed");
++	}
++
++	last_swdio = swdio;
++	last_swclk = swclk;
++	last_stored = true;
++}
++
++/*
++ * Bitbang interface read of TDO
++ *
++ * The sysfs value will read back either '0' or '1'. The trick here is to call
++ * lseek to bypass buffering in the sysfs kernel driver.
++ */
++static bb_value_t gpiod_read(void)
++{
++	int ret = gpiod_line_get_value(tdo_state);
++
++	if (ret < 0) {
++		LOG_WARNING("reading tdo failed");
++		return 0;
++	}
++
++	return ret == 0 ? BB_LOW : BB_HIGH;
++}
++
++/*
++ * Bitbang interface write of TCK, TMS, TDI
++ *
++ * Seeing as this is the only function where the outputs are changed,
++ * we can cache the old value to avoid needlessly writing it.
++ */
++static int gpiod_write(int tck, int tms, int tdi)
++{
++	if (swd_mode) {
++		gpiod_swdio_write(tck, tdi);
++		return ERROR_OK;
++	}
++
++	static int last_tck;
++	static int last_tms;
++	static int last_tdi;
++
++	static int first_time;
++	int ret;
++
++	if (!first_time) {
++		last_tck = !tck;
++		last_tms = !tms;
++		last_tdi = !tdi;
++		first_time = 1;
++	}
++
++	if (tdi != last_tdi) {
++		ret = gpiod_line_set_value(tdi_state, tdi ? 1 : 0);
++		if (ret)
++			LOG_WARNING("writing tdi failed");
++	}
++
++	if (tms != last_tms) {
++		ret = gpiod_line_set_value(tms_state, tms ? 1 : 0);
++		if (ret)
++			LOG_WARNING("writing tms failed");
++	}
++
++	/* write clk last */
++	if (tck != last_tck) {
++		ret = gpiod_line_set_value(tck_state, tck ? 1 : 0);
++		if (ret)
++			LOG_WARNING("writing tck failed");
++	}
++
++	last_tdi = tdi;
++	last_tms = tms;
++	last_tck = tck;
++
++	return ERROR_OK;
++}
++
++/*
++ * Bitbang interface to manipulate reset lines SRST and TRST
++ *
++ * (1) assert or (0) deassert reset lines
++ */
++static int gpiod_reset(int trst, int srst)
++{
++	LOG_DEBUG("gpiod_reset");
++	int ret;
++
++	/* assume active low */
++	if (srst_state) {
++		ret = gpiod_line_set_value(srst_state, srst ? 0 : 1);
++		if (ret)
++			LOG_WARNING("writing srst failed");
++	}
++
++	/* assume active low */
++	if (trst_state) {
++		ret = gpiod_line_set_value(trst_state, trst ? 0 : 1);
++		if (ret)
++			LOG_WARNING("writing trst failed");
++	}
++
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_jtag_gpionames)
++{
++	if (CMD_ARGC == 4) {
++		COMMAND_COPY_STR(CMD_ARGV[0], tck_gpio);
++		COMMAND_COPY_STR(CMD_ARGV[1], tms_gpio);
++		COMMAND_COPY_STR(CMD_ARGV[2], tdi_gpio);
++		COMMAND_COPY_STR(CMD_ARGV[3], tdo_gpio);
++	} else if (CMD_ARGC != 0) {
++		return ERROR_COMMAND_SYNTAX_ERROR;
++	}
++
++	command_print(CMD_CTX,
++			"gpiod names: tck = %s, tms = %s, tdi = %s, tdo = %s",
++			tck_gpio, tms_gpio, tdi_gpio, tdo_gpio);
++
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_jtag_gpioname_tck)
++{
++	if (CMD_ARGC == 1)
++		COMMAND_COPY_STR(CMD_ARGV[0], tck_gpio);
++
++	command_print(CMD_CTX, "gpiod name: tck = %s", tck_gpio);
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_jtag_gpioname_tms)
++{
++	if (CMD_ARGC == 1)
++		COMMAND_COPY_STR(CMD_ARGV[0], tms_gpio);
++
++	command_print(CMD_CTX, "gpiod name: tms = %s", tms_gpio);
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_jtag_gpioname_tdo)
++{
++	if (CMD_ARGC == 1)
++		COMMAND_COPY_STR(CMD_ARGV[0], tdo_gpio);
++
++	command_print(CMD_CTX, "gpiod name: tdo = %s", tdo_gpio);
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_jtag_gpioname_tdi)
++{
++	if (CMD_ARGC == 1)
++		COMMAND_COPY_STR(CMD_ARGV[0], tdi_gpio);
++
++	command_print(CMD_CTX, "gpiod name: tdi = %s", tdi_gpio);
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_jtag_gpioname_srst)
++{
++	if (CMD_ARGC == 1)
++		COMMAND_COPY_STR(CMD_ARGV[0], srst_gpio);
++
++	command_print(CMD_CTX, "gpiod name: srst = %s", srst_gpio);
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_jtag_gpioname_trst)
++{
++	if (CMD_ARGC == 1)
++		COMMAND_COPY_STR(CMD_ARGV[0], trst_gpio);
++
++	command_print(CMD_CTX, "gpiod name: trst = %s", trst_gpio);
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_swd_gpionames)
++{
++	if (CMD_ARGC == 2) {
++		COMMAND_COPY_STR(CMD_ARGV[0], swclk_gpio);
++		COMMAND_COPY_STR(CMD_ARGV[1], swdio_gpio);
++	} else if (CMD_ARGC != 0) {
++		return ERROR_COMMAND_SYNTAX_ERROR;
++	}
++
++	command_print(CMD_CTX,
++			"gpiod names: swclk = %s, swdio = %s",
++			swclk_gpio, swdio_gpio);
++
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_swd_gpioname_swclk)
++{
++	if (CMD_ARGC == 1)
++		COMMAND_COPY_STR(CMD_ARGV[0], swclk_gpio);
++
++	command_print(CMD_CTX, "gpiod name: swclk = %s", swclk_gpio);
++	return ERROR_OK;
++}
++
++COMMAND_HANDLER(gpiod_handle_swd_gpioname_swdio)
++{
++	if (CMD_ARGC == 1)
++		COMMAND_COPY_STR(CMD_ARGV[0], swdio_gpio);
++
++	command_print(CMD_CTX, "gpiod name: swdio = %s", swdio_gpio);
++	return ERROR_OK;
++}
++
++static const struct command_registration gpiod_command_handlers[] = {
++	{
++		.name = "gpiod_jtag_names",
++		.handler = &gpiod_handle_jtag_gpionames,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio names for tck, tms, tdi, tdo. (in that order)",
++		.usage = "(tck tms tdi tdo)* ",
++	},
++	{
++		.name = "gpiod_tck_name",
++		.handler = gpiod_handle_jtag_gpioname_tck,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio name for tck.",
++	},
++	{
++		.name = "gpiod_tms_name",
++		.handler = &gpiod_handle_jtag_gpioname_tms,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio name for tms.",
++	},
++	{
++		.name = "gpiod_tdo_name",
++		.handler = &gpiod_handle_jtag_gpioname_tdo,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio name for tdo.",
++	},
++	{
++		.name = "gpiod_tdi_name",
++		.handler = &gpiod_handle_jtag_gpioname_tdi,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio name for tdi.",
++	},
++	{
++		.name = "gpiod_srst_name",
++		.handler = &gpiod_handle_jtag_gpioname_srst,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio name for srst.",
++	},
++	{
++		.name = "gpiod_trst_name",
++		.handler = &gpiod_handle_jtag_gpioname_trst,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio name for trst.",
++	},
++	{
++		.name = "gpiod_swd_names",
++		.handler = &gpiod_handle_swd_gpionames,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio names for swclk, swdio. (in that order)",
++		.usage = "(swclk swdio)* ",
++	},
++	{
++		.name = "gpiod_swclk_name",
++		.handler = &gpiod_handle_swd_gpioname_swclk,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio name for swclk.",
++	},
++	{
++		.name = "gpiod_swdio_name",
++		.handler = &gpiod_handle_swd_gpioname_swdio,
++		.mode = COMMAND_CONFIG,
++		.help = "gpio name for swdio.",
++	},
++	COMMAND_REGISTRATION_DONE
++};
++
++static int gpiod_init(void);
++static int gpiod_quit(void);
++
++static const char * const gpiod_transports[] = { "jtag", "swd", NULL };
++
++struct jtag_interface gpiod_interface = {
++	.name = "gpiod",
++	.supported = DEBUG_CAP_TMS_SEQ,
++	.execute_queue = bitbang_execute_queue,
++	.transports = gpiod_transports,
++	.swd = &bitbang_swd,
++	.commands = gpiod_command_handlers,
++	.init = gpiod_init,
++	.quit = gpiod_quit,
++};
++
++static struct bitbang_interface gpiod_bitbang = {
++	.read = gpiod_read,
++	.write = gpiod_write,
++	.reset = gpiod_reset,
++	.swdio_read = gpiod_swdio_read,
++	.swdio_drive = gpiod_swdio_drive,
++	.blink = 0
++};
++
++/* helper func to close and cleanup files only if they were valid/ used */
++static void cleanup_gpiostate(struct gpiod_line **pline)
++{
++	if (pline && *pline) {
++		if (gpiod_line_is_requested(*pline)) {
++			gpiod_line_release(*pline);
++		}
++
++		gpiod_line_close_chip(*pline);
++		*pline = NULL;
++	}
++}
++
++static void cleanup_all_gpios(void)
++{
++	cleanup_gpiostate(&tck_state);
++	cleanup_gpiostate(&tms_state);
++	cleanup_gpiostate(&tdi_state);
++	cleanup_gpiostate(&tdo_state);
++	cleanup_gpiostate(&trst_state);
++	cleanup_gpiostate(&srst_state);
++	cleanup_gpiostate(&swclk_state);
++	cleanup_gpiostate(&swdio_state);
++}
++
++static bool gpiod_jtag_mode_possible(void)
++{
++	if (!tck_gpio)
++		return 0;
++	if (!tms_gpio)
++		return 0;
++	if (!tdi_gpio)
++		return 0;
++	if (!tdo_gpio)
++		return 0;
++	return 1;
++}
++
++static bool gpiod_swd_mode_possible(void)
++{
++	if (!swclk_gpio)
++		return 0;
++	if (!swdio_gpio)
++		return 0;
++	return 1;
++}
++
++static int gpiod_init(void)
++{
++	int ret;
++	bitbang_interface = &gpiod_bitbang;
++
++	LOG_INFO("gpiod JTAG/SWD bitbang driver");
++
++	if (gpiod_jtag_mode_possible()) {
++		if (gpiod_swd_mode_possible())
++			LOG_INFO("JTAG and SWD modes enabled");
++		else
++			LOG_INFO("JTAG only mode enabled (specify swclk and swdio gpio to add SWD mode)");
++		if (!trst_gpio && !srst_gpio) {
++			LOG_ERROR("Require at least one of trst or srst gpios to be specified");
++			return ERROR_JTAG_INIT_FAILED;
++		}
++	} else if (gpiod_swd_mode_possible()) {
++		LOG_INFO("SWD only mode enabled (specify tck, tms, tdi and tdo gpios to add JTAG mode)");
++	} else {
++		LOG_ERROR("Require tck, tms, tdi and tdo gpios for JTAG mode and/or swclk and swdio gpio for SWD mode");
++		return ERROR_JTAG_INIT_FAILED;
++	}
++
++
++	/*
++	 * Configure TDO as an input, and TDI, TCK, TMS, TRST, SRST
++	 * as outputs.  Drive TDI and TCK low, and TMS/TRST/SRST high.
++	 * For SWD, SWCLK and SWDIO are configures as output high.
++	 */
++	if (tck_gpio) {
++		ret = setup_gpio(&tck_state, tck_gpio, 1, 0);
++		if (ret < 0)
++			goto out_error;
++	}
++
++	if (tms_gpio) {
++		ret = setup_gpio(&tms_state, tms_gpio, 1, 1);
++		if (ret < 0)
++			goto out_error;
++	}
++
++	if (tdi_gpio) {
++		ret = setup_gpio(&tdi_state, tdi_gpio, 1, 0);
++		if (ret < 0)
++			goto out_error;
++	}
++
++	if (tdo_gpio) {
++		ret = setup_gpio(&tdo_state, tdo_gpio, 0, 0);
++		if (ret < 0)
++			goto out_error;
++	}
++
++	/* assume active low*/
++	if (trst_gpio) {
++		ret = setup_gpio(&trst_state, trst_gpio, 1, 1);
++		if (ret < 0)
++			goto out_error;
++	}
++
++	/* assume active low*/
++	if (srst_gpio) {
++		ret = setup_gpio(&srst_state, srst_gpio, 1, 1);
++		if (ret < 0)
++			goto out_error;
++	}
++
++	if (swclk_gpio) {
++		ret = setup_gpio(&swclk_state, swclk_gpio, 1, 0);
++		if (ret < 0)
++			goto out_error;
++	}
++
++	if (swdio_gpio) {
++		ret = setup_gpio(&swdio_state, swdio_gpio, 1, 0);
++		if (ret < 0)
++			goto out_error;
++	}
++
++	if (gpiod_swd_mode_possible()) {
++		if (swd_mode)
++			bitbang_swd_switch_seq(JTAG_TO_SWD);
++		else
++			bitbang_swd_switch_seq(SWD_TO_JTAG);
++	}
++
++	return ERROR_OK;
++
++out_error:
++	cleanup_all_gpios();
++	return ERROR_JTAG_INIT_FAILED;
++}
++
++static int gpiod_quit(void)
++{
++	cleanup_all_gpios();
++	return ERROR_OK;
++}
++
+diff --git a/src/jtag/interfaces.c b/src/jtag/interfaces.c
+index 286a73ac..8ce298aa 100644
+--- a/src/jtag/interfaces.c
++++ b/src/jtag/interfaces.c
+@@ -117,6 +117,9 @@ extern struct jtag_interface opendous_interface;
+ #if BUILD_SYSFSGPIO == 1
+ extern struct jtag_interface sysfsgpio_interface;
+ #endif
++#if BUILD_GPIOD == 1
++extern struct jtag_interface gpiod_interface;
++#endif
+ #if BUILD_AICE == 1
+ extern struct jtag_interface aice_interface;
+ #endif
+@@ -222,6 +225,9 @@ struct jtag_interface *jtag_interfaces[] = {
+ #if BUILD_SYSFSGPIO == 1
+ 		&sysfsgpio_interface,
+ #endif
++#if BUILD_GPIOD == 1
++		&gpiod_interface,
++#endif
+ #if BUILD_AICE == 1
+ 		&aice_interface,
+ #endif
