@@ -16,7 +16,7 @@ SRC_URI = "\
 S = "${WORKDIR}/"
 
 do_compile() {
-    ${CC} -fPIC -Os -ggdb -shared ${WORKDIR}/lsdl-serializer-log.c -o liblsdl-serializer-log.so -Wall -Wextra -Werror
+    ${CC} ${CFLAGS} ${LDFLAGS} -fPIC -Os -ggdb -shared ${WORKDIR}/lsdl-serializer-log.c -o liblsdl-serializer-log.so -Wall -Wextra -Werror
 }
 
 do_install() {
