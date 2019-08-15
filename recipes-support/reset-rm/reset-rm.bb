@@ -7,21 +7,30 @@ PV = "1.0"
 PR = "r0"
 
 SRC_URI = "\
-    file://reset-rm.py \
+    file://reset-rm.c \
     file://reset-rm.service \
     file://reset-rm.cfg \
 "
 
 S = "${WORKDIR}/"
 
-RDEPENDS_${PN} += " \
-    python3 \
-    libgpiod-python \
+DEPENDS += " \
+    libcyaml \
+    libgpiod \
 "
+
+RDEPENDS_${PN} += " \
+    libcyaml \
+    libgpiod \
+"
+
+do_compile() {
+    ${CC} ${CFLAGS} ${LDFLAGS} ${WORKDIR}/reset-rm.c -lcyaml -lyaml -lgpiod -o reset-rm -Wall -Wextra -Wpedantic -Werror
+}
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 755 ${S}reset-rm.py ${D}${bindir}/reset-rm
+    install -m 755 ${WORKDIR}/reset-rm ${D}${bindir}/
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/reset-rm.service ${D}${systemd_unitdir}/system
