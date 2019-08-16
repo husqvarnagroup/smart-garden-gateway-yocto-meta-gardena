@@ -3,6 +3,8 @@ LICENSE = "CLOSED"
 
 DEPENDS = "python3-native"
 
+COMPATIBLE_MACHINE = "mt7688"
+
 inherit systemd allarch python3-dir python3native
 
 SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
