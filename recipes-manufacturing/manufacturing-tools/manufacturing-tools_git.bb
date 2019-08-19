@@ -5,9 +5,7 @@ DEPENDS = "python3-native"
 
 inherit systemd allarch python3-dir python3native
 
-# SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
-#
-SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https;branch=SG-12284-EOL-test \
+SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
            file://ipr-setup \
            file://ipr.service \
            file://selftest-check \
@@ -26,7 +24,7 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufa
 PR = "r1"
 
 PV = "20190717+git${SRCPV}"
-SRCREV = "617e0cf1139cdc395010b5bfe4f9fd2ac38b0fd9"
+SRCREV = "1666fc3940cfec8af8498fcd891af0e649fc2b19"
 
 S = "${WORKDIR}/git"
 
