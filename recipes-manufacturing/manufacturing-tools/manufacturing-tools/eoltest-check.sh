@@ -7,9 +7,26 @@
 # This is expected to happen at least once during manufacturing (it
 # can happen more than once and must be idempotent).
 
-set -eu -o pipefail
+set -eu
 
 eol_test_statusfile=/etc/eol_test_passed
+
+# with systemd, we wait only for network-online.target; this means,
+# dhcpcd has just been started, but may net have completed yet. as a
+# workaround, we wait up to 20 seconds (DCHP usually takes ~3
+# seconds), if an ethernet cable is connected. this is not ideal, but
+# we cannot use systemd-networkd-wait-online, as the eoltest-check
+# must run, even if there is no network connection.
+carrier="$(cat /sys/class/net/eth0/carrier || true)"
+if [ "$carrier" = "1" ]; then
+    i=1
+    while [ $i -le 20 ] && [ "$(ip -4 -o address show dev eth0||true)" = "" ]; do
+        printf .
+        i=$(( i + 1 ))
+        sleep 1
+    done
+    echo
+fi
 
 # make sure EOL test status file is in the correct state
 #
@@ -38,4 +55,3 @@ else
     # EOL test not yet passed
     rm -f $eol_test_statusfile
 fi
-
