@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Run the eoltest script if we're at ELRAD (verified by DNS search
-# domain) and FCT is finalized.
+# Run the eoltest script if we're in manufacturing (verified by DNS
+# search domain) and FCT is finalized.
 #
 # This is expected to happen at least once during manufacturing (it
 # can happen more than once and must be idempotent).
