@@ -13,6 +13,6 @@ fi
 # note: not checking for return value as we have set -e above;
 # ipr-tool.py and shell will already each print an error message.
 
-/usr/bin/ipr-tool --init-gateway-id
+/usr/bin/ipr-tool --init-gateway
 /usr/bin/ipr-tool --verify-ipr-data
 fw_setenv ipr_setup_done 1
