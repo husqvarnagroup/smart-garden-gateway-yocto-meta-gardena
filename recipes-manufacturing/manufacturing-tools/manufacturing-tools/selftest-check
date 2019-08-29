@@ -17,7 +17,8 @@ exit_error()
 
 self_test_passed="$(fw_printenv -n self_test_passed 2>/dev/null || echo 0)"
 if [ "${self_test_passed}" = "1" ]; then
-    # set LEDs to green if we're still in manufacturing
+    # set LEDs to green if we're still in manufacturing and before FCT
+    # (i.e. rerun of bootstrapping process)
     if [ ! -f /etc/fct_finalized ]; then
         /usr/bin/fct-tool --set-leds green
     fi
