@@ -26,11 +26,13 @@ if [ "${self_test_passed}" = "1" ]; then
 fi
 
 gatewayid="$(fw_printenv -n gatewayid 2>/dev/null)"
+# shellcheck disable=SC2181
 if [ $? -ne 0 ]; then
     exit_error "U-Boot variable gatewayid not set - can not run selftest!"
 fi
 
 selftest --ipr-id "${gatewayid}"
+# shellcheck disable=SC2181
 if [ $? -ne 0 ]; then
     exit_error "Selftest failed!"
 fi

@@ -1,0 +1,15 @@
+[Unit]
+Description=Run EOL test during manufacturing
+Requires=ipr.service homekit-setup.service fctcheck.service network-online.target eoltest-check.service
+After=ipr.service homekit-setup.service fctcheck.service network-online.target eoltest-check.service
+ConditionPathExists=/etc/fct_finalized
+ConditionPathExists=!/etc/eol_test_passed
+
+[Service]
+ExecStart=/usr/bin/eoltest-run
+Type=simple
+# unexpected error → all red
+ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then fct-tool --set-leds red; fi'
+
+[Install]
+WantedBy=serial-getty@ttyS0.service
