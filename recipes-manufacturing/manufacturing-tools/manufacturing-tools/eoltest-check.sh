@@ -19,7 +19,13 @@ eol_test_statusfile=/etc/eol_test_passed
 # must run, even if there is no network connection.
 carrier="$(cat /sys/class/net/eth0/carrier || true)"
 if [ "$carrier" = "1" ]; then
-    /lib/systemd/systemd-networkd-wait-online -q -i eth0
+    i=1
+    while [ $i -le 20 ] && [ "$(ip -4 -o address show dev eth0||true)" = "" ]; do
+        printf .
+        i=$(( i + 1 ))
+        sleep 1
+    done
+    echo
 fi
 
 # make sure EOL test status file is in the correct state
