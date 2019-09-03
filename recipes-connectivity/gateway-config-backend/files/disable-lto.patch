@@ -1,0 +1,12 @@
+diff --git a/Cargo.toml b/Cargo.toml
+index 7771ce2..dd4d6e9 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -29,6 +29,6 @@ default-features = false
+ features = ["ssl"]
+ 
+ [profile.release]
+-lto = true
++lto = false
+ opt-level = 3
+ codegen-units = 1
