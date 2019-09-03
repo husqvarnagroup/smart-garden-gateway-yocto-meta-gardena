@@ -4,6 +4,7 @@ Requires=ipr.service
 Before=serial-getty@ttyS0.service
 After=ipr.service
 Wants=ipr.service
+ConditionPathExists=!/etc/eol_test_passed
 
 [Service]
 ExecStart=/usr/bin/homekit-setup

@@ -8,6 +8,7 @@ Description=Run selftest during manufacturing
 Requires=ipr.service homekit-setup.service fctcheck.service gateway-config-backend-sslkey.service
 After=ipr.service homekit-setup.service fctcheck.service gateway-config-backend-sslkey.service
 Before=serial-getty@ttyS0.service
+ConditionPathExists=!/etc/eol_test_passed
 
 [Service]
 ExecStart=/usr/bin/selftest-check
