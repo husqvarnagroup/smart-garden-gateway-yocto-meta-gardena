@@ -1,12 +1,12 @@
 [Unit]
 Description=Run selftest during manufacturing
-# note: the dependency on gateway-config-backend-sslkey.service and
-# dropbearkey.service is not a technical one, but rather, we want to
-# make sure the certificate generation is done before the FCT, because
-# bootstrapping happens outside the test jig (i.e. bootstrapping time
-# incurs lower costs than FCT time)
-Requires=ipr.service homekit-setup.service fctcheck.service gateway-config-backend-sslkey.service dropbearkey.service
-After=ipr.service homekit-setup.service fctcheck.service gateway-config-backend-sslkey.service dropbearkey.service
+# note: the dependency on gateway-config-backend-sslkey.service is not
+# a technical one, but rather, we want to make sure the certificate
+# generation is done before the FCT, because bootstrapping happens
+# outside the test jig (i.e. bootstrapping time incurs lower costs
+# than FCT time)
+Requires=ipr.service homekit-setup.service fctcheck.service gateway-config-backend-sslkey.service
+After=ipr.service homekit-setup.service fctcheck.service gateway-config-backend-sslkey.service
 Before=serial-getty@ttyS0.service
 
 [Service]
