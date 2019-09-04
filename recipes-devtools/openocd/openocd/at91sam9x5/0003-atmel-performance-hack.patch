@@ -1,0 +1,199 @@
+commit bddca08477b1ad12236b4abe8cf28eb6ded18bc7
+Author: Michael Zimmermann <michael.zimmermann@grandcentrix.net>
+Date:   Mon Sep 2 15:15:23 2019 +0200
+
+    atmel performance hack
+
+diff --git a/src/jtag/drivers/gpiod.c b/src/jtag/drivers/gpiod.c
+index faa26277..db578b99 100644
+--- a/src/jtag/drivers/gpiod.c
++++ b/src/jtag/drivers/gpiod.c
+@@ -45,6 +45,8 @@
+ 
+ #include <jtag/interface.h>
+ #include <gpiod.h>
++#include <unistd.h>
++#include <sys/mman.h>
+ #include "bitbang.h"
+ 
+ #define COMMAND_COPY_STR(in, out) \
+@@ -119,6 +121,8 @@ static int setup_gpio(struct gpiod_line **pline, const char *name, int is_output
+ }
+ 
+ /* names for each gpio. NULL values are invalid */
++static int devmem_fd = -1;
++static void *regbase = NULL;
+ static char *tck_gpio = NULL;
+ static char *tms_gpio = NULL;
+ static char *tdi_gpio = NULL;
+@@ -146,12 +150,66 @@ static int last_swdio;
+ static bool last_stored;
+ static bool swdio_input;
+ 
++#define REG32(addr) ((volatile uint32_t *)(uintptr_t)(addr))
++
++#define writel(v, a) (*REG32(a) = (v))
++#define readl(a) (*REG32(a))
++
++#define PIO_OER		0x10	/* Output Enable Register */
++#define PIO_ODR		0x14	/* Output Disable Register */
++#define PIO_SODR	0x30	/* Set Output Data Register */
++#define PIO_CODR	0x34	/* Clear Output Data Register */
++#define PIO_PDSR	0x3c	/* Pin Data Status Register */
++
++static int memgpio_set(struct gpiod_line *line, int val) {
++	unsigned offset = gpiod_line_offset(line);
++	unsigned mask = 1 << offset;
++
++	writel(mask, regbase + (val ? PIO_SODR : PIO_CODR));
++
++	return 0;
++}
++
++static int memgpio_get(struct gpiod_line *line) {
++	unsigned offset = gpiod_line_offset(line);
++	unsigned mask = 1 << offset;
++	uint32_t pdsr;
++
++	pdsr = readl(regbase + PIO_PDSR);
++	return (pdsr & mask) != 0;
++}
++
++static int memgpio_direction_input(struct gpiod_line *line)
++{
++	unsigned offset = gpiod_line_offset(line);
++	unsigned mask = 1 << offset;
++
++	writel(mask, regbase + PIO_ODR);
++	return 0;
++}
++
++static int memgpio_direction_output(struct gpiod_line *line,
++				int val)
++{
++	unsigned offset = gpiod_line_offset(line);
++	unsigned mask = 1 << offset;
++
++	writel(mask, regbase + (val ? PIO_SODR : PIO_CODR));
++	writel(mask, regbase + PIO_OER);
++
++	return 0;
++}
++
+ static void gpiod_swdio_drive(bool is_output)
+ {
+ 	int ret;
+ 
+-	ret = do_request(swdio_state, is_output, 1);
+-	if (ret != ERROR_OK) {
++	if (is_output)
++		ret = memgpio_direction_output(swdio_state, 1);
++	else
++		ret = memgpio_direction_input(swdio_state);
++
++	if (ret) {
+ 		LOG_ERROR("Couldn't set direction for gpio %s", swdio_gpio);
+ 	}
+ 
+@@ -161,7 +219,7 @@ static void gpiod_swdio_drive(bool is_output)
+ 
+ static int gpiod_swdio_read(void)
+ {
+-	int ret = gpiod_line_get_value(swdio_state);
++	int ret = memgpio_get(swdio_state);
+ 
+ 	if (ret < 0) {
+ 		LOG_WARNING("reading swdio failed");
+@@ -177,7 +235,7 @@ static void gpiod_swdio_write(int swclk, int swdio)
+ 
+ 	if (!swdio_input) {
+ 		if (!last_stored || (swdio != last_swdio)) {
+-			ret = gpiod_line_set_value(swdio_state, swdio ? 1 : 0);
++			ret = memgpio_set(swdio_state, swdio ? 1 : 0);
+ 			if (ret)
+ 				LOG_WARNING("writing swdio failed");
+ 		}
+@@ -185,7 +243,7 @@ static void gpiod_swdio_write(int swclk, int swdio)
+ 
+ 	/* write swclk last */
+ 	if (!last_stored || (swclk != last_swclk)) {
+-		ret = gpiod_line_set_value(swclk_state, swclk ? 1 : 0);
++		ret = memgpio_set(swclk_state, swclk ? 1 : 0);
+ 		if (ret)
+ 			LOG_WARNING("writing swclk failed");
+ 	}
+@@ -203,7 +261,7 @@ static void gpiod_swdio_write(int swclk, int swdio)
+  */
+ static bb_value_t gpiod_read(void)
+ {
+-	int ret = gpiod_line_get_value(tdo_state);
++	int ret = memgpio_get(tdo_state);
+ 
+ 	if (ret < 0) {
+ 		LOG_WARNING("reading tdo failed");
+@@ -241,20 +299,20 @@ static int gpiod_write(int tck, int tms, int tdi)
+ 	}
+ 
+ 	if (tdi != last_tdi) {
+-		ret = gpiod_line_set_value(tdi_state, tdi ? 1 : 0);
++		ret = memgpio_set(tdi_state, tdi ? 1 : 0);
+ 		if (ret)
+ 			LOG_WARNING("writing tdi failed");
+ 	}
+ 
+ 	if (tms != last_tms) {
+-		ret = gpiod_line_set_value(tms_state, tms ? 1 : 0);
++		ret = memgpio_set(tms_state, tms ? 1 : 0);
+ 		if (ret)
+ 			LOG_WARNING("writing tms failed");
+ 	}
+ 
+ 	/* write clk last */
+ 	if (tck != last_tck) {
+-		ret = gpiod_line_set_value(tck_state, tck ? 1 : 0);
++		ret = memgpio_set(tck_state, tck ? 1 : 0);
+ 		if (ret)
+ 			LOG_WARNING("writing tck failed");
+ 	}
+@@ -278,14 +336,14 @@ static int gpiod_reset(int trst, int srst)
+ 
+ 	/* assume active low */
+ 	if (srst_state) {
+-		ret = gpiod_line_set_value(srst_state, srst ? 0 : 1);
++		ret = memgpio_set(srst_state, srst ? 0 : 1);
+ 		if (ret)
+ 			LOG_WARNING("writing srst failed");
+ 	}
+ 
+ 	/* assume active low */
+ 	if (trst_state) {
+-		ret = gpiod_line_set_value(trst_state, trst ? 0 : 1);
++		ret = memgpio_set(trst_state, trst ? 0 : 1);
+ 		if (ret)
+ 			LOG_WARNING("writing trst failed");
+ 	}
+@@ -540,10 +598,24 @@ static bool gpiod_swd_mode_possible(void)
+ static int gpiod_init(void)
+ {
+ 	int ret;
++	int pagesize = getpagesize();
+ 	bitbang_interface = &gpiod_bitbang;
+ 
+ 	LOG_INFO("gpiod JTAG/SWD bitbang driver");
+ 
++	devmem_fd = open("/dev/mem", O_RDWR | O_SYNC);
++	if (devmem_fd < 0) {
++		LOG_ERROR("can't open devmem");
++		return ERROR_JTAG_INIT_FAILED;
++	}
++
++	regbase = mmap(NULL, pagesize, PROT_READ | PROT_WRITE, MAP_SHARED, devmem_fd, 0xfffff000);
++	if (regbase == MAP_FAILED) {
++		LOG_ERROR("mmap failed: regbase=%p rc=%ld errno=%d", regbase, (long)(intptr_t)regbase, errno);
++		return ERROR_JTAG_INIT_FAILED;
++	}
++	regbase += 0x800;
++
+ 	if (gpiod_jtag_mode_possible()) {
+ 		if (gpiod_swd_mode_possible())
+ 			LOG_INFO("JTAG and SWD modes enabled");

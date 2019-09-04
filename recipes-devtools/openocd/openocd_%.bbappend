@@ -9,6 +9,10 @@ SRC_URI += " \
     file://gardena_nrf52.cfg \
 "
 
+SRC_URI_append_at91sam9x5 = " \
+    file://0003-atmel-performance-hack.patch \
+"
+
 # We are using upstream and most patches in the base .bb are already upstreamed.
 SRC_URI_remove = "file://0001-Add-fallthrough-comments.patch \
                   file://0002-Workaround-new-warnings-generated-by-GCC-7.patch\
