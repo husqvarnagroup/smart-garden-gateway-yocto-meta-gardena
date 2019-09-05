@@ -1,6 +1,7 @@
 [Unit]
 Description=Run IPR tool
 Before=serial-getty@ttyS0.service
+ConditionPathExists=!/etc/eol_test_passed
 
 [Service]
 ExecStart=/usr/bin/ipr-setup
