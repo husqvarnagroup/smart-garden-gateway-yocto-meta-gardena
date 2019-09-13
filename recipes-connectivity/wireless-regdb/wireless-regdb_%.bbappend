@@ -6,11 +6,16 @@ SRC_URI += " \
 
 unset do_compile[noexec]
 
+inherit python3native
+
+DEPENDS += "python3-attrs-native"
+
 # to reach max of 20dBm in DE with out gateway, we 
 # need to reduce txpower by 10dBm. To do it we need 
 # to create our own self signed regulatory.db
 do_compile() {
-    oe_runmake regulatory.db
+    oe_runmake maintainer-clean
+    python3 ./db2fw.py regulatory.db db.txt
 }
 
 do_install() {
