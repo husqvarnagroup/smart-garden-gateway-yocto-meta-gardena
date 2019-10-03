@@ -21,9 +21,10 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufa
            file://homekit-setup \
            file://homekit-setup.service \
            file://keep.d/fctcheck \
+           file://keep.d/eoltest \
            "
 
-PR = "r1"
+PR = "r2"
 
 PV = "20190924+git${SRCPV}"
 SRCREV = "acd7e7d7ae86b5be052d82a5ff80e86c06437096"
@@ -79,6 +80,7 @@ do_install () {
 
     install -d ${D}${base_libdir}/upgrade/keep.d
     install -m 0644 ${WORKDIR}/keep.d/fctcheck ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${WORKDIR}/keep.d/eoltest ${D}${base_libdir}/upgrade/keep.d
 }
 
 pkg_postinst_${PN} () {
