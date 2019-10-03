@@ -8,11 +8,13 @@
 #include <gpiod.h>
 
 struct config {
-    char *pin;
+    char *chip_name;
+    unsigned int pin_offset;
 };
 
 static const cyaml_schema_field_t top_mapping_schema[] = {
-    CYAML_FIELD_STRING_PTR("pin", CYAML_FLAG_POINTER, struct config, pin, 0, CYAML_UNLIMITED),
+    CYAML_FIELD_STRING_PTR("chip_name", CYAML_FLAG_POINTER, struct config, chip_name, 0, CYAML_UNLIMITED),
+    CYAML_FIELD_UINT("pin_offset", CYAML_FLAG_DEFAULT, struct config, pin_offset),
     CYAML_FIELD_END
 };
 
@@ -37,8 +39,6 @@ int main(void) {
     int ret = EXIT_FAILURE;
     cyaml_err_t cyerr;
     struct config *cfg;
-    char chipname[PATH_MAX];
-    unsigned int offset;
     struct gpiod_chip *chip;
     struct gpiod_line *line;
 
@@ -49,29 +49,15 @@ int main(void) {
         goto out_ret;
     }
 
-    rc = gpiod_ctxless_find_line(cfg->pin, chipname, sizeof(chipname), &offset);
-    if (rc < 0 || rc > 1) {
-        fprintf(stderr, "unknown error during find_line: %d. errno=%d\n", rc, errno);
-        goto out_free_cfg;
-    }
-    if (rc == 0) {
-        fprintf(stderr, "pin %s not found: %d\n", cfg->pin, errno);
-        goto out_free_cfg;
-    }
-    if (rc != 1) {
-        fprintf(stderr, "BUG: %d\n", errno);
-        goto out_free_cfg;
-    }
-
-    chip = gpiod_chip_open_by_name(chipname);
+    chip = gpiod_chip_open_by_name(cfg->chip_name);
     if (!chip) {
-        fprintf(stderr, "chip %s not found: %d\n", chipname, errno);
+        fprintf(stderr, "chip %s not found: %d\n", cfg->chip_name, errno);
         goto out_free_cfg;
     }
 
-    line = gpiod_chip_get_line(chip, offset);
+    line = gpiod_chip_get_line(chip, cfg->pin_offset);
     if (!line) {
-        fprintf(stderr, "line %u not found: %d\n", offset, errno);
+        fprintf(stderr, "line %u not found: %d\n", cfg->pin_offset, errno);
         goto out_close_chip;
     }
 
