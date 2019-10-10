@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PR_append = ".1"
+PR_append = ".2"
 
 SRC_URI += " \
     file://0001-jtag-sysfsgpio-clean-up-swd-gpios.patch \
