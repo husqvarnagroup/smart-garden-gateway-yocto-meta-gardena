@@ -10,7 +10,18 @@ if [ "${ipr_setup_done}" = "1" ]; then
     exit 0
 fi
 
-# note: not checking for return value as we have set -e above;
+# Note: the following two dependencies are intentionally here, rather
+# than in the service file as Requires= and After=. The reason for
+# this is that ipr.service is part of the boot process, even if the
+# file /etc/ipr_setup_done exists. systemd awaits dependencies first
+# and checks ConditionPathExists= after that (which is the expected
+# behaviour). This would block the boot process when no Internet is
+# present (first boot at customer or after factory reset and no
+# Ethernet connected).
+/lib/systemd/systemd-networkd-wait-online -i eth0
+/lib/systemd/systemd-time-wait-sync
+
+# Note: not checking for return value as we have set -e above;
 # ipr-tool.py and shell will already each print an error message.
 
 /usr/bin/ipr-tool --init-gateway

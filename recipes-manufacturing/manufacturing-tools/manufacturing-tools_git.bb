@@ -8,26 +8,26 @@ COMPATIBLE_MACHINE = "mt7688"
 inherit systemd allarch python3-dir python3native
 
 SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=https \
+           file://manufacturing-statusfiles.service \
+           file://manufacturing-statusfiles.sh \
            file://ipr-setup \
            file://ipr.service \
            file://selftest-check \
            file://selftest.service \
-           file://fctcheck \
-           file://fctcheck.service \
            file://eoltest-check.sh \
            file://eoltest-check.service \
            file://eoltest-run.sh \
            file://eoltest.service \
            file://homekit-setup \
            file://homekit-setup.service \
-           file://keep.d/fctcheck \
            file://keep.d/eoltest \
+           file://keep.d/manufacturing-statusfiles \
            "
 
 PR = "r2"
 
-PV = "20190924+git${SRCPV}"
-SRCREV = "acd7e7d7ae86b5be052d82a5ff80e86c06437096"
+PV = "20191016+git${SRCPV}"
+SRCREV = "80d99b3ff2484c0c4aeee670e1877ae99d7930e9"
 
 S = "${WORKDIR}/git"
 
@@ -56,17 +56,17 @@ do_install () {
     install -m 0755 ${S}/fct-tool.py ${D}${bindir}/fct-tool
     install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
     install -m 0755 ${S}/homekit-tool.py ${D}${bindir}/homekit-tool
+    install -m 0755 ${WORKDIR}/manufacturing-statusfiles.sh ${D}${bindir}/manufacturing-statusfiles
     install -m 0755 ${WORKDIR}/ipr-setup ${D}${bindir}
     install -m 0755 ${WORKDIR}/homekit-setup ${D}${bindir}
     install -m 0755 ${WORKDIR}/selftest-check ${D}${bindir}
-    install -m 0755 ${WORKDIR}/fctcheck ${D}${bindir}
     install -m 0755 ${WORKDIR}/eoltest-check.sh ${D}${bindir}/eoltest-check
     install -m 0755 ${WORKDIR}/eoltest-run.sh ${D}${bindir}/eoltest-run
 
     install -d ${D}${systemd_unitdir}/system
+    install -m 0644 ${WORKDIR}/manufacturing-statusfiles.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/ipr.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/selftest.service ${D}${systemd_unitdir}/system/
-    install -m 0644 ${WORKDIR}/fctcheck.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/eoltest-check.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/eoltest.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/homekit-setup.service ${D}${systemd_unitdir}/system/
@@ -79,17 +79,17 @@ do_install () {
     install -m 0755 ${S}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}/
 
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/fctcheck ${D}${base_libdir}/upgrade/keep.d
     install -m 0644 ${WORKDIR}/keep.d/eoltest ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${WORKDIR}/keep.d/manufacturing-statusfiles ${D}${base_libdir}/upgrade/keep.d
 }
 
 pkg_postinst_${PN} () {
     cd $D${PYTHON_SITEPACKAGES_DIR} && python3 -m compileall .
 }
 
+SYSTEMD_SERVICE_${PN} += "manufacturing-statusfiles.service"
 SYSTEMD_SERVICE_${PN} += "ipr.service"
 SYSTEMD_SERVICE_${PN} += "selftest.service"
-SYSTEMD_SERVICE_${PN} += "fctcheck.service"
 SYSTEMD_SERVICE_${PN} += "eoltest-check.service"
 SYSTEMD_SERVICE_${PN} += "eoltest.service"
 SYSTEMD_SERVICE_${PN} += "homekit-setup.service"
