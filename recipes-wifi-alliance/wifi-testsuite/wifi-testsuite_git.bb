@@ -6,7 +6,7 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-gateway-wifi-a
            "
 PR = "r0"
 PV = "1.0+git${SRCPV}"
-SRCREV = "a16500480b91d04a5e89a27ba4bc890ac9707ee0"
+SRCREV = "98ce4fb97e8aefaa50a4a9f7313ffbfd5855fe15"
 
 DEPENDS = "libtirpc"
 

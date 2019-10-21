@@ -1,0 +1,10 @@
+[Unit]
+Description=Create FCT status file
+
+[Service]
+ExecStart=/bin/sh -c 'if [ ! -f /etc/fct_finalized ]; then touch /etc/fct_finalized; fi'
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+RequiredBy=multi-user.target

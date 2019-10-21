@@ -3,6 +3,11 @@ PR = "r3"
 DEPENDS += "openssl"
 RDEPENDS_${PN} += "gateway-config-frontend openssl openssl-bin openssl-conf"
 
+# XXX: WORKAROUND FOR RUST COMPILER BUGS
+SRC_URI_append_at91sam9x5 = " \
+    file://disable-lto.patch \
+"
+
 SRC_URI += "\
     file://gateway-config-backend-sslkey.service \
     file://gateway-config-backend.service \
