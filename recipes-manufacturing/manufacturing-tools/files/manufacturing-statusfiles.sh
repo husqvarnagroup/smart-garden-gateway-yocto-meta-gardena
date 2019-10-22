@@ -11,7 +11,7 @@ set -eu
 for var in ipr_setup_done self_test_passed hk_setup_done fct_finalized; do
     statusfile="/etc/$var"
     status="$(fw_printenv -n $var 2>/dev/null || echo 0)"
-    if [ "${status}" = "1" ]; then
+    if [ "${status}" = "1" ] || [ "$(uname -m)" = "armv5tejl" ]; then
         [ -f $statusfile ] || touch $statusfile
     fi
     # We never unset status variables, so trying to delete a status
