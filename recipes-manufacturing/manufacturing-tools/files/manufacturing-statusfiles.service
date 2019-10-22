@@ -1,0 +1,11 @@
+[Unit]
+Description=Create status files for manufacturing services
+Requires=local-fs.target
+
+[Service]
+ExecStart=/usr/bin/manufacturing-statusfiles
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+RequiredBy=multi-user.target

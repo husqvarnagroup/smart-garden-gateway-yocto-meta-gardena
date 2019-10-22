@@ -5,10 +5,10 @@ Description=Run selftest during manufacturing
 # generation is done before the FCT, because bootstrapping happens
 # outside the test jig (i.e. bootstrapping time incurs lower costs
 # than FCT time)
-Requires=ipr.service homekit-setup.service fctcheck.service gateway-config-backend-sslkey.service
-After=ipr.service homekit-setup.service fctcheck.service gateway-config-backend-sslkey.service
+Requires=ipr.service homekit-setup.service manufacturing-statusfiles.service gateway-config-backend-sslkey.service
+After=ipr.service homekit-setup.service manufacturing-statusfiles.service gateway-config-backend-sslkey.service
 Before=serial-getty@ttyS0.service
-ConditionPathExists=!/etc/eol_test_passed
+ConditionPathExists=!/etc/self_test_passed
 
 [Service]
 ExecStart=/usr/bin/selftest-check

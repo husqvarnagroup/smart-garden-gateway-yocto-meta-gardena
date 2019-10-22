@@ -1,7 +1,9 @@
 [Unit]
 Description=Run IPR tool
+Requires=manufacturing-statusfiles.service
+After=manufacturing-statusfiles.service
 Before=serial-getty@ttyS0.service
-ConditionPathExists=!/etc/eol_test_passed
+ConditionPathExists=!/etc/ipr_setup_done
 
 [Service]
 ExecStart=/usr/bin/ipr-setup
