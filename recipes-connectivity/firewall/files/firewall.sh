@@ -13,7 +13,7 @@ allowed_tcp_ports="http https $hap_port"
 allowed_udp_ports="bootps mdns"
 
 # always allow ssh during development
-if [ "$(fw_printenv -n dev_debug 2>/dev/null || true)" = "1" ]; then
+if [ "$(fw_printenv -n dev_debug_allow_local_ssh 2>/dev/null || true)" = "1" ]; then
     allowed_tcp_ports="ssh $allowed_tcp_ports"
 fi
 
