@@ -31,7 +31,7 @@ echo 1 > ${LED}green/brightness
 
 # show error during development
 if [ "$status" != "running" ]; then
-    if [ "$(fw_printenv -n dev_debug 2>/dev/null || true)" = "1" ]; then
+    if [ "$(fw_printenv -n dev_debug_led_systemd 2>/dev/null || true)" = "1" ]; then
         echo 1 > ${LED}red/brightness
     fi
 fi
