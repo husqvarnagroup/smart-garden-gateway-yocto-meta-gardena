@@ -1,7 +1,6 @@
 SUMMARY = "Shim to create manufacturing tools status files"
-LICENSE = "CLOSED"
-
-COMPATIBLE_MACHINE = "at91sam9x5"
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 inherit systemd allarch
 
