@@ -6,8 +6,6 @@ PV = "1.4"
 
 PR = "r1"
 
-DEPENDS = "shadoway"
-
 SRC_URI = "\
     file://internet-ledd.sh \
     file://led-indicator.c \
