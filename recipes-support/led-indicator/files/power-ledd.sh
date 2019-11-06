@@ -16,14 +16,7 @@ echo 500 > ${LED}green/delay_on
 echo 500 > ${LED}green/delay_off
 
 # wait for boot to complete
-# note: once we have systemd version 240, the following can be replaced with
-# status="$(systemctl is-system-running --wait || true)"
-# (saving status for use below)
-status="$(systemctl is-system-running || true)"
-while [ "$status" = "initializing" ] || [ "$status" = "starting" ] ; do
-    sleep 5
-    status="$(systemctl is-system-running || true)"
-done
+status="$(systemctl is-system-running --wait || true)"
 
 # indicate success
 echo none > ${LED}green/trigger
