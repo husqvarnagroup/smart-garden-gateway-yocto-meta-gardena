@@ -5,7 +5,7 @@ HOMEPAGE = "http://argtable.sourceforge.net/"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=f30a9716ef3762e3467a2f62bf790f0a"
 
-PR = "r0"
+PR = "r1"
 
 DEPENDS = "libtool-cross"
 
@@ -14,7 +14,7 @@ PV_MINOR = "${@d.getVar('PV').split('.')[1]}"
 
 VERSION_STRING = "${PV_MAJOR}-${PV_MINOR}"
 
-SRC_URI = "${SOURCEFORGE_MIRROR}/${PN}/${PN}${VERSION_STRING}.tar.gz"
+SRC_URI = "${SOURCEFORGE_MIRROR}/${BPN}/${BPN}${VERSION_STRING}.tar.gz"
 
 S="${WORKDIR}/${PN}${VERSION_STRING}"
 
