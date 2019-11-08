@@ -12,10 +12,7 @@ RDEPENDS_${PN} = "libyaml"
 
 PR = "r1"
 
-SRC_URI = "git://github.com/tlsa/libcyaml.git;protocol=https"
-
-# Last commit before tag v0.1.0 which is also in master
-SRCREV = "8918b1ea2bf8cb4980c7b8c83b57bae3b362698c"
+SRC_URI = "git://github.com/tlsa/libcyaml.git;protocol=https;nobranch=1;tag=v${PV}"
 
 S = "${WORKDIR}/git"
 
