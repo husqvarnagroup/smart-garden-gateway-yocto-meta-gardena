@@ -1,4 +1,4 @@
-PR = "r4"
+PR = "r5"
 
 DEPENDS += "openssl"
 RDEPENDS_${PN} += "gateway-config-frontend openssl openssl-bin openssl-conf"
