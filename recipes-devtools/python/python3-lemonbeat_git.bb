@@ -4,10 +4,10 @@ LICENSE = "CLOSED"
 inherit python3-dir
 
 SRC_URI += " \
-    git://stash.dss.husqvarnagroup.com/scm/sg/lemonbeat-python.git;protocol=https \
+    git://stash.dss.husqvarnagroup.com:7999/sg/lemonbeat-python.git;protocol=ssh \
 "
 
-PR = "r1"
+PR = "r2"
 PV = "2019-10-15+git${SRCPV}"
 
 SRCREV = "55f1d27fcf0f9b1145ae1a2349237248b203f0cc"

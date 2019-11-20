@@ -5,10 +5,10 @@ LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
 SRC_URI = " \
-  git://stash.dss.husqvarnagroup.com/scm/sg/smart-garden-lemonbeat-serializer.git;protocol=https \
+  git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-lemonbeat-serializer.git;protocol=ssh \
 "
 
-INC_PR = "r0"
+INC_PR = "r1"
 
 S = "${WORKDIR}/git"
 

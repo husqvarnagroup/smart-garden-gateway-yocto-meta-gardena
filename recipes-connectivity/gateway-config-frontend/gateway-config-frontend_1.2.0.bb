@@ -7,9 +7,9 @@ LIC_FILES_CHKSUM = " \
     file://third-party-licenses.txt;md5=05b4c6864c181049f0a08b49242f97e7 \
     "
 
-PR = "r0"
+PR = "r1"
 
-SRC_URI += "git://stash.dss.husqvarnagroup.com/scm/sg/gateway-config-frontend.git;protocol=https;branch=build"
+SRC_URI += "git://stash.dss.husqvarnagroup.com:7999/sg/gateway-config-frontend.git;protocol=ssh;branch=build"
 SRCREV = "5126abb259f79ae7504dc5f9b45806a489ed42eb"
 S = "${WORKDIR}/git"
 
