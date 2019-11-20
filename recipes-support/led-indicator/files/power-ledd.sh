@@ -33,7 +33,7 @@ fi
 # TODO SGISSUE-1896 remove once issue is fixed
 while true; do
     wifistatus="fail"
-    dmesg | grep -q "mt76_wmac 10300000.wmac: MCU message 8 (seq [0-9]\+) timed out$" || wifistatus="ok"
+    dmesg | grep -q "mt76_wmac 10300000.wmac: MCU message 8 (seq [0-9]\\+) timed out$" || wifistatus="ok"
     if [ "$wifistatus" = "fail" ]; then
         echo none > ${LED}green/trigger
         echo 0 > ${LED}green/brightness
