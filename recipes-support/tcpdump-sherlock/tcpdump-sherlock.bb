@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 RDEPENDS_${PN} = "tcpdump"
 
 PV = "0.1"
-PR = "r0"
+PR = "r1"
 
 SRC_URI = "\
     file://${BPN}@.service \
