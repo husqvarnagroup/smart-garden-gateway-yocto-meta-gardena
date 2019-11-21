@@ -1,7 +1,7 @@
 [Unit]
 Description=Store traffic locally to allow post mortem analysis
-BindsTo=sys-devices-virtual-net-ppp0.device
-After=sys-devices-virtual-net-ppp0.device
+BindsTo=sys-devices-virtual-net-%I.device
+After=sys-devices-virtual-net-%I.device
 Before=shadoway.service
 
 [Service]
