@@ -1,0 +1,15 @@
+[Unit]
+Description=Store ppp0 traffic locally to allow post mortem analysis
+BindsTo=sys-devices-virtual-net-ppp0.device
+After=sys-devices-virtual-net-ppp0.device
+Before=shadoway.service
+
+[Service]
+Environment="SAVE_DIR=/tmp/tcpdump-sherlock"
+ExecStartPre=/bin/mkdir -p "${SAVE_DIR}"
+ExecStart=tcpdump --interface ppp0 --packet-buffered -W 2 -C 1 -w "${SAVE_DIR}/ppp0.pcap."
+ExecStopPost=rm -r "${SAVE_DIR}"
+
+[Install]
+WantedBy=basic.target
+WantedBy=shadoway.service
