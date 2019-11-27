@@ -7,7 +7,7 @@ Before=shadoway.service
 [Service]
 Environment="SAVE_DIR=/tmp/tcpdump-sherlock"
 ExecStartPre=/bin/mkdir -p "${SAVE_DIR}"
-ExecStart=tcpdump --interface vpn0 -W 5 -C 1 -w "${SAVE_DIR}/vpn0.pcap."
+ExecStart=tcpdump --interface vpn0 -W 2 -C 1 -w "${SAVE_DIR}/vpn0.pcap."
 ExecStopPost=rm -r "${SAVE_DIR}"
 
 [Install]
