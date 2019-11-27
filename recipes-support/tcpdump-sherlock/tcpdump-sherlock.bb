@@ -4,18 +4,20 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 RDEPENDS_${PN} = "tcpdump"
 
-PV = "0.1"
-PR = "r1"
+PV = "0.2"
+PR = "r0"
 
 SRC_URI = "\
-    file://${BPN}@.service \
+    file://${BPN}-ppp0.service \
+    file://${BPN}-vpn0.service \
 "
 
 S = "${WORKDIR}/"
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/${BPN}@.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${WORKDIR}/${BPN}-ppp0.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${WORKDIR}/${BPN}-vpn0.service ${D}${systemd_unitdir}/system
 }
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
@@ -23,5 +25,8 @@ INHIBIT_PACKAGE_STRIP = "1"
 
 inherit systemd allarch
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "${BPN}@.service"
+SYSTEMD_SERVICE_${PN} = " \
+    ${BPN}-ppp0.service \
+    ${BPN}-vpn0.service \
+"
 SYSTEMD_AUTO_ENABLE = "disable"
