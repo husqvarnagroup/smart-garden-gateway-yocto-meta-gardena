@@ -63,4 +63,4 @@ mv /tmp/overlayfs-purge-*.log /var/lib/sysupgrade
 sync
 
 echo "Finished data migration, restarting"
-reboot
+systemctl reboot || systemctl --force reboot || systemctl --force --force reboot || true
