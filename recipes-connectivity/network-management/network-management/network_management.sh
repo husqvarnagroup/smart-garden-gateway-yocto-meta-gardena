@@ -88,7 +88,7 @@ derive_psk() {
     fi
 }
 
-set_wifi_config() {
+set_wifi_config_noconnect() {
     mkdir -p /etc/wpa_supplicant
 
     if [ $# -lt 2 ]; then
@@ -105,6 +105,10 @@ set_wifi_config() {
 }" > "$WIFI_CONFIG_FILE_TMP"
     sync
     mv $WIFI_CONFIG_FILE_TMP $WIFI_CONFIG_FILE
+}
+
+set_wifi_config() {
+    set_wifi_config_noconnect "$@"
 
     {
         # Fork to background and use delay for the client to get the response.
@@ -169,7 +173,7 @@ wait_for_homekit_socket() {
 # call function and exit, if given as cli parameter
 if [ $# -ge 1 ]; then
     case "$1" in
-        "start_networking" | "start_ap" | "stop_ap" | "set_wifi_config" | "remove_wifi_config" | "stop_wifi")
+        "start_networking" | "start_ap" | "stop_ap" | "set_wifi_config" | "set_wifi_config_noconnect" | "remove_wifi_config" | "stop_wifi")
             read_eth_carrier
             "$@"
             exit 0
