@@ -14,10 +14,10 @@ SRC_URI += " \
     git://stash.dss.husqvarnagroup.com:7999/sg/gateway-migration.git;protocol=ssh;branch=${SRCBRANCH} \
 "
 
-PR = "r1"
-PV = "2019-12-07-0+git${SRCPV}"
+PR = "r0"
+PV = "2019-12-08-0+git${SRCPV}"
 
-SRCREV ?= "e4accc304a612f0f89564b68593bda86c3c376fc"
+SRCREV ?= "e9413868662858a388ea640db26399f6de9da459"
 
 S = "${WORKDIR}/git"
 
