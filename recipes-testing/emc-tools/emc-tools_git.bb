@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 SRC_URI = "git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-emc-testing-tools.git;protocol=ssh"
 SRCREV = "5dd841ca75c9a79d885a1f86e0c63157e0e4152e"
 
-PR = "r1"
+PR = "r2"
 PV = "2019-12-19+git${SRCPV}"
 
 S = "${WORKDIR}/git"
@@ -19,6 +19,7 @@ FILES_${PN} += " \
 RDEPENDS_emc-tools += " \
     python3-core \
     python3-fcntl \
+    python3-json \
     python3-lemonbeat \
     python3-misc \
     python3-netclient \
