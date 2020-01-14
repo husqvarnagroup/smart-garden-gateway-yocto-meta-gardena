@@ -23,7 +23,7 @@ if [ "${wlan_down}" -eq 0 ]; then
   sync
   reboot
 else
-  date >> /home/root/wlan0-date-bad
+  date >> /home/root/wlan0-bad
   dmesg > /home/root/wlan0-dmesg-bad
   echo "${wlan_down}" >> /home/root/wlan0-reason-bad
   echo WLAN IS DEAD!
