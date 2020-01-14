@@ -18,7 +18,8 @@ fi
 # Reboot if WLAN is working
 if [ "${wlan_down}" -eq 0 ]; then
   date >> /home/root/wlan0-date-good
-  dmesg > "/home/root/wlan0-dmesg-good.$(date +%s)"
+  next_file_extensions="$(( $(find /home/root/wlan0-dmesg-good.* 2>/dev/null | sort -n | tail -n 1 | awk -F . '{print $2}') + 1))"
+  dmesg > "/home/root/wlan0-dmesg-good.${next_file_extensions}"
   echo WLAN STILL ALIVE!
   sync
   reboot
