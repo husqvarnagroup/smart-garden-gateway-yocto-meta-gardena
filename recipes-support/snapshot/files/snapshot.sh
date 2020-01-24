@@ -68,6 +68,13 @@ cp /etc/sysupgrade.conf /tmp/snapshot/runtime/user/
 /usr/bin/opkg list-installed > /tmp/snapshot/runtime/user/opkg-list-installed
 
 ##################################
+# tcpdump files                  #
+##################################
+if [ -d /tmp/tcpdump-sherlock ]; then
+    cp -r /tmp/tcpdump-sherlock /tmp/snapshot/runtime/
+fi
+
+##################################
 # Create tarball & delete files  #
 ##################################
 tar cfz "$(/sbin/fw_printenv -n gatewayid)_snapshot.tar.gz" ./snapshot
