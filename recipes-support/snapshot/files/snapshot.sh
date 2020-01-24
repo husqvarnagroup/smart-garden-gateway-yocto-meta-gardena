@@ -59,15 +59,6 @@ mkdir /tmp/snapshot/runtime
 /usr/sbin/iw dev > /tmp/snapshot/runtime/iw-dev
 /bin/ps > /tmp/snapshot/runtime/ps
 /usr/bin/top -bn1 > /tmp/snapshot/runtime/top
-mkdir -p /tmp/snapshot/runtime/proc
-( cd /proc || exit 1; \
-  for pid in [0-9]*; do \
-    mkdir -p "/tmp/snapshot/runtime/proc/${pid}"; \
-    cp "${pid}/status" "/tmp/snapshot/runtime/proc/${pid}"; \
-    cp "${pid}/io" "/tmp/snapshot/runtime/proc/${pid}"; \
-    ls -lh "${pid}/fd" > "/tmp/snapshot/runtime/proc/${pid}/fds"; \
-  done \
-)
 
 ##################################
 # User data                      #
