@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# shellcheck disable=SC2039
 set -eu -o pipefail
 
 # Internet LED daemon for SGGW
@@ -51,7 +52,7 @@ vpn_connected() {
 }
 
 shadoway_status() {
-    [ "$(cat $shadoway_status_file)" = "GREEN" ]
+    [ -f "$shadoway_status_file" ] && [ "$(cat $shadoway_status_file)" = "GREEN" ]
 }
 
 last_state=""
