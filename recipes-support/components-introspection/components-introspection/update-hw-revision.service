@@ -1,0 +1,9 @@
+[Unit]
+Description=Update Hardware Revision file
+
+[Service]
+ExecStart=/usr/bin/update-hw-revision
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
