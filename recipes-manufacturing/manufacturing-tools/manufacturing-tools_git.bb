@@ -26,8 +26,8 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-gateway-manuf
 
 PR = "r0"
 
-PV = "20200206+git${SRCPV}"
-SRCREV = "77f4932d3906b3e789dbc960b58953f52b3b16c4"
+PV = "20200212+git${SRCPV}"
+SRCREV = "b05de6a7d8008787f1d7f60ee4c28e1fff2d366c"
 
 S = "${WORKDIR}/git"
 
@@ -47,6 +47,12 @@ RDEPENDS_${PN} += " \
     python3-json \
     python3-threading \
     python3-unittest \
+"
+
+# additional python modules (not part of core python3 packages)
+RDEPENDS_${PN} += " \
+    python3-crcmod \
+    python3-pyserial \
 "
 
 do_install () {
