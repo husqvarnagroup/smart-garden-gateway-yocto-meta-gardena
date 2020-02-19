@@ -1,0 +1,9 @@
+[Unit]
+
+[Socket]
+ListenStream=80
+ListenStream=443
+
+[Install]
+WantedBy=sockets.target
+Also=gateway-config-backend-sslkey.service
