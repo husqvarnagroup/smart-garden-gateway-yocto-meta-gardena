@@ -37,6 +37,10 @@ restart_wifi() {
     systemctl restart "$WPA_SERVICE"
 }
 
+vpn_restart() {
+    systemctl restart $VPN_SERVICE
+}
+
 start_networking() {
     if ! eth_up; then
         start_wifi
@@ -209,6 +213,7 @@ while true; do
             stop_ap
             stop_wifi
         fi
+        vpn_restart
     fi
 
     sleep 1
