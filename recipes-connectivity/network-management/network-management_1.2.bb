@@ -1,7 +1,7 @@
 DESCRIPTION = "Gardena Network Management"
 MAINTAINER = "Gardena GmbH"
 HOMEPAGE = "https://www.gardena.com/"
-LICENSE = "Proprietary"
+LICENSE = "MIT"
 
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28"
 
@@ -12,7 +12,7 @@ RDEPENDS_${PN} += " \
     wpa-supplicant-passphrase \
 "
 
-PR = "r4"
+PR = "r6"
 
 S = "${WORKDIR}/"
 
