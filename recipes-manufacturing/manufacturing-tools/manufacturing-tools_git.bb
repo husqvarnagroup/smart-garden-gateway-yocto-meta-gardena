@@ -26,7 +26,7 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-gateway-manuf
 
 PR = "r0"
 
-PV = "20200212+git${SRCPV}"
+PV = "20200224+git${SRCPV}"
 SRCREV = "b05de6a7d8008787f1d7f60ee4c28e1fff2d366c"
 
 S = "${WORKDIR}/git"
@@ -37,6 +37,7 @@ FILES_${PN} += " \
     ${PYTHON_SITEPACKAGES_DIR}/testing.py \
     ${PYTHON_SITEPACKAGES_DIR}/cpms_client.py \
     ${PYTHON_SITEPACKAGES_DIR}/cpms_config.py \
+    ${PYTHON_SITEPACKAGES_DIR}/radio_module_test.py \
     ${base_libdir}/upgrade/keep.d \
 "
 
@@ -83,6 +84,7 @@ do_install () {
     install -m 0755 ${S}/bootstrap.py ${D}${PYTHON_SITEPACKAGES_DIR}/
     install -m 0755 ${S}/cpms_client.py ${D}${PYTHON_SITEPACKAGES_DIR}/
     install -m 0755 ${S}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}/
+    install -m 0755 ${S}/radio_module_test.py ${D}${PYTHON_SITEPACKAGES_DIR}/
 
     install -d ${D}${base_libdir}/upgrade/keep.d
     install -m 0644 ${WORKDIR}/keep.d/eoltest ${D}${base_libdir}/upgrade/keep.d
