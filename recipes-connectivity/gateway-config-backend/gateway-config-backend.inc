@@ -1,4 +1,4 @@
-PR = "r1"
+PR = "r2"
 
 DEPENDS += "openssl"
 RDEPENDS_${PN} += "gateway-config-frontend openssl openssl-bin openssl-conf"
@@ -6,6 +6,7 @@ RDEPENDS_${PN} += "gateway-config-frontend openssl openssl-bin openssl-conf"
 SRC_URI += "\
     file://gateway-config-backend-sslkey.service \
     file://gateway-config-backend.service \
+    file://gateway-config-backend.socket \
     file://keep.d/gateway-config-backend \
     "
 
@@ -19,6 +20,7 @@ do_install () {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/gateway-config-backend-sslkey.service ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/gateway-config-backend.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${WORKDIR}/gateway-config-backend.socket ${D}${systemd_unitdir}/system
 
     install -d ${D}${base_libdir}/upgrade/keep.d
     install -m 0644 ${WORKDIR}/keep.d/gateway-config-backend ${D}${base_libdir}/upgrade/keep.d
@@ -32,4 +34,7 @@ FILES_${PN} += "\
 
 inherit systemd
 
-SYSTEMD_SERVICE_${PN} = "gateway-config-backend.service"
+SYSTEMD_SERVICE_${PN} = " \
+    gateway-config-backend.service \
+    gateway-config-backend.socket \
+"
