@@ -138,7 +138,7 @@ wifi_config_exists() {
 }
 
 read_eth_carrier() {
-    if [ "$(cat /sys/class/net/eth0/carrier)" = "1" ]; then
+    if [ "$(cat /sys/class/net/eth0/carrier 2>/dev/null)" = "1" ]; then
         ETH_CARRIER=1
     else
         ETH_CARRIER=0

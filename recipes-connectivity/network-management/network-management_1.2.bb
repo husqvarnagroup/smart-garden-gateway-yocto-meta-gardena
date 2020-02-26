@@ -12,7 +12,7 @@ RDEPENDS_${PN} += " \
     wpa-supplicant-passphrase \
 "
 
-PR = "r6"
+PR = "r7"
 
 S = "${WORKDIR}/"
 
