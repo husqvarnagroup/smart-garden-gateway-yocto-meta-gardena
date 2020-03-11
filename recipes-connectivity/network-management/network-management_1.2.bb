@@ -50,7 +50,7 @@ do_install() {
     install -m 0644 ${WORKDIR}/network_management.service ${D}${systemd_unitdir}/system/
 }
 
-inherit systemd
+inherit systemd pkgconfig
 SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE_${PN} = " \
     ap_button_listener.service \
