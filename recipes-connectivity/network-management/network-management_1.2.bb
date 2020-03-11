@@ -9,7 +9,6 @@ RDEPENDS_${PN} += " \
     openvpn \
     socat \
     wpa-supplicant-passphrase \
-    libevdev \
 "
 
 DEPENDS += " \
