@@ -15,7 +15,7 @@ DEPENDS += " \
     libevdev \
 "
 
-PR = "r7"
+PR = "r0"
 
 S = "${WORKDIR}/"
 
