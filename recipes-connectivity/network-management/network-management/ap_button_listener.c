@@ -96,7 +96,7 @@ int main(void) {
         struct input_event ev;
         struct timespec evts;
 
-        rc = libevdev_next_event(dev, LIBEVDEV_READ_FLAG_NORMAL, &ev);
+        rc = libevdev_next_event(dev, LIBEVDEV_READ_FLAG_NORMAL|LIBEVDEV_READ_FLAG_BLOCKING, &ev);
         if (rc != LIBEVDEV_READ_STATUS_SUCCESS) {
             continue;
         }
