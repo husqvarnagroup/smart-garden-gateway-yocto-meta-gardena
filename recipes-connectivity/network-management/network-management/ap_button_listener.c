@@ -67,7 +67,7 @@ int main(void) {
     int ret = -1;
     struct libevdev *dev = NULL;
 
-    fd = open(EVENT_FILE, O_RDONLY|O_NONBLOCK);
+    fd = open(EVENT_FILE, O_RDONLY);
     if (fd < 0) {
         fprintf(stderr, "can't open "EVENT_FILE": %d\n", fd);
         return -1;
