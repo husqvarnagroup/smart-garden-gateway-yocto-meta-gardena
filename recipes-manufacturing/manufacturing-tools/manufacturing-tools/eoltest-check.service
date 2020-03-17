@@ -11,7 +11,7 @@ Type=oneshot
 # started multiple times
 RemainAfterExit=true
 # unexpected error → all red
-ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then fct-tool --set-leds red; fi'
+ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then errorhandler; fi'
 
 [Install]
 WantedBy=serial-getty@ttyS0.service
