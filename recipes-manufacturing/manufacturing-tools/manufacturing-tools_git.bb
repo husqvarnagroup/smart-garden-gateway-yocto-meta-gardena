@@ -63,7 +63,7 @@ do_install () {
     install -m 0755 ${S}/fct-tool.py ${D}${bindir}/fct-tool
     install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
     install -m 0755 ${S}/homekit-tool.py ${D}${bindir}/homekit-tool
-    install -m 0755 ${S}/errorhandler.py ${D}${bindir}/errorhandler
+    install -m 0755 ${S}/errorhandler.py ${D}${bindir}/cpms-errorhandler
     install -m 0755 ${WORKDIR}/manufacturing-statusfiles.sh ${D}${bindir}/manufacturing-statusfiles
     install -m 0755 ${WORKDIR}/ipr-setup ${D}${bindir}
     install -m 0755 ${WORKDIR}/homekit-setup ${D}${bindir}
