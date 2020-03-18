@@ -26,8 +26,8 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-gateway-manuf
 
 PR = "r0"
 
-PV = "20200224+git${SRCPV}"
-SRCREV = "b05de6a7d8008787f1d7f60ee4c28e1fff2d366c"
+PV = "20200318+git${SRCPV}"
+SRCREV = "f13ae62f22a73b7c774c8e5697ed6f7b4bec0f31"
 
 S = "${WORKDIR}/git"
 
@@ -63,6 +63,7 @@ do_install () {
     install -m 0755 ${S}/fct-tool.py ${D}${bindir}/fct-tool
     install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
     install -m 0755 ${S}/homekit-tool.py ${D}${bindir}/homekit-tool
+    install -m 0755 ${S}/errorhandler.py ${D}${bindir}/cpms-errorhandler
     install -m 0755 ${WORKDIR}/manufacturing-statusfiles.sh ${D}${bindir}/manufacturing-statusfiles
     install -m 0755 ${WORKDIR}/ipr-setup ${D}${bindir}
     install -m 0755 ${WORKDIR}/homekit-setup ${D}${bindir}
