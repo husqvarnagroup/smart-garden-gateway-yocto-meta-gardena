@@ -7,7 +7,7 @@ SRC_URI += " \
     git://stash.dss.husqvarnagroup.com:7999/sg/lemonbeat-python.git;protocol=ssh \
 "
 
-PR = "r2"
+PR = "r3"
 PV = "2019-10-15+git${SRCPV}"
 
 SRCREV = "55f1d27fcf0f9b1145ae1a2349237248b203f0cc"
@@ -17,6 +17,7 @@ S = "${WORKDIR}/git"
 RDEPENDS_${PN} += " \
     lsdl-serializer-lib \
     python3-core \
+    python3-ctypes \
     python3-fcntl \
     python3-pycrypto \
     python3-threading \
