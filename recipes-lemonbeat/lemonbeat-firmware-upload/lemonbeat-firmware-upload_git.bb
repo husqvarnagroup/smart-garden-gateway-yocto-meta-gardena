@@ -12,9 +12,9 @@ SRC_URI += " \
     git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-lemonbeat-tools.git;protocol=ssh \
 "
 
-PR = "r1"
-SRCREV = "ef784be7cfbeb4d42a999a9f0f52336c5992487b"
-PV = "2019-10-16+git${SRCPV}"
+PR = "r0"
+SRCREV = "105f9a4095e06bbc8a7135b190c3b86ee0a611ee"
+PV = "2020-03-17+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
