@@ -66,6 +66,16 @@ start_ap() {
         return 1
     fi
 
+    # SG-14607 Only rtl8192cu offers AP mode
+    # This needs to be done here (instead of just in hostapd.service) because
+    # the accessory server starts hostapd without systemd.
+    if [ "$(uname -m)" = "armv5tejl" ]; then
+        rmmod rtl8192cu rtl_usb rtl8192c_common rtlwifi rtl8xxxu || true
+        modprobe rtl8192cu
+        # Give the driver some time to initialize
+        sleep 3
+    fi
+
     ###
     # Notify Homekit accessory server to start the access point
     # WAC server stops automatically after 15 minutes
