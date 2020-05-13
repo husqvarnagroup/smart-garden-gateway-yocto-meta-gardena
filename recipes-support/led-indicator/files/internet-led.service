@@ -1,6 +1,8 @@
 [Unit]
 Description=Internet LED indication
-After=network.target
+ConditionPathExists=/etc/eol_test_passed
+After=network.target eoltest-check.service
+Wants=eoltest-check.service
 
 [Service]
 Type=simple
