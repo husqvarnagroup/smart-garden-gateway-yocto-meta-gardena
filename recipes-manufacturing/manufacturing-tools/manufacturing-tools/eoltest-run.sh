@@ -40,6 +40,10 @@ if [ "${fct_finalized=}" != "1" ] || ! grep -q "^search manufacturing.husqvarnag
     exit 0
 fi
 
+# Allow time triggered services (like swupdate-check) to query if gateway was
+# started in EOL mode. Needed to be idempotent.
+touch /run/eol_test_network
+
 # indicate with LEDs that EOL test is running now
 fct-tool --set-leds blue
 
