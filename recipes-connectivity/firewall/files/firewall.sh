@@ -12,8 +12,9 @@ hap_port="8001"
 allowed_tcp_ports="http https $hap_port"
 allowed_udp_ports="bootps mdns"
 
-# always allow ssh during development
-if [ "$(fw_printenv -n dev_debug_allow_local_ssh 2>/dev/null || true)" = "1" ]; then
+# always allow SSH during development and manufacturing
+if [ "$(fw_printenv -n dev_debug_allow_local_ssh 2>/dev/null || true)" = "1" ] \
+    || [ "$(fw_printenv -n eol_test_passed 2>/dev/null || true)" != "1" ]; then
     allowed_tcp_ports="ssh $allowed_tcp_ports"
 fi
 
