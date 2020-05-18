@@ -1,0 +1,11 @@
+[Unit]
+Description=Run healthcheck after startup and again every 23 hours
+After=network-online.target
+
+[Timer]
+OnBootSec=900s
+# Rotate execution around the clock
+OnUnitActiveSec=23h
+
+[Install]
+WantedBy=timers.target

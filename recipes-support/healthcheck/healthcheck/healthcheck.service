@@ -1,0 +1,12 @@
+[Unit]
+Description=Healthcheck
+After=network-online.target manufacturing-statusfiles.service eoltest-check.service
+Wants=network-online.target manufacturing-statusfiles.service eoltest-check.service
+# prevent script from running during manufacturing
+ConditionPathExists=/etc/eol_test_passed
+
+[Service]
+ExecStart=/usr/bin/healthcheck
+Type=oneshot
+# Service must not fail when a check found a problem
+SuccessExitStatus=1
