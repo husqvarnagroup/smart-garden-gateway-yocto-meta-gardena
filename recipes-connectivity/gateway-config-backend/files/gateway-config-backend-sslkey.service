@@ -3,6 +3,8 @@ Description=SSL Key Generation for the GARDENA smart Gateway config interface
 RequiresMountsFor=/var /var/lib
 ConditionFileNotEmpty=|!/etc/gateway-config-interface/key.pem
 ConditionFileNotEmpty=|!/etc/gateway-config-interface/cert.pem
+After=systemd-random-seed.service
+Requires=systemd-random-seed.service
 
 [Service]
 Environment="SSLKEY_DIR=/etc/gateway-config-interface"
