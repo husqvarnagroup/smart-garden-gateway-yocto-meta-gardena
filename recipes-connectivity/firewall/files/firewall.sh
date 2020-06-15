@@ -10,7 +10,7 @@ set -eu -o pipefail
 unfiltered_interfaces="ppp0 vpn0"
 hap_port="8001"
 allowed_tcp_ports="http https $hap_port"
-allowed_udp_ports="bootps mdns"
+allowed_udp_ports="mdns"
 
 # always allow SSH during development and manufacturing
 if [ "$(fw_printenv -n dev_debug_allow_local_ssh 2>/dev/null || true)" = "1" ] \
@@ -79,6 +79,12 @@ done
 for port in $allowed_udp_ports; do
     ip46tables -A INPUT -p udp -m udp --dport "$port" -j ACCEPT
 done
+
+# allow DHCPv4 server access in AP mode
+iptables -A INPUT -p udp -m udp --dport bootps -j ACCEPT
+
+# allow DHCPv6 server(547)->client(546)
+ip6tables -A INPUT -p udp -m udp --dport dhcpv6-client -d fe80::/64 -j ACCEPT
 
 # reject the rest
 ip46tables -A INPUT -j rejectclosed
