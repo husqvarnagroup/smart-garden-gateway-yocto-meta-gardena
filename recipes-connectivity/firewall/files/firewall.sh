@@ -83,7 +83,7 @@ done
 # allow DHCPv4 server access in AP mode
 iptables -A INPUT -p udp -m udp --dport bootps -j ACCEPT
 
-# allow DHCPv6 server(547)->client(546)
+# allow DHCPv6 server(547)->client(546) communication in client mode
 ip6tables -A INPUT -p udp -m udp --dport dhcpv6-client -d fe80::/64 -j ACCEPT
 
 # reject the rest
