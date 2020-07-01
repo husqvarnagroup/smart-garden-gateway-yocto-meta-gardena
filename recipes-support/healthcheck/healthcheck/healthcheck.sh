@@ -186,6 +186,21 @@ test_systemd_running() {
     log_result "systemd_running" "${result}" "status=${status}"
 }
 
+test_ppp0() {
+    local result=0
+
+    if ! ip_address="$(networkctl status ppp0 | grep "Address:" | awk '{print $2}')"; then
+        log_result "ppp0" "2" "missing ip address"
+        return
+    fi
+
+    if ! echo "${ip_address}" | grep -q "^fe80::106:94bb";then
+        result=3
+    fi
+
+    log_result "ppp0" "${result}" "ip_address=${ip_address}"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -206,6 +221,7 @@ test_all() {
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
     test_systemd_running
+    test_ppp0
 
     return "${something_failed}"
 }
