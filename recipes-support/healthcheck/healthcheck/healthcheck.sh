@@ -180,7 +180,7 @@ test_systemd_running() {
 
     local status=0
     if ! status="$(systemctl is-system-running)"; then
-        result=1
+        result=2
     fi
 
     log_result "systemd_running" "${result}" "status=${status}"
