@@ -19,7 +19,7 @@ log_result() {
 
     if [ "${result}" -ne 0 ];then
         echoerr "ERROR: [${name}] result=${result}, data: ${data}"
-        logger -p user.error -t healthcheck "[${name}] result=${result}, data: ${data}"
+        logger -p user.error -t healthcheck "ERROR: [${name}] result=${result}, data: ${data}"
         something_failed=1
     else
         echoerr "OK: [${name}] result=${result}, data: ${data}"
