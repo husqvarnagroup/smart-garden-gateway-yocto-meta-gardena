@@ -19,7 +19,7 @@ log_result() {
 
     if [ "${result}" -ne 0 ];then
         echoerr "ERROR: [${name}] result=${result}, data: ${data}"
-        logger -p user.error -t healthcheck "[${name}] result=${result}, data: ${data}"
+        logger -p user.error -t healthcheck "ERROR: [${name}] result=${result}, data: ${data}"
         something_failed=1
     else
         echoerr "OK: [${name}] result=${result}, data: ${data}"
@@ -186,6 +186,36 @@ test_systemd_running() {
     log_result "systemd_running" "${result}" "status=${status}"
 }
 
+test_ppp0() {
+    local result=0
+
+    if ! ip_address="$(networkctl status ppp0 | grep "Address:" | awk '{print $2}')"; then
+        log_result "ppp0" "2" "missing ip address"
+        return
+    fi
+
+    if ! echo "${ip_address}" | grep -q "^fe80::106:94bb";then
+        result=3
+    fi
+
+    log_result "ppp0" "${result}" "ip_address=${ip_address}"
+}
+
+test_rm_ping() {
+    local result=0
+
+    if ! rm_ip_address="$(fw_printenv -n rmaddr | awk -F: '{print "fc00::6:" $1$2 ":" $3$4 ":" $5$6 }')"; then
+        log_result "rm_ping" "1" "missing rmaddr"
+        return
+    fi
+
+    if ! ping -c1 "${rm_ip_address}" >/dev/null;then
+        result=2
+    fi
+
+    log_result "rm_ping" "${result}" "rm_ip_address=${rm_ip_address}"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -206,6 +236,8 @@ test_all() {
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
     test_systemd_running
+    test_ppp0
+    test_rm_ping
 
     return "${something_failed}"
 }
