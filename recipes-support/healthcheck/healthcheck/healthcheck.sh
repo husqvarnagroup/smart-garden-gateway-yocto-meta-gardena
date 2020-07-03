@@ -178,6 +178,12 @@ test_shadoway_corrupted_directories() {
 test_systemd_running() {
     local result=0
 
+    # Prevent `systemctl is-system-running` from failing due to a failed
+    # systemd-networkd-wait-online.service unit.
+    if systemctl is-failed systemd-networkd-wait-online.service >/dev/null; then
+        systemctl restart systemd-networkd-wait-online.service
+    fi
+
     local status=0
     if ! status="$(systemctl is-system-running)"; then
         result=2
@@ -225,6 +231,7 @@ test_all() {
 
         # Internet connectivity required (but not necessarily during test run)
         test_system_clock_synced
+        test_systemd_running
     fi
 
     # No dependencies on internet connectivity
@@ -235,7 +242,6 @@ test_all() {
     test_meminfo_slab
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
-    test_systemd_running
     test_ppp0
     test_rm_ping
 
