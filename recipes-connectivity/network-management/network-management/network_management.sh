@@ -38,7 +38,8 @@ restart_wifi() {
 }
 
 vpn_restart() {
-    systemctl restart $VPN_SERVICE
+    # Restart only if already running
+    systemctl try-restart $VPN_SERVICE
 }
 
 start_networking() {

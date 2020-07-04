@@ -1,8 +1,8 @@
 [Unit]
 Description=Check EOL test status and update status file
 Requires=ipr.service manufacturing-statusfiles.service
-Wants=homekit-setup.service network-online.target
-After=ipr.service homekit-setup.service manufacturing-statusfiles.service network-online.target
+Wants=homekit-setup.service network.target
+After=ipr.service homekit-setup.service manufacturing-statusfiles.service network.target
 
 [Service]
 ExecStart=/usr/bin/eoltest-check
