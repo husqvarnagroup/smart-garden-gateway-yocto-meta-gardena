@@ -11,7 +11,7 @@ set -eu
 
 eol_test_statusfile=/etc/eol_test_passed
 
-# with systemd, we wait only for network-online.target; this means,
+# with systemd, we wait only for network.target; this means,
 # dhcpcd has just been started, but may net have completed yet. as a
 # workaround, we wait up to 20 seconds (DCHP usually takes ~3
 # seconds), if an ethernet cable is connected. this is not ideal, but
