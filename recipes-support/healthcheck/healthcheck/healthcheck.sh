@@ -196,10 +196,18 @@ test_ppp0() {
     local result=0
 
     if ! ip_address="$(networkctl status ppp0 | grep "Address:" | awk '{print $2}')"; then
-        log_result "ppp0" "2" "missing ip address"
+        log_result "ppp0" "2" "omitted"
         return
     fi
 
+    # SG-16012: Having a DNS server configured on ppp0 makes no sense at all
+    if dns_address="$(networkctl status ppp0 | grep "DNS:" | awk '{print $2}')"; then
+        log_result "ppp0" "4" "dns_address=${dns_address}"
+        return
+    fi
+
+    # SG-16012: Assuming non-link-local addresses get listed first (directly
+    # after "Address:"), this check detects multiple IP addresses on ppp0.
     if ! echo "${ip_address}" | grep -q "^fe80::106:94bb";then
         result=3
     fi
