@@ -5,7 +5,7 @@ set -eu -o pipefail
 
 DEBUG=1
 HOMEKIT_SOCKET="/tmp/wifi_interface"
-HOMEKIT_TIMEOUT=30
+HOMEKIT_TIMEOUT=300
 WIFI_CONFIG_FILE="/etc/wpa_supplicant/wpa_supplicant-wlan0.conf"
 WIFI_CONFIG_FILE_TMP="${WIFI_CONFIG_FILE}.tmp"
 WPA_SERVICE="wpa_supplicant@wlan0"
