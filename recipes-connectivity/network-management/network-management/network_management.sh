@@ -215,7 +215,6 @@ while true; do
     read_eth_carrier
 
     if [ $ETH_CARRIER -ne $ETH_CARRIER_OLD ]; then
-        ETH_CARRIER_OLD=$ETH_CARRIER
         if ! eth_up; then
             info "LAN changed to DOWN, trying to connect to Wi-Fi."
             start_wifi
@@ -224,7 +223,16 @@ while true; do
             stop_ap
             stop_wifi
         fi
-        vpn_restart
+
+        # SG-16090 Restarting on the first round of this loop, during startup,
+        # is not helpful and just causes Shadoway to take more time to connect
+        # to the backend.
+        if [ $ETH_CARRIER_OLD -ne -1 ]; then
+            vpn_restart
+        else
+            info "Connectivity change during startup, skipping OpenVPN restart"
+        fi
+        ETH_CARRIER_OLD=$ETH_CARRIER
     fi
 
     sleep 1
