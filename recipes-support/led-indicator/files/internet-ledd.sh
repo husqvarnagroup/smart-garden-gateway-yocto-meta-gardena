@@ -5,34 +5,46 @@ set -eu -o pipefail
 
 # Internet LED daemon for SGGW
 
-led=/usr/bin/led-indicatorc
-shadoway_status_file=/run/shadoway/led_status
+readonly debug=1
+readonly led=/usr/bin/led-indicatorc
+readonly shadoway_status_file=/run/shadoway/led_status
+
+info() {
+    if [ $debug -ne 0 ]; then
+        echo "$(awk '{print $1}' /proc/uptime) seconds after start: $*"
+    fi
+}
 
 led_green_on() {
+    info "Steady green"
     $led smartgw:internet:red off
     $led smartgw:internet:green on
     $led smartgw:internet:blue off
 }
 
 led_red_on() {
+    info "Steady red"
     $led smartgw:internet:red on
     $led smartgw:internet:green off
     $led smartgw:internet:blue off
 }
 
 led_red_blink() {
+    info "Blinking red"
     $led smartgw:internet:red flash
     $led smartgw:internet:green off
     $led smartgw:internet:blue off
 }
 
 led_yellow_on() {
+    info "Steady yellow"
     $led smartgw:internet:blue off
     $led smartgw:internet:red on
     $led smartgw:internet:green on
 }
 
 led_yellow_blink() {
+    info "Blinking yellow"
     $led smartgw:internet:blue off
     $led smartgw:internet:red flash
     $led smartgw:internet:green flash
