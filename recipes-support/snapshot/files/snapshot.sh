@@ -64,6 +64,33 @@ if [ -f /sys/devices/virtual/misc/bootcount/bootcount ]; then
 fi
 
 ##################################
+# Systemd units                  #
+##################################
+for s in \
+  environment.service \
+  eoltest-check.service \
+  gateway-config-backend.service \
+  gateway-config-backend.socket \
+  healthcheck.service \
+  internet-led.service \
+  iptables.service \
+  lsdl-serializer-log.service \
+  manufacturing-statusfiles.service \
+  mdns.service \
+  network_management.service \
+  openvpn.service \
+  power-led.service \
+  ppp.service \
+  rm-flashing.service \
+  rsyslog.service \
+  shadoway.service \
+  swupdate-check.timer \
+  swupdate-progress.service \
+  sysupgrade.service \
+  ; do systemctl is-failed "${s}" >/dev/null && systemctl status "${s}" > "/tmp/snapshot/runtime/systemctl-status-${s}";
+done
+
+##################################
 # User data                      #
 ##################################
 mkdir /tmp/snapshot/runtime/user/
