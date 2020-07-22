@@ -4,7 +4,9 @@ HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28"
 
-PV = "1.4.0"
+RDEPENDS_${PN} += "healtcheck"
+
+PV = "1.5.0"
 PR = "r0"
 
 SRC_URI = "\

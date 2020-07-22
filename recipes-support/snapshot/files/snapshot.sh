@@ -62,6 +62,7 @@ mkdir /tmp/snapshot/runtime
 if [ -f /sys/devices/virtual/misc/bootcount/bootcount ]; then
   cp /sys/devices/virtual/misc/bootcount/bootcount /tmp/snapshot/runtime/bootcount
 fi
+/usr/bin/healthcheck  > /tmp/snapshot/runtime/healthcheck 2>&1 || true
 
 ##################################
 # Systemd units                  #
