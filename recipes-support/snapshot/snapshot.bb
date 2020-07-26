@@ -6,8 +6,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2
 
 RDEPENDS_${PN} += "healthcheck"
 
-PV = "1.5.0"
-PR = "r1"
+PV = "1.5.1"
+PR = "r0"
 
 SRC_URI = "\
     file://snapshot.sh \

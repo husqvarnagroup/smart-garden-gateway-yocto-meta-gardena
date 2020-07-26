@@ -59,6 +59,7 @@ mkdir /tmp/snapshot/runtime
 /usr/sbin/iw dev > /tmp/snapshot/runtime/iw-dev
 /bin/ps > /tmp/snapshot/runtime/ps
 /usr/bin/top -bn1 > /tmp/snapshot/runtime/top
+[ -f /usr/sbin/lsof ] && /usr/sbin/lsof > /tmp/snapshot/runtime/lsof
 if [ -f /sys/devices/virtual/misc/bootcount/bootcount ]; then
   cp /sys/devices/virtual/misc/bootcount/bootcount /tmp/snapshot/runtime/bootcount
 fi
