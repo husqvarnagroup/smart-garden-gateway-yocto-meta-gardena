@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2
 
 RDEPENDS_${PN} += "healthcheck"
 
-PV = "1.5.1"
+PV = "1.6.0"
 PR = "r0"
 
 SRC_URI = "\
