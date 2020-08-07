@@ -74,7 +74,7 @@ test_vpn_crt_subject() {
     # gatewayid and cert subject must match
 
     local gatewayid
-    if ! gatewayid="$(fw_printenv -n gatewayid)"; then
+    if ! gatewayid="$(/sbin/fw_printenv -n gatewayid)"; then
         log_result "vpn_crt_subject" "1" "Failed to extract gatewayid"
         return
     fi
@@ -218,7 +218,7 @@ test_ppp0() {
 test_rm_ping() {
     local result=0
 
-    if ! rm_ip_address="$(fw_printenv -n rmaddr | awk -F: '{print "fc00::6:" $1$2 ":" $3$4 ":" $5$6 }')"; then
+    if ! rm_ip_address="$(/sbin/fw_printenv -n rmaddr | awk -F: '{print "fc00::6:" $1$2 ":" $3$4 ":" $5$6 }')"; then
         log_result "rm_ping" "1" "missing rmaddr"
         return
     fi
