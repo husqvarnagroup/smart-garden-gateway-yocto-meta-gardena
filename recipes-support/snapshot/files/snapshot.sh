@@ -66,6 +66,8 @@ fi
 /usr/bin/healthcheck  > /tmp/snapshot/runtime/healthcheck 2>&1 || true
 /bin/networkctl > /tmp/snapshot/runtime/networkctl
 /bin/networkctl status ppp0 > /tmp/snapshot/runtime/networkctl-ppp0
+/usr/bin/systemd-cgtop --batch --iterations=1 --order=memory --cpu=time > /tmp/snapshot/runtime/systemd-cgtop-cpu-time
+/usr/bin/systemd-cgtop --batch --iterations=2 --order=cpu --cpu=percentage --delay=5s > /tmp/snapshot/runtime/systemd-cgtop-cpu-percentage
 
 ##################################
 # Systemd units                  #
