@@ -223,7 +223,7 @@ test_rm_ping() {
         return
     fi
 
-    if ! ping -c1 "${rm_ip_address}" >/dev/null;then
+    if ! ping -I ppp0 -c1 "${rm_ip_address}" >/dev/null;then
         result=2
     fi
 
