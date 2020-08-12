@@ -13,9 +13,8 @@ DEPENDS = "libtirpc"
 S = "${WORKDIR}/git"
 
 do_install () {
-	install -d ${D}${bindir}
-	install -m 0755 ${S}/ca/wfa_ca ${D}${bindir}
-	install -m 0755 ${S}/dut/wfa_dut ${D}${bindir}
-	install -m 0755 -D ${S}/scripts/*.sh ${D}${bindir}
+    install -d ${D}${bindir}
+    install -m 0755 ${S}/ca/wfa_ca ${D}${bindir}
+    install -m 0755 ${S}/dut/wfa_dut ${D}${bindir}
+    install -m 0755 -D ${S}/scripts/*.sh ${D}${bindir}
 }
-
