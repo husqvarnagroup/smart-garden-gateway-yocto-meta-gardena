@@ -4,11 +4,12 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=0542427ed5c315ca34aa09ae7a85ed32"
 
 SRC_URI = "git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-gateway-wifi-alliance-test-suite.git;protocol=ssh \
            "
-PR = "r1"
+PR = "r2"
 PV = "10.10.1+git${SRCPV}"
 SRCREV = "63cd320851e875ee278a4b019b9ad537104cc21b"
 
 DEPENDS = "libtirpc"
+RDEPENDS_${PN} = "wpa-supplicant-cli"
 
 S = "${WORKDIR}/git"
 
