@@ -1,15 +1,15 @@
 LICENSE = "EPL-1.0 & EDL-1.0"
-LIC_FILES_CHKSUM = "file://core/er-coap-13/LICENSE;md5=bd9db1399d32da2d482fb0afb64b3d20 \
+LIC_FILES_CHKSUM = "file://coap/er-coap-13/LICENSE;md5=bd9db1399d32da2d482fb0afb64b3d20 \
                     file://examples/shared/tinydtls/LICENSE;md5=ffb073dbb36e7ec5e091047332f302c5"
 
-SRC_URI = "gitsm://github.com/eclipse/wakaama.git;protocol=https"
+SRC_URI = "gitsm://github.com/sbertin-telular/wakaama.git;protocol=https;branch=lwm2m_1.1"
 
-PV = "2020-02-21+git${SRCPV}"
+PV = "2020-06-26+git${SRCPV}"
 PR = "r0"
-SRCREV = "31d64c0c41fae9653c1fa53ef58d1a44e49017fa"
+SRCREV = "d37af90783883393c0cb7fbecb5b6e2e1fa9f026"
 
 S = "${WORKDIR}/git"
-B = "${WORKDIR}/build"                                                          
+B = "${WORKDIR}/build"
 
 inherit cmake
 
