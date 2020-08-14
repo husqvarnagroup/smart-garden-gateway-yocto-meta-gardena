@@ -223,8 +223,10 @@ test_rm_ping() {
         return
     fi
 
-    if ! ping -c1 "${rm_ip_address}" >/dev/null;then
-        result=2
+    if ! ping -I ppp0 -c1 "${rm_ip_address}" >/dev/null;then
+        # 2nd attempt to avoid reporting one-off, temporary failures
+        sleep 1
+        ping -I ppp0 -c1 "${rm_ip_address}" >/dev/null || result=2
     fi
 
     log_result "rm_ping" "${result}" "rm_ip_address=${rm_ip_address}"
