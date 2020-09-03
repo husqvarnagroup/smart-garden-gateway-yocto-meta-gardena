@@ -175,6 +175,48 @@ test_shadoway_corrupted_directories() {
     log_result "shadoway_corrupted_directories" "${result}" "corrupted=${corrupted}"
 }
 
+# SGSE-965
+test_shadoway_gateway_partner_address() {
+    local device_addresses
+    if ! device_addresses="$(find /var/lib/shadoway/work/ -name "Device_descriptionID_fc00*" -type d | grep -oE 'fc00::.*')"; then
+        log_result "shadoway_gateway_partner_address" 1 "no_device_descriptions"
+        return
+    fi
+
+    for device_address in ${device_addresses}; do
+        local device_description_file="/var/lib/shadoway/work/Device_descriptionID_${device_address}/Device_descriptionID_${device_address}.json"
+
+        # Skip non-included devices
+        if [ ! -f "${device_description_file}" ] || [ "$(jq --raw-output .included < "${device_description_file}")" = "false" ]; then
+            continue
+        fi
+
+        # Skip devices with no (serialized) partner #1
+        local partner_information_file="/var/lib/shadoway/work/Device_descriptionID_${device_address}/Partner_information/Partner_information_1.json"
+        if [ ! -f "${partner_information_file}" ]; then
+            continue
+        fi
+
+        local device_name
+        if ! device_name="$(jq --exit-status --raw-output .name < "${device_description_file}")"; then
+            log_result "shadoway_gateway_partner_address" 1 "extraction_fail_missing_name=${device_address}"
+            return
+        fi
+
+        if ! gateway_address="$(jq --exit-status --raw-output .ipv6_addr < "${partner_information_file}")"; then
+            log_result "shadoway_gateway_partner_address" 1 "extraction_fail_ipv6_addr=${device_address}"
+            return
+        fi
+
+        if [ "${gateway_address}" != "fc00::6:100::" ]; then
+            log_result "shadoway_gateway_partner_address" 2 "has_faulty_partner_address=${device_address} (${device_name})"
+            return
+        fi
+    done
+
+    log_result "shadoway_gateway_partner_address" "0" "omitted"
+}
+
 test_systemd_running() {
     local result=0
 
@@ -254,6 +296,8 @@ test_all() {
     test_meminfo_slab
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
+    test_shadoway_gateway_partner_address
+
     test_ppp0
     test_rm_ping
 
