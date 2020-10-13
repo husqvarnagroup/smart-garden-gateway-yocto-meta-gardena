@@ -185,11 +185,13 @@ test_systemd_running() {
     fi
 
     local status=0
+    local failed_units=""
     if ! status="$(systemctl is-system-running)"; then
         result=2
+        failed_units=";$(systemctl --failed --no-legend  | awk '{print $1}' | tr '\n' ',' | sed 's/,$//')"
     fi
 
-    log_result "systemd_running" "${result}" "status=${status}"
+    log_result "systemd_running" "${result}" "status=${status}${failed_units}"
 }
 
 test_ppp0() {
