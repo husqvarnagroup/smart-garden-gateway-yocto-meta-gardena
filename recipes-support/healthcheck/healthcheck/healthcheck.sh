@@ -161,7 +161,7 @@ test_meminfo_s_unreclaim() {
         result=2
     fi
 
-    log_result "meminfo_slab" "${result}" "SUnreclaim=${s_unreclaim}"
+    log_result "meminfo_s_unreclaim" "${result}" "SUnreclaim=${s_unreclaim}"
 }
 
 test_shadoway_corrupted_directories() {
