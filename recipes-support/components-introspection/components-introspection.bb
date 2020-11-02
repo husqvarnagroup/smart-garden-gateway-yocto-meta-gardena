@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2
 
 inherit systemd
 
-PV = "0.1"
+PV = "0.1.1"
 PR = "r0"
 
 SRC_URI = " \

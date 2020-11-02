@@ -8,6 +8,7 @@ ConditionPathExists=!/etc/ipr_setup_done
 [Service]
 ExecStart=/usr/bin/ipr-setup
 Type=oneshot
+RemainAfterExit=yes
 ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then cpms-errorhandler; fi'
 
 [Install]

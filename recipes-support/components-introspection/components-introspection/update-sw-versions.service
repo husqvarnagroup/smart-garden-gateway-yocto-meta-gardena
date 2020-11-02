@@ -4,6 +4,7 @@ Description=Update Software Versions file for SWUpdate
 [Service]
 ExecStart=/usr/bin/update-sw-versions
 Type=oneshot
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
