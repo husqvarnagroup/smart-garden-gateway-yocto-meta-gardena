@@ -5,6 +5,7 @@ After=ppp.service
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/rf-led-setup
+RemainAfterExit=true
 
 [Install]
 WantedBy=multi-user.target

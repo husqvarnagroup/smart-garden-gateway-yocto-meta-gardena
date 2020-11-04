@@ -5,6 +5,7 @@ Before=network-pre.target
 [Service]
 ExecStart=/usr/bin/unique-hostname
 Type=oneshot
+RemainAfterExit=true
 
 [Install]
 WantedBy=basic.target

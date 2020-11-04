@@ -4,6 +4,7 @@ Description=Update Hardware Revision file
 [Service]
 ExecStart=/usr/bin/update-hw-revision
 Type=oneshot
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target

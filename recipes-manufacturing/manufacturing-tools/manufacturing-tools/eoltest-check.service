@@ -9,7 +9,7 @@ ExecStart=/usr/bin/eoltest-check
 Type=oneshot
 # consider service as active after running once; otherwise it will be
 # started multiple times
-RemainAfterExit=true
+RemainAfterExit=yes
 # unexpected error → all red
 ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then cpms-errorhandler; fi'
 

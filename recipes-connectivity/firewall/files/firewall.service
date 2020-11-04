@@ -5,6 +5,7 @@ After=network-pre.target
 
 [Service]
 Type=oneshot
+RemainAfterExit=true
 ExecStart=/usr/sbin/firewall
 
 [Install]

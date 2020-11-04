@@ -4,8 +4,8 @@ HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28"
 
-PV = "1.1.1"
-PR = "r1"
+PV = "1.1.2"
+PR = "r0"
 
 RDEPENDS_${PN} = "iptables iptables-modules"
 

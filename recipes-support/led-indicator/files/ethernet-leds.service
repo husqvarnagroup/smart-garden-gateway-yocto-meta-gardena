@@ -8,6 +8,7 @@ Before=network-pre.target
 [Service]
 ExecStart=/usr/bin/ethernet-led-setup
 Type=oneshot
+RemainAfterExit=true
 
 [Install]
 WantedBy=basic.target
