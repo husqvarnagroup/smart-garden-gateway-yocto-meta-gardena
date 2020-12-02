@@ -235,7 +235,7 @@ test_ppp0() {
     local result=0
 
     if ! ip_address="$(networkctl status ppp0 | grep "Address:" | awk '{print $2}')"; then
-        log_result "ppp0" "2" "ppp0 interface not existing"
+        log_result "ppp0" "2" "ppp0 interface not operational"
         return
     fi
 
@@ -259,6 +259,15 @@ test_rm_ping() {
 
     if ! rm_ip_address="$(/sbin/fw_printenv -n rmaddr | awk -F: '{print "fc00::6:" $1$2 ":" $3$4 ":" $5$6 }')"; then
         log_result "rm_ping" "1" "missing rmaddr"
+        return
+    fi
+
+    local rx_bytes
+    if ! rx_bytes="$(cat /sys/class/net/ppp0/statistics/rx_bytes 2>/dev/null)"; then
+        log_result "rm_ping" "1" "ppp0 interface missing"
+        return
+    elif [ "${rx_bytes}" -eq 0 ]; then
+        log_result "rm_ping" "3" "ppp0 interface inactive"
         return
     fi
 
