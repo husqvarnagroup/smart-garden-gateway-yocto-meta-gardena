@@ -271,6 +271,30 @@ test_rm_ping() {
     log_result "rm_ping" "${result}" "rm_ip_address=${rm_ip_address}"
 }
 
+# Find squashfs errors, which are potential side-effects of SG-14950
+test_squashfs() {
+    if dmesg | grep -q "SQUASHFS error"; then
+        log_result "squashfs" 2 "omitted"
+        return
+    fi
+
+    log_result "squashfs" 0 "omitted"
+}
+
+# Failing to load libraries is a potential side-effect of SG-14950 and, among
+# others, causing SG-15858.
+test_shared_library_loading() {
+    # "grep -q" does not work as journalctl exits with an error when the pipe
+    # gets closed early on.
+    if journalctl | grep -c "error while loading shared libraries" > /dev/null; then
+        log_result "shared_library_loading" 2 "omitted"
+        return
+    fi
+
+    log_result "shared_library_loading" 0 "omitted"
+}
+
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -284,6 +308,8 @@ test_all() {
     fi
 
     # No dependencies on internet connectivity
+    test_squashfs
+    test_shared_library_loading
     test_vpn_crt_ca
     test_vpn_crt_subject
     test_vpn_key
