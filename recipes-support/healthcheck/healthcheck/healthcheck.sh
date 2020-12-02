@@ -196,6 +196,22 @@ test_shadoway_sgse_965() {
     fi
 }
 
+# Find devices which have too high (>30) partner IDs
+test_shadoway_sgse_1020() {
+    local count
+    if ! count="$(jq --slurp 'map(select(.id > 30)) | length' /var/shadoway/work/Device_descriptionID_*/*/Partner_information_*.json 2>/dev/null)"; then
+        log_result "shadoway_sgse_1020" 1 "failed to extract number of affected partners"
+        return
+    fi
+
+    if [ "${count}" -gt 0 ]; then
+        log_result "shadoway_sgse_1020" 2 "count=${count}"
+        return
+    fi
+
+    log_result "shadoway_sgse_1020" 0 "omitted"
+}
+
 test_systemd_running() {
     local result=0
 
@@ -276,6 +292,7 @@ test_all() {
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
     test_shadoway_sgse_965
+    test_shadoway_sgse_1020
 
     test_ppp0
     test_rm_ping
