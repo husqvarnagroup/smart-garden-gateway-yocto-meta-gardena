@@ -163,7 +163,7 @@ test_meminfo_s_unreclaim() {
 
     log_result "meminfo_s_unreclaim" "${result}" "SUnreclaim=${s_unreclaim}"
 }
-
+# SGSE-770
 test_shadoway_corrupted_directories() {
     local result=0
 
@@ -175,46 +175,25 @@ test_shadoway_corrupted_directories() {
     log_result "shadoway_corrupted_directories" "${result}" "corrupted=${corrupted}"
 }
 
-# SGSE-965
-test_shadoway_gateway_partner_address() {
-    local device_addresses
-    if ! device_addresses="$(find /var/lib/shadoway/work/ -name "Device_descriptionID_fc00*" -type d | grep -oE 'fc00::.*')"; then
-        log_result "shadoway_gateway_partner_address" 1 "no_device_descriptions"
+# Allow finding devices which have been affected by SGSE-965.
+# Intended allow attributing long-term side effects of a too low MAC counter.
+test_shadoway_sgse_965() {
+    # Dongles have a wakeup_interval of 0. Having anything else here is a
+    # (harmless) side effect of SGSE-965 which does not get fixed by Shadoway
+    # and allows us to single out (previously) affected gateways.
+    local affected_devices
+    if ! affected_devices="$(jq -r "select(.wakeup_interval > 0).address" /var/shadoway/work/Device_*/Partner_information/Partner_information_1.json 2>/dev/null)"; then
+        log_result "shadoway_sgse_965" 1 "failed to extract affected device addresses"
         return
     fi
 
-    for device_address in ${device_addresses}; do
-        local device_description_file="/var/lib/shadoway/work/Device_descriptionID_${device_address}/Device_descriptionID_${device_address}.json"
-
-        # Skip non-included devices
-        if [ ! -f "${device_description_file}" ] || [ "$(jq --raw-output .included < "${device_description_file}")" = "false" ]; then
-            continue
-        fi
-
-        # Skip devices with no (serialized) partner #1
-        local partner_information_file="/var/lib/shadoway/work/Device_descriptionID_${device_address}/Partner_information/Partner_information_1.json"
-        if [ ! -f "${partner_information_file}" ]; then
-            continue
-        fi
-
-        local device_name
-        if ! device_name="$(jq --exit-status --raw-output .name < "${device_description_file}")"; then
-            log_result "shadoway_gateway_partner_address" 1 "extraction_fail_missing_name=${device_address}"
-            return
-        fi
-
-        if ! gateway_address="$(jq --exit-status --raw-output .ipv6_addr < "${partner_information_file}")"; then
-            log_result "shadoway_gateway_partner_address" 1 "extraction_fail_ipv6_addr=${device_address}"
-            return
-        fi
-
-        if [ "${gateway_address}" != "fc00::6:100::" ]; then
-            log_result "shadoway_gateway_partner_address" 2 "has_faulty_partner_address=${device_address} (${device_name})"
-            return
-        fi
+    for affected_device in ${affected_devices}; do
+        log_result "shadoway_sgse_995" 2 "device=${affected_device}"
     done
 
-    log_result "shadoway_gateway_partner_address" "0" "omitted"
+    if [ -z "${affected_devices}" ]; then
+        log_result "shadoway_sgse_965" 0 "omitted"
+    fi
 }
 
 test_systemd_running() {
@@ -296,7 +275,7 @@ test_all() {
     test_meminfo_slab
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
-    test_shadoway_gateway_partner_address
+    test_shadoway_sgse_965
 
     test_ppp0
     test_rm_ping
