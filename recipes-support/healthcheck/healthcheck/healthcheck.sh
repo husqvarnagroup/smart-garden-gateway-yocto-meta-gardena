@@ -163,7 +163,7 @@ test_meminfo_s_unreclaim() {
 
     log_result "meminfo_s_unreclaim" "${result}" "SUnreclaim=${s_unreclaim}"
 }
-
+# SGSE-770
 test_shadoway_corrupted_directories() {
     local result=0
 
@@ -175,46 +175,41 @@ test_shadoway_corrupted_directories() {
     log_result "shadoway_corrupted_directories" "${result}" "corrupted=${corrupted}"
 }
 
-# SGSE-965
-test_shadoway_gateway_partner_address() {
-    local device_addresses
-    if ! device_addresses="$(find /var/lib/shadoway/work/ -name "Device_descriptionID_fc00*" -type d | grep -oE 'fc00::.*')"; then
-        log_result "shadoway_gateway_partner_address" 1 "no_device_descriptions"
+# Allow finding devices which have been affected by SGSE-965.
+# Intended allow attributing long-term side effects of a too low MAC counter.
+test_shadoway_sgse_965() {
+    # Dongles have a wakeup_interval of 0. Having anything else here is a
+    # (harmless) side effect of SGSE-965 which does not get fixed by Shadoway
+    # and allows us to single out (previously) affected gateways.
+    local affected_devices
+    if ! affected_devices="$(jq -r "select(.wakeup_interval > 0).address" /var/shadoway/work/Device_*/Partner_information/Partner_information_1.json 2>/dev/null)"; then
+        log_result "shadoway_sgse_965" 1 "failed to extract affected device addresses"
         return
     fi
 
-    for device_address in ${device_addresses}; do
-        local device_description_file="/var/lib/shadoway/work/Device_descriptionID_${device_address}/Device_descriptionID_${device_address}.json"
-
-        # Skip non-included devices
-        if [ ! -f "${device_description_file}" ] || [ "$(jq --raw-output .included < "${device_description_file}")" = "false" ]; then
-            continue
-        fi
-
-        # Skip devices with no (serialized) partner #1
-        local partner_information_file="/var/lib/shadoway/work/Device_descriptionID_${device_address}/Partner_information/Partner_information_1.json"
-        if [ ! -f "${partner_information_file}" ]; then
-            continue
-        fi
-
-        local device_name
-        if ! device_name="$(jq --exit-status --raw-output .name < "${device_description_file}")"; then
-            log_result "shadoway_gateway_partner_address" 1 "extraction_fail_missing_name=${device_address}"
-            return
-        fi
-
-        if ! gateway_address="$(jq --exit-status --raw-output .ipv6_addr < "${partner_information_file}")"; then
-            log_result "shadoway_gateway_partner_address" 1 "extraction_fail_ipv6_addr=${device_address}"
-            return
-        fi
-
-        if [ "${gateway_address}" != "fc00::6:100::" ]; then
-            log_result "shadoway_gateway_partner_address" 2 "has_faulty_partner_address=${device_address} (${device_name})"
-            return
-        fi
+    for affected_device in ${affected_devices}; do
+        log_result "shadoway_sgse_995" 2 "device=${affected_device}"
     done
 
-    log_result "shadoway_gateway_partner_address" "0" "omitted"
+    if [ -z "${affected_devices}" ]; then
+        log_result "shadoway_sgse_965" 0 "omitted"
+    fi
+}
+
+# Find devices which have too high (>30) partner IDs
+test_shadoway_sgse_1020() {
+    local count
+    if ! count="$(jq --slurp 'map(select(.id > 30)) | length' /var/shadoway/work/Device_descriptionID_*/*/Partner_information_*.json 2>/dev/null)"; then
+        log_result "shadoway_sgse_1020" 1 "failed to extract number of affected partners"
+        return
+    fi
+
+    if [ "${count}" -gt 0 ]; then
+        log_result "shadoway_sgse_1020" 2 "count=${count}"
+        return
+    fi
+
+    log_result "shadoway_sgse_1020" 0 "omitted"
 }
 
 test_systemd_running() {
@@ -240,7 +235,7 @@ test_ppp0() {
     local result=0
 
     if ! ip_address="$(networkctl status ppp0 | grep "Address:" | awk '{print $2}')"; then
-        log_result "ppp0" "2" "omitted"
+        log_result "ppp0" "2" "ppp0 interface not operational"
         return
     fi
 
@@ -267,6 +262,15 @@ test_rm_ping() {
         return
     fi
 
+    local rx_bytes
+    if ! rx_bytes="$(cat /sys/class/net/ppp0/statistics/rx_bytes 2>/dev/null)"; then
+        log_result "rm_ping" "1" "ppp0 interface missing"
+        return
+    elif [ "${rx_bytes}" -eq 0 ]; then
+        log_result "rm_ping" "3" "ppp0 interface inactive"
+        return
+    fi
+
     if ! ping -I ppp0 -c1 "${rm_ip_address}" >/dev/null;then
         # 2nd attempt to avoid reporting one-off, temporary failures
         sleep 1
@@ -275,6 +279,30 @@ test_rm_ping() {
 
     log_result "rm_ping" "${result}" "rm_ip_address=${rm_ip_address}"
 }
+
+# Find squashfs errors, which are potential side-effects of SG-14950
+test_squashfs() {
+    if dmesg | grep -q "SQUASHFS error"; then
+        log_result "squashfs" 2 "omitted"
+        return
+    fi
+
+    log_result "squashfs" 0 "omitted"
+}
+
+# Failing to load libraries is a potential side-effect of SG-14950 and, among
+# others, causing SG-15858.
+test_shared_library_loading() {
+    # "grep -q" does not work as journalctl exits with an error when the pipe
+    # gets closed early on.
+    if journalctl | grep -c "error while loading shared libraries" > /dev/null; then
+        log_result "shared_library_loading" 2 "omitted"
+        return
+    fi
+
+    log_result "shared_library_loading" 0 "omitted"
+}
+
 
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
@@ -289,6 +317,8 @@ test_all() {
     fi
 
     # No dependencies on internet connectivity
+    test_squashfs
+    test_shared_library_loading
     test_vpn_crt_ca
     test_vpn_crt_subject
     test_vpn_key
@@ -296,7 +326,8 @@ test_all() {
     test_meminfo_slab
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
-    test_shadoway_gateway_partner_address
+    test_shadoway_sgse_965
+    test_shadoway_sgse_1020
 
     test_ppp0
     test_rm_ping
