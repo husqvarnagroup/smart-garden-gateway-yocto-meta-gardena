@@ -303,6 +303,18 @@ test_shared_library_loading() {
     log_result "shared_library_loading" 0 "omitted"
 }
 
+# Check if Shadoway can not communicate with the radio module
+test_shadoway_sgse_956() {
+    local count
+    if count="$(journalctl -u shadoway | grep -c "Ups .... can't get radio device info...")"; then
+        if [ "${count}" -gt 3 ]; then
+            log_result "shadoway_sgse_956" 2 "count=${count}"
+            return
+        fi
+    fi
+
+    log_result "shadoway_sgse_956" 0 "omitted"
+}
 
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
@@ -327,6 +339,7 @@ test_all() {
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
     test_shadoway_sgse_965
+    test_shadoway_sgse_956
     test_shadoway_sgse_1020
 
     test_ppp0
