@@ -295,7 +295,7 @@ test_squashfs() {
 test_shared_library_loading() {
     # "grep -q" does not work as journalctl exits with an error when the pipe
     # gets closed early on.
-    if journalctl | grep -c "error while loading shared libraries" > /dev/null; then
+    if journalctl -u shadoway | grep -c "error while loading shared libraries" > /dev/null; then
         log_result "shared_library_loading" 2 "omitted"
         return
     fi
