@@ -148,6 +148,12 @@ wifi_config_exists() {
     [ -f "$WIFI_CONFIG_FILE" ]
 }
 
+get_ssid() {
+    if wifi_config_exists; then
+        grep 'ssid=".*"' "$WIFI_CONFIG_FILE" | cut -d'"' -f2 | tr -d '\n'
+    fi
+}
+
 read_eth_carrier() {
     if [ "$(cat /sys/class/net/eth0/carrier 2>/dev/null)" = "1" ]; then
         ETH_CARRIER=1
@@ -188,7 +194,7 @@ wait_for_homekit_socket() {
 # call function and exit, if given as cli parameter
 if [ $# -ge 1 ]; then
     case "$1" in
-        "start_networking" | "start_ap" | "stop_ap" | "set_wifi_config" | "set_wifi_config_noconnect" | "remove_wifi_config" | "stop_wifi")
+        "start_networking" | "start_ap" | "stop_ap" | "set_wifi_config" | "set_wifi_config_noconnect" | "remove_wifi_config" | "stop_wifi" | "get_ssid")
             read_eth_carrier
             "$@"
             exit 0
