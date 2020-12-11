@@ -1,25 +1,31 @@
 SUMMARY = "Publishes & browses available services on a link according to the Zeroconf / Bonjour protocol"
 DESCRIPTION = "Bonjour, also known as zero-configuration networking, enables automatic discovery of computers, devices, and services on IP networks."
 HOMEPAGE = "http://developer.apple.com/networking/bonjour/"
-LICENSE = "Apache-2.0"
+LICENSE = "Apache-2.0 & BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://../LICENSE;md5=31c50371921e0fb731003bbc665f29bf"
+
+COMPATIBLE_HOST_libc-musl = 'null'
 
 RPROVIDES_${PN} += "libdns_sd.so"
 
 SRC_URI = "https://opensource.apple.com/tarballs/mDNSResponder/mDNSResponder-${PV}.tar.gz \
-           file://build.patch;patchdir=.. \
            file://mdns.service \
-           file://0001-nss_mdns-Do-not-include-nss.h-when-libc-glibc.patch;patchdir=.. \
-           file://0002-Don-t-call-memcpy-with-size-src.patch;patchdir=.. \
-           file://0003-Don-t-enable-MDNS-on-non-multicast-non-broadcast-int.patch;patchdir=.. \
-           file://0004-mDNS-Support-interface-names-larger-than-8-character.patch;patchdir=.. \
-           file://0005-mDNSCore-fix-switch-fallthrough-warnings.patch;patchdir=.. \
-           file://0006-Clients-fix-misleading-indentation-warning.patch;patchdir=.. \
-           file://0007-mDNSCore-fix-Warray-bounds-warnings-for-HMAC_MD5_Alg.patch;patchdir=.. \
+           file://0001-mdns-include-stddef.h-for-NULL.patch;patchdir=.. \
+           file://0002-mdns-cross-compilation-fixes-for-bitbake.patch;patchdir=.. \
+           file://0001-Create-subroutine-for-cleaning-recent-interfaces.patch;patchdir=.. \
+           file://0002-Create-subroutine-for-tearing-down-an-interface.patch;patchdir=.. \
+           file://0003-Track-interface-socket-family.patch;patchdir=.. \
+           file://0004-Use-list-for-changed-interfaces.patch;patchdir=.. \
+           file://0006-Remove-unneeded-function.patch;patchdir=.. \
+           file://0008-Mark-deleted-interfaces-as-being-changed.patch;patchdir=.. \
+           file://0009-Fix-possible-NULL-dereference.patch;patchdir=.. \
+           file://0010-Handle-errors-from-socket-calls.patch;patchdir=.. \
+           file://0011-Change-a-dynamic-allocation-to-file-scope-variable.patch;patchdir=.. \
            "
+SRC_URI[md5sum] = "ac766013bbcb323e9db4c80805b2552a"
+SRC_URI[sha256sum] = "b86f4816b4145915198e7c5bf0bc56dbbfd960e9a4518bb6486baa40cdcca7e6"
 
-SRC_URI[md5sum] = "6995455d50166993d6b35e67416ee84b"
-SRC_URI[sha256sum] = "cdd03171ca05f16ea987bba1f8b0c4847d3035283ea0f5fa0ade75f64ec83ed5"
+CVE_PRODUCT = "apple:mdnsresponder"
 
 PARALLEL_MAKE = ""
 
