@@ -1,0 +1,33 @@
+From 9709c736c68f55a6b9ab6bf264a7052546270b81 Mon Sep 17 00:00:00 2001
+From: Lorenzo Colitti <lorenzo@google.com>
+Date: Mon, 16 Nov 2015 11:37:57 +0900
+Subject: [PATCH] Don't enable MDNS on non-multicast, non-broadcast
+ interfaces.
+
+This is unlikely to work, and in the case of cell interfaces, it
+may be harmful (e.g., use metered bandwidth, or compete for
+resources with carrier traffic such as VoLTE).
+
+Bug: 25629907
+Bug: 25669326
+Change-Id: I2622182ce1a3bb1c605de8afce61cf5ae1f4cbfb
+---
+ mDNSPosix/mDNSPosix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mDNSPosix/mDNSPosix.c b/mDNSPosix/mDNSPosix.c
+index 2d25016..192d92f 100755
+--- a/mDNSPosix/mDNSPosix.c
++++ b/mDNSPosix/mDNSPosix.c
+@@ -1373,7 +1373,7 @@ mDNSlocal int SetupInterfaceList(mDNS *const m)
+                         firstLoopbackIndex = ifIndex;
+                     }
+                 }
+-                else
++                else if (i->ifa_flags & (IFF_MULTICAST | IFF_BROADCAST))  // http://b/25669326
+                 {
+                     if (SetupOneInterface(m, i->ifa_addr, i->ifa_netmask, i->ifa_name, ifIndex) == 0)
+                     {
+-- 
+2.30.0
+
