@@ -1,0 +1,35 @@
+From ebb8c86aac62de36cfbf257fc47b72656cd71c55 Mon Sep 17 00:00:00 2001
+From: Michael Zimmermann <michael.zimmermann@grandcentrix.net>
+Date: Fri, 8 Jan 2021 15:01:42 +0100
+Subject: [PATCH] mDNSPosix: fix potential infinite loop
+
+---
+ mDNSPosix/mDNSPosix.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mDNSPosix/mDNSPosix.c b/mDNSPosix/mDNSPosix.c
+index 192d92f..43b2014 100755
+--- a/mDNSPosix/mDNSPosix.c
++++ b/mDNSPosix/mDNSPosix.c
+@@ -1351,8 +1351,8 @@ mDNSlocal int SetupInterfaceList(mDNS *const m)
+ 
+     if (err == 0)
+     {
+-        struct ifaddrs *i = intfList;
+-        while (i)
++        struct ifaddrs *i;
++        for (i = intfList; i; i = i->ifa_next)
+         {
+             if (     ((i->ifa_addr->sa_family == AF_INET)
+ #if HAVE_IPV6
+@@ -1384,7 +1384,6 @@ mDNSlocal int SetupInterfaceList(mDNS *const m)
+                     }
+                 }
+             }
+-            i = i->ifa_next;
+         }
+ 
+         // If we found no normal interfaces but we did find a loopback interface, register the
+-- 
+2.30.0
+
