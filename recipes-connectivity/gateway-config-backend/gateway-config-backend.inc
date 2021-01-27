@@ -1,6 +1,6 @@
 PR = "r3"
 
-DEPENDS += "openssl"
+DEPENDS += "openssl accessory-server"
 RDEPENDS_${PN} += "gateway-config-frontend openssl openssl-bin openssl-conf"
 
 SRC_URI += "\
@@ -9,6 +9,9 @@ SRC_URI += "\
     file://gateway-config-backend.socket \
     file://keep.d/gateway-config-backend \
     "
+
+# BUG: meta-rust doesn't add the include directories to bindgen runs
+export BINDGEN_EXTRA_CLANG_ARGS="-I${STAGING_INCDIR}"
 
 do_install () {
     cargo_do_install
