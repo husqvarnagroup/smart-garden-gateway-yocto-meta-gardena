@@ -282,8 +282,12 @@ test_rm_ping() {
 
 # Find squashfs errors, which are potential side-effects of SG-14950
 test_squashfs() {
-    if dmesg | grep -q "SQUASHFS error"; then
-        log_result "squashfs" 2 "omitted"
+    # dmesg exists with an error code when it can not write all its content.
+    # Using -c instead of -q forces grep to read the complete dmesg output,
+    # even when the first occurrence has been found.
+    local count
+    if count=$(dmesg | grep -c "SQUASHFS error"); then
+        log_result "squashfs" 2 "count=${count}"
         return
     fi
 
