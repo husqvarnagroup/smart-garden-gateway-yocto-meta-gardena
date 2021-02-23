@@ -83,7 +83,6 @@ for s in \
   lsdl-serializer-log.service \
   manufacturing-statusfiles.service \
   mdns.service \
-  network_management.service \
   openvpn.service \
   power-led.service \
   ppp.service \

@@ -36,7 +36,6 @@ systemctl disable swupdate-progress.service
 systemctl disable systemd-timesyncd.service
 systemctl disable tcpdump-sherlock-ppp0.service
 systemctl mask firewall.service
-systemctl mask network_management.service
 systemctl mask swupdate-check.timer
 systemctl mask swupdate-check.service
 
