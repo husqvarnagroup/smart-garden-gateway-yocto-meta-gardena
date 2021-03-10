@@ -245,7 +245,7 @@ test_ppp0() {
     local result=0
 
     if ! ip_address="$(networkctl status ppp0 | grep "Address:" | awk '{print $2}')"; then
-        log_result "ppp0" "2" "ppp0 interface not operational"
+        log_result "ppp0" "2" "ppp0 interface has no IP address"
         return
     fi
 
