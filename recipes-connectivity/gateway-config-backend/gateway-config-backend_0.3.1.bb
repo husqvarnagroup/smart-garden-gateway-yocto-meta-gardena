@@ -8,7 +8,7 @@ inherit cargo
 # how to get gateway-config-backend could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/gateway-config-backend/0.3.0"
 SRC_URI += "git://stash.dss.husqvarnagroup.com:7999/sg/gateway-config-backend.git;protocol=ssh"
-SRCREV = "7df65cffdc9105165f7919a0370f8ddf9ce5ee67"
+SRCREV = "56701082af8c2ff944e00ddf1bd1cc4ee485ed53"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
@@ -241,7 +241,7 @@ SRC_URI += " \
 
 LIC_FILES_CHKSUM = " \
     file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://third_party_licenses;md5=eec36858e099e5a4341eb8fa97b8ee57 \
+    file://third_party_licenses;md5=d197be2894b62516943ba1c8247735b3 \
 "
 
 SUMMARY = "Backend component for the GARDENA smart Gateway config interface"
