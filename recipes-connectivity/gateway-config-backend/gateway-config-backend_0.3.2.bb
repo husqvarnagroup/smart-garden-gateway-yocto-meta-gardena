@@ -241,7 +241,7 @@ SRC_URI += " \
 
 LIC_FILES_CHKSUM = " \
     file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://third_party_licenses;md5=d197be2894b62516943ba1c8247735b3 \
+    file://third_party_licenses;md5=72ed30bbb7673eb3d80ef5962a39f5ff \
 "
 
 SUMMARY = "Backend component for the GARDENA smart Gateway config interface"
