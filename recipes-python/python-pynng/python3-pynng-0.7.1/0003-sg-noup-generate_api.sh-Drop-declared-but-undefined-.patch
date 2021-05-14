@@ -1,0 +1,30 @@
+From c8f185a9123e23d0a90d509c38e2040df9c545aa Mon Sep 17 00:00:00 2001
+From: Reto Schneider <reto.schneider@husqvarnagroup.com>
+Date: Fri, 24 Dec 2021 04:17:53 +0100
+Subject: [PATCH] [sg noup] generate_api.sh: Drop declared but undefined
+ function
+
+Once the underlying issue in nng got fixed, this patch can be dropped.
+---
+ generate_api.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/generate_api.sh b/generate_api.sh
+index ead9325..dec99be 100755
+--- a/generate_api.sh
++++ b/generate_api.sh
+@@ -21,7 +21,10 @@ process_header() {
+     # remove blank lines
+     sed '/^$/d' | \
+     # remove NNG_DECL since we don't need it
+-    sed 's/^NNG_DECL *//g'
++    sed 's/^NNG_DECL *//g' | \
++    # prevent ImportError because of undefined symbol (undefined function)
++    # no longer needed once https://github.com/nanomsg/nng/pull/1553 got merged
++    grep -v nng_getopt_ptr
+ }
+ 
+ process_header "${prefix}/include/nng/nng.h" >> "${tmpfile}"
+-- 
+2.30.2
+
