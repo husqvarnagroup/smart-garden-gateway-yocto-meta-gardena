@@ -147,12 +147,11 @@ def tcpdump_worker(interface):
     subprocess.run(command.split())
 
 
-def rx_mode_teardown(device, monitor):
+def rx_mode_teardown(device, monitor, phy):
     """Teardown rx_mode."""
     system("ifconfig %s down" % monitor)
     system("iw dev %s del" % monitor)
-    system("ifconfig %s up" % device)
-    # TODO add old interface
+    system("iw phy %s interface add %s type managed" % (phy, device))
 
 
 def set_interface_ip_address(conf, network="192.168.25.0", netmask="255.255.255.0"):
@@ -273,7 +272,7 @@ def main():  # pylint: disable=too-many-statements,too-many-branches
         if args.rx_mode_timeout > 0:
             global RX_MODE_TIMER
             RX_MODE_TIMER = threading.Timer(args.rx_mode_timeout, rx_mode_teardown,
-                                            args=[args.device, monitor_interface])
+                                            args=[args.device, monitor_interface, phy_from_device])
             RX_MODE_TIMER.start()
 
         tcpdump = Process(target=tcpdump_worker, args=(monitor_interface,))
