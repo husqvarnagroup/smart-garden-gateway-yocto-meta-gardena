@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 SRC_URI = "git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-emc-testing-tools.git;protocol=ssh"
 SRCREV = "5dd841ca75c9a79d885a1f86e0c63157e0e4152e"
 
-PR = "r2"
+PR = "r3"
 PV = "2019-12-19+git${SRCPV}"
 
 S = "${WORKDIR}/git"
@@ -50,6 +50,7 @@ do_install () {
 
     # script for initial auto-configuration
     install -m 0755 ${S}/scripts/gateway_autoconfig.sh ${D}${bindir}/emc-tools-autoconfig
+    sed -i 's|/usr/lib/python3.7/site-packages|${PYTHON_SITEPACKAGES_DIR}|g' ${D}${bindir}/emc-tools-autoconfig
 }
 
 pkg_postinst_${PN} () {
