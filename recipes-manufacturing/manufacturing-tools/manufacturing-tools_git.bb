@@ -24,10 +24,10 @@ SRC_URI = "git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-gateway-manuf
            file://keep.d/manufacturing-statusfiles \
            "
 
-PR = "r6"
+PR = "r0"
 
-PV = "20200525+git${SRCPV}"
-SRCREV = "00e07ca224b41688f33063f97c2dc8c097901945"
+PV = "20210812+git${SRCPV}"
+SRCREV = "e0db2ae9139c4331529b7c7a77fe830bef984b85"
 
 S = "${WORKDIR}/git"
 
