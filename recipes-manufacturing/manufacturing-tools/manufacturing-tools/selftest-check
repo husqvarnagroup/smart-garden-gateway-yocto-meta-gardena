@@ -10,6 +10,9 @@ exit_error()
 {
     message=$1
 
+    # Prevent power LED from turning yellow (red + green) once GW is booted
+    systemctl stop power-led
+
     fct-tool --set-leds red
     echo "$message" >&2
     exit 1
