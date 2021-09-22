@@ -2,7 +2,7 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=bc41bb7fa5bd6d6c2b47de1cc649e107"
 
 SRC_URI = " \
-  git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-lemonbeat-serializer.git;protocol=ssh \
+  git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Embedded/sg-lemonbeat-serializer;protocol=ssh;branch=main \
 "
 
 SRCREV = "v${PV}"

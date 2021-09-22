@@ -7,7 +7,7 @@ COMPATIBLE_MACHINE = "mt7688"
 
 inherit systemd allarch python3-dir python3native
 
-SRC_URI = "git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-gateway-manufacturing-scripts.git;protocol=ssh \
+SRC_URI = "git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-manufacturing-scripts;protocol=ssh;branch=main \
            file://manufacturing-statusfiles.service \
            file://manufacturing-statusfiles.sh \
            file://ipr-setup \

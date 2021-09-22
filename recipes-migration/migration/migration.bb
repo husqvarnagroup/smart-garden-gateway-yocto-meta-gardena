@@ -8,10 +8,10 @@ RDEPENDS_${PN} = "\
     mtd-utils \
 "
 
-SRCBRANCH ?= "master"
+SRCBRANCH ?= "main"
 
 SRC_URI += " \
-    git://stash.dss.husqvarnagroup.com:7999/sg/gateway-migration.git;protocol=ssh;branch=${SRCBRANCH} \
+    git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-migration;protocol=ssh;branch=${SRCBRANCH} \
 "
 
 PR = "r0"

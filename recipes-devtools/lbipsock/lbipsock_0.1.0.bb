@@ -7,7 +7,7 @@ inherit cargo
 
 # how to get lbipsock could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/lbipsock/0.1.0"
-SRC_URI += "git://stash.dss.husqvarnagroup.com:7999/sg/lbipsock.git;protocol=ssh"
+SRC_URI += "git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-ip-socket;protocol=ssh;branch=main"
 SRCREV = "1fe5021f2a40f72ece10e2ff2a8e9df5e5938823"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""

@@ -3,7 +3,7 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=0542427ed5c315ca34aa09ae7a85ed32"
 
 SRC_URI = " \
-  git://stash.dss.husqvarnagroup.com:7999/sg/smart-garden-gateway-wifi-alliance-test-suite.git;protocol=ssh \
+  git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-wifi-alliance-test-suite;protocol=ssh;branch=main \
   file://eth0.network.disabled \
   file://wifi-testsuite-install.sh \
 "

@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 inherit python3-dir
 
 SRC_URI += " \
-    git://stash.dss.husqvarnagroup.com:7999/sg/lemonbeat-python.git;protocol=ssh \
+    git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Embedded/sg-lemonbeat-python;protocol=ssh;branch=main \
 "
 
 PR = "r0"

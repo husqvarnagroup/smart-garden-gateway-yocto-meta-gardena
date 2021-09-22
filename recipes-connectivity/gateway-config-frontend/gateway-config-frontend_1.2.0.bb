@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = " \
 
 PR = "r1"
 
-SRC_URI += "git://stash.dss.husqvarnagroup.com:7999/sg/gateway-config-frontend.git;protocol=ssh;branch=build"
+SRC_URI += "git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-frontend;protocol=ssh;branch=build"
 SRCREV = "5126abb259f79ae7504dc5f9b45806a489ed42eb"
 S = "${WORKDIR}/git"
 
