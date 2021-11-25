@@ -29,8 +29,8 @@ log_result() {
 test_portcheck_http() {
     local result=0
 
-    # Check if HTTP connectivity is working
-    if ! curl --max-time 30 --range 0-1024 -sS "http://${update_url_protocolless}" 2>/dev/null | grep -q "Linux System Firmware for the GARDENA smart Gateway"; then
+    # Check if HTTP connectivity is working (HEAD request, range lead to ~0.1% false positives)
+    if ! curl --max-time 30 -sfI "http://${update_url_protocolless}" >/dev/null; then
         result=2
     fi
 
