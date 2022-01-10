@@ -8,9 +8,9 @@ SRC_URI += " \
 "
 
 PR = "r0"
-PV = "2021-09-22+git${SRCPV}"
+PV = "2022-01-07+git${SRCPV}"
 
-SRCREV = "6f82f0bf8af5772a868bd6ff6ef4193e35b23159"
+SRCREV = "f4f99355f856df8479db76a1576d324343bcbece"
 
 S = "${WORKDIR}/git"
 
@@ -31,7 +31,7 @@ do_install() {
 
     # Files for lemonbeat-firmware-upload
     install -d ${D}${bindir}
-    install -m 0755 ${S}/examples/upload.py ${D}${bindir}/upload
+    install -m 0755 ${S}/examples/gateway_scripts/upload.py ${D}${bindir}/upload
 }
 
 FILES_${PN} += " \
