@@ -2,11 +2,11 @@ LICENSE = "EPL-1.0 & EDL-1.0"
 LIC_FILES_CHKSUM = "file://coap/er-coap-13/LICENSE;md5=bd9db1399d32da2d482fb0afb64b3d20 \
                     file://examples/shared/tinydtls/LICENSE;md5=ffb073dbb36e7ec5e091047332f302c5"
 
-SRC_URI = "gitsm://github.com/sbertin-telular/wakaama.git;protocol=https;branch=lwm2m_1.1"
+SRC_URI = "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/wakaama;protocol=ssh;branch=master"
 
-PV = "2020-06-26+git${SRCPV}"
+PV = "2022-01-19+git${SRCPV}"
 PR = "r0"
-SRCREV = "d37af90783883393c0cb7fbecb5b6e2e1fa9f026"
+SRCREV = "c73b5065d64efe793b3a605beaf63691aa253146"
 
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
