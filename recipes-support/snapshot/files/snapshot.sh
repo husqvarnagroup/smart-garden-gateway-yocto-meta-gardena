@@ -44,7 +44,7 @@ mkdir /tmp/snapshot/runtime
 /sbin/ip route > /tmp/snapshot/runtime/ip-route
 /sbin/ip -6 route > /tmp/snapshot/runtime/ip6-route
 /sbin/ip link > /tmp/snapshot/runtime/ip-link
-/bin/journalctl --no-pager > /tmp/snapshot/runtime/journalctl
+/bin/journalctl | /bin/gzip > /tmp/snapshot/runtime/journalctl
 /bin/systemctl > /tmp/snapshot/runtime/systemctl
 /bin/systemctl status > /tmp/snapshot/runtime/systemctl-status
 /sbin/fw_printenv > /tmp/snapshot/runtime/fw_printenv
