@@ -330,6 +330,42 @@ test_shadoway_sgse_956() {
     log_result "shadoway_sgse_956" 0 "omitted"
 }
 
+# Check if zram compression ratio is above minimum
+test_zram_compr_ratio() {
+    local readonly compr_ratio_min=4 # 3 is a hard limit, but we want the healthcheck to trigger earlier
+
+    if ! orig_data_size="$(awk '{print $1}' /sys/block/zram0/mm_stat)"; then
+        log_result "zram_compr_ratio" 1 "omitted"
+        return
+    fi
+    if ! compr_data_size="$(awk '{print $2}' /sys/block/zram0/mm_stat)"; then
+        log_result "zram_compr_ratio" 2 "omitted"
+        return
+    fi
+    if [ "${orig_data_size}" -lt $((compr_ratio_min * compr_data_size)) ]; then
+        log_result "zram_compr_ratio" 3 "ratio=${orig_data_size}/${compr_data_size}"
+        return
+    fi
+
+    log_result "zram_compr_ratio" 0 "omitted"
+}
+
+# Check if zram has not more than a limited amount of uncompressed pages
+test_zram_huge_pages() {
+    local readonly huge_pages_max=10 # maximum allowed uncompressed pages, none are expected, 10 is an arbitrary number
+
+    if ! huge_pages="$(awk '{print $8}' /sys/block/zram0/mm_stat)"; then
+        log_result "zram_huge_pages" 1 "omitted"
+        return
+        if [ "${huge_pages}" -gt "${huge_pages_max}" ]; then
+            log_result "zram_huge_pages" 2 "huge_pages=${huge_pages}"
+            return
+        fi
+    fi
+
+    log_result "zram_huge_pages" 0 "omitted"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -355,6 +391,8 @@ test_all() {
     test_shadoway_sgse_965
     test_shadoway_sgse_956
     test_shadoway_sgse_1020
+    test_zram_compr_ratio
+    test_zram_huge_pages
 
     test_ppp0
     test_rm_ping
