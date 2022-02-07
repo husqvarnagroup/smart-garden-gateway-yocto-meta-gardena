@@ -6,6 +6,7 @@ inherit allarch
 
 RDEPENDS_${PN} = "\
     mtd-utils \
+    wpa-supplicant-passphrase \
 "
 
 SRCBRANCH ?= "main"
@@ -15,12 +16,12 @@ SRC_URI += " \
 "
 
 PR = "r0"
-PV = "2019-12-14-0+git${SRCPV}"
+PV = "2022-02-08-0+git${SRCPV}"
 
-SRCREV ?= "de0d7b0d932f642252a32181b5e2a16d994fc60e"
+SRCREV ?= "cd437976be1b2f7064993be0a6d01db561ea2293"
 
 S = "${WORKDIR}/git"
 
 do_install() {
-    install -D -m 0755 ${S}/stage3/stage3.sh ${D}${bindir}/${BPN}-stage3
+    install -D -m 0755 ${S}/migration/migration-stage3.sh ${D}${bindir}/${BPN}-stage3
 }
