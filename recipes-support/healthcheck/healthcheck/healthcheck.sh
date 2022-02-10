@@ -342,12 +342,13 @@ test_zram_compr_ratio() {
         log_result "zram_compr_ratio" 2 "omitted"
         return
     fi
+
+    local result=0
     if [ "${orig_data_size}" -lt $((compr_ratio_min * compr_data_size)) ]; then
-        log_result "zram_compr_ratio" 3 "ratio=${orig_data_size}/${compr_data_size}"
-        return
+        result=3
     fi
 
-    log_result "zram_compr_ratio" 0 "omitted"
+    log_result "zram_compr_ratio" "${result}" "ratio=${orig_data_size}/${compr_data_size}"
 }
 
 # Check if zram has not more than a limited amount of uncompressed pages
@@ -357,13 +358,14 @@ test_zram_huge_pages() {
     if ! huge_pages="$(awk '{print $8}' /sys/block/zram0/mm_stat)"; then
         log_result "zram_huge_pages" 1 "omitted"
         return
-        if [ "${huge_pages}" -gt "${huge_pages_max}" ]; then
-            log_result "zram_huge_pages" 2 "huge_pages=${huge_pages}"
-            return
-        fi
     fi
 
-    log_result "zram_huge_pages" 0 "omitted"
+    local result=0
+    if [ "${huge_pages}" -gt "${huge_pages_max}" ]; then
+        result=2
+    fi
+
+    log_result "zram_huge_pages" "${result}" "huge_pages=${huge_pages}"
 }
 
 test_all() {
