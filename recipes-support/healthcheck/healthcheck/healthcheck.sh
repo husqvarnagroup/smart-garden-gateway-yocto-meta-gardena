@@ -56,7 +56,7 @@ test_system_clock_synced() {
         result=2
     fi
 
-    log_result "portcheck_ntp" "${result}" "omitted"
+    log_result "system_clock_synced" "${result}" "omitted"
 }
 
 test_vpn_crt_ca() {
