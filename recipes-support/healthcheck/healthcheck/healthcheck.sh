@@ -48,6 +48,23 @@ test_portcheck_https() {
     log_result "portcheck_https" "${result}" "omitted"
 }
 
+# check BSSID-unique disconnection events during the last 24h and compare against maximum acceptable
+test_wifi_connection() {
+    # maximum of acceptable BSSID-unique disconnection events during the last 24h
+    local readonly max_bssid_unique_disconnects=12
+
+    local result=0
+    local result_string="omitted"
+    if unique_disconnects="$(journalctl -S-24h -u wpa_supplicant@wlan0 | grep CTRL-EVENT-DISCONNECTED | awk '{print $8}' | sort | uniq -c | sort -n | tail -1 | awk '{print $1}')"; then
+        result_string="unique_disconnects=${unique_disconnects}"
+        if [ "${unique_disconnects}" -gt "${max_bssid_unique_disconnects}" ]; then
+            result=1
+        fi
+    fi
+
+    log_result "wifi_connection" "${result}" "${result_string}"
+}
+
 test_system_clock_synced() {
     local result=0
 
@@ -395,6 +412,7 @@ test_all() {
     test_shadoway_sgse_1020
     test_zram_compr_ratio
     test_zram_huge_pages
+    test_wifi_connection
 
     test_ppp0
     test_rm_ping
