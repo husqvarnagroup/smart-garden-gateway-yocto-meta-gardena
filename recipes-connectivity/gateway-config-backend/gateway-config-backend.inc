@@ -12,6 +12,7 @@ SRC_URI += "\
 
 # BUG: meta-rust doesn't add the include directories to bindgen runs
 export BINDGEN_EXTRA_CLANG_ARGS="-I${STAGING_INCDIR}"
+export CARGO_FEATURE_STD="1"
 
 do_install () {
     cargo_do_install
