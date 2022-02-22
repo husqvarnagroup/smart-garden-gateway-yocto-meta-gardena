@@ -8,9 +8,9 @@ SRC_URI += " \
 "
 
 PR = "r0"
-PV = "2022-01-07+git${SRCPV}"
+PV = "2022-02-23+git${SRCPV}"
 
-SRCREV = "f4f99355f856df8479db76a1576d324343bcbece"
+SRCREV = "7142abd8435b05db94dae1e1180cf42c37209017"
 
 S = "${WORKDIR}/git"
 
@@ -19,7 +19,7 @@ RDEPENDS_${PN} += " \
     python3-core \
     python3-ctypes \
     python3-fcntl \
-    python3-pycrypto \
+    python3-pycryptodomex \
     python3-threading \
     python3-xml \
 "
