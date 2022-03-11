@@ -49,7 +49,7 @@ test_portcheck_https() {
 }
 
 # check BSSID-unique disconnection events during the last 24h and compare against maximum acceptable
-test_wifi_connection() {
+test_wifi_connection_stability() {
     # maximum of acceptable BSSID-unique disconnection events during the last 24h
     local readonly max_bssid_unique_disconnects=12
 
@@ -62,7 +62,7 @@ test_wifi_connection() {
         fi
     fi
 
-    log_result "wifi_connection" "${result}" "${result_string}"
+    log_result "wifi_connection_stability" "${result}" "${result_string}"
 }
 
 test_system_clock_synced() {
@@ -412,7 +412,7 @@ test_all() {
     test_shadoway_sgse_1020
     test_zram_compr_ratio
     test_zram_huge_pages
-    test_wifi_connection
+    test_wifi_connection_stability
 
     test_ppp0
     test_rm_ping
