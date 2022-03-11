@@ -395,6 +395,8 @@ test_wifi_device() {
     fi
 
     log_result "wifi_device" "${result}" "omitted"
+
+    return "${result}"
 }
 
 test_all() {
@@ -424,8 +426,8 @@ test_all() {
     test_shadoway_sgse_1020
     test_zram_compr_ratio
     test_zram_huge_pages
-    test_wifi_device
-    test_wifi_connection_stability
+    test_wifi_device \
+      && test_wifi_connection_stability
 
     test_ppp0
     test_rm_ping
