@@ -385,6 +385,18 @@ test_zram_huge_pages() {
     log_result "zram_huge_pages" "${result}" "huge_pages=${huge_pages}"
 }
 
+test_wifi_device() {
+    local result=0
+
+    # Test not executed on MT7688 because it is not affected
+    if [ "$(uname -m)" = "armv5tejl" ] \
+       && [ ! -d "/sys/bus/usb/devices/1-2:1.0" ]; then
+        result=1
+    fi
+
+    log_result "wifi_device" "${result}" "omitted"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -412,6 +424,7 @@ test_all() {
     test_shadoway_sgse_1020
     test_zram_compr_ratio
     test_zram_huge_pages
+    test_wifi_device
     test_wifi_connection_stability
 
     test_ppp0
