@@ -1,0 +1,14 @@
+# Neither systemd's BindsTo= nor its PartOf= do restart
+# tcpdump-sherlock-ppp0.service when the ppp0 interface goes down and then up
+# again. This causes,  every time ppp.service gets restarted,
+# tcpdump-sherlock-ppp0.service to end up in failed state, degrading the system
+# until either tcpdump-sherlock-ppp0.service or the whole gateway gets
+# restarted.
+#
+# Upholds= seems to be the proper solution for this, but is available only in
+# systemd version 249 and newer:
+#  https://github.com/systemd/systemd/blob/629c1cdf03fdb032ca70a57786bd478c2372ccb4/NEWS#L1404
+# Systemd version 249 itself is part of Yocto Honister (3.4).
+#
+# Until then, this workaround should suffice.
+ACTION=="add", SUBSYSTEM=="net", KERNEL=="ppp0", TAG+="systemd", ENV{SYSTEMD_WANTS}="tcpdump-sherlock-ppp0.service"
