@@ -5,7 +5,6 @@
 
 set -eu -o pipefail
 
-readonly update_server=gateway.iot.sg.dss.husqvarnagroup.net
 readonly update_url_protocolless=gateway.iot.sg.dss.husqvarnagroup.net/images/gardena-update-image-prod-gardena-sg-mt7688.swu
 
 something_failed=0
