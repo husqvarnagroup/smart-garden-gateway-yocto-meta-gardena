@@ -398,6 +398,21 @@ test_wifi_device() {
     return "${result}"
 }
 
+test_network_key_sgse_1024() {
+    local result=0
+    local key_file=/var/lib/shadoway/work/Network_management/Network_key.json
+
+    if [ -f ${key_file} ]; then
+      if jq .encrypted_key ${key_file} | grep -q [A-Z]; then
+        result=1
+      fi
+    fi
+
+    log_result "network_key_sgse_1024" "${result}" "omitted"
+
+    return "${result}"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -430,6 +445,8 @@ test_all() {
 
     test_ppp0
     test_rm_ping
+
+    test_network_key_sgse_1024
 
     return "${something_failed}"
 }
