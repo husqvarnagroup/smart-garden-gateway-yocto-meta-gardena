@@ -336,7 +336,10 @@ test_shared_library_loading() {
 # Check if Shadoway can not communicate with the radio module
 test_shadoway_sgse_956() {
     local count
-    if count="$(journalctl -u shadoway | grep -c "Ups .... can't get radio device info...")"; then
+    # shadoway tries to recover from sgse-956 once a minute if it should be affected. So healthcheck
+    # should only check logs since last run of checks. As timestamps are not correct during startup,
+    # we however might miss such occurences at the first run of the healthcheck.
+    if count="$(journalctl -S-23h -u shadoway | grep -c "Ups .... can't get radio device info...")"; then
         if [ "${count}" -gt 3 ]; then
             log_result "shadoway_sgse_956" 2 "count=${count}"
             return
