@@ -406,7 +406,7 @@ test_network_key_sgse_1024() {
     local key_file=/var/lib/shadoway/work/Network_management/Network_key.json
 
     if [ -f ${key_file} ]; then
-      if jq .encrypted_key ${key_file} | grep -q [A-Z]; then
+      if jq .encrypted_key ${key_file} | grep -q "[A-Z]"; then
         result=1
       fi
     fi
@@ -414,6 +414,44 @@ test_network_key_sgse_1024() {
     log_result "network_key_sgse_1024" "${result}" "omitted"
 
     return "${result}"
+}
+
+test_rmver() {
+    # Only for version 1.4.2 (and potentially newer!) we have not locked the
+    # flash after programming.
+    local result=1
+    local data="unknown"
+    local filename
+    local dongle_count
+
+    # shellcheck disable=SC2126
+    if ! dongle_count="$(grep -l DONGLE /var/lib/shadoway/work/Device_descriptionID_*/Device_descriptionID_*.json | wc -l)"; then
+        log_result "rmver" "3" "Dongle work folders could not be counted"
+        return
+    fi
+    if [ "${dongle_count}" -ne "1" ]; then
+        log_result "rmver" "4" "${dongle_count} dongle folders folders found"
+        return
+    fi
+
+    if filename="$(grep -l DONGLE /var/lib/shadoway/work/Device_descriptionID_*/Device_descriptionID_*.json)" \
+        && [ -n "${filename}" ]; then
+        # Normalize whitespace to support Shadoway and lemonbeatd serialized files
+        local dongle_device_description="$(sed -En "s/([a-z_]+\")\ *:/\1 :/p" "$filename")"
+        # Extract the needed information
+        local radio_module_app_ver="unknown"
+        local etc_radio_module_app_ver_latest="$(cat /etc/rm-firmware-version.latest)"
+        if radio_module_app_ver="$(echo "$dongle_device_description" | awk '/version_app/ {print $3}' | cut -d '"' -f2)"; then
+            if [ "${radio_module_app_ver}" = "$etc_radio_module_app_ver_latest" ]; then
+                result=0;
+            else
+                result=2;
+            fi
+            data="${radio_module_app_ver}"
+        fi
+    fi
+
+    log_result "rmver" "${result}" "${data}"
 }
 
 test_all() {
@@ -450,6 +488,7 @@ test_all() {
     test_rm_ping
 
     test_network_key_sgse_1024
+    test_rmver
 
     return "${something_failed}"
 }
