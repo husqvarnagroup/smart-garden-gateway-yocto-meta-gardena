@@ -25,7 +25,6 @@ DEPENDS = " \
     python3-ubootenv \
     python3-wheel-native \
     python3-distro-native \
-    python3-ninja-native \
     python3-scikit-build-native \
     virtual/crypt \
 "
