@@ -22,7 +22,6 @@ RDEPENDS:${PN} += " \
     python3-cffi \
     python3-asyncio \
     python3-sniffio \
-    python3-typing \
 "
 
 do_compile:prepend () {
