@@ -9,7 +9,9 @@ cd /tmp/ || exit 1
 # Shadoway stuff                 #
 ##################################
 cp -r /var/lib/shadoway /tmp/snapshot/
-cp -r /var/run/log/shadoway/ /tmp/snapshot/shadoway/shadoway-volatile-logs
+if [ -d /var/run/log/shadoway/ ]; then
+  cp -r /var/run/log/shadoway/ /tmp/snapshot/shadoway/shadoway-volatile-logs
+fi
 if [ -f /var/run/shadoway/led_status ]; then
   cp /var/run/shadoway/led_status /tmp/snapshot/shadoway/shadoway-led_status
 else
