@@ -4,9 +4,11 @@ HOMEPAGE = "http://developer.apple.com/networking/bonjour/"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://../LICENSE;md5=31c50371921e0fb731003bbc665f29bf"
 
+PR = "r1"
+
 RPROVIDES_${PN} += "libdns_sd.so"
 
-SRC_URI = "https://opensource.apple.com/tarballs/mDNSResponder/mDNSResponder-${PV}.tar.gz \
+SRC_URI = "https://github.com/apple-oss-distributions/mDNSResponder/archive/refs/tags/mDNSResponder-${PV}.tar.gz \
            file://build.patch;patchdir=.. \
            file://mdns.service \
            file://0001-nss_mdns-Do-not-include-nss.h-when-libc-glibc.patch;patchdir=.. \
@@ -18,12 +20,12 @@ SRC_URI = "https://opensource.apple.com/tarballs/mDNSResponder/mDNSResponder-${P
            file://0007-mDNSCore-fix-Warray-bounds-warnings-for-HMAC_MD5_Alg.patch;patchdir=.. \
            "
 
-SRC_URI[md5sum] = "6995455d50166993d6b35e67416ee84b"
-SRC_URI[sha256sum] = "cdd03171ca05f16ea987bba1f8b0c4847d3035283ea0f5fa0ade75f64ec83ed5"
+SRC_URI[md5sum] = "7410c046a775113aa397dc215a4a5964"
+SRC_URI[sha256sum] = "7eb6b5ffc16ef26a9ad50dac17615a09ea3fc228186bed3f8c55de320eda8f3e"
 
 PARALLEL_MAKE = ""
 
-S = "${WORKDIR}/mDNSResponder-${PV}/mDNSPosix"
+S = "${WORKDIR}/mDNSResponder-mDNSResponder-${PV}/mDNSPosix"
 
 EXTRA_OEMAKE += "os=linux DEBUG=0 'CC=${CC}' 'LD=${CCLD} ${LDFLAGS}'"
 
