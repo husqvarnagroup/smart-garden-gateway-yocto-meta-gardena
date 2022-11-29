@@ -271,9 +271,16 @@ test_ppp0() {
         return
     fi
 
-    # SG-16012: Assuming non-link-local addresses get listed first (directly
-    # after "Address:"), this check detects multiple IP addresses on ppp0.
-    if ! echo "${ip_address}" | grep -q "^fe80::106:94bb";then
+    # SG-16012: Check for multiple IP addresses on ppp0.
+    if [ "$(ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:0:0:1/64 scope global" ]; then
+        # for BNW GW, the only global address must be fc00::6:0:0:1
+        result=0
+
+    elif echo "${ip_address}" | grep -q "^fe80::106:94bb";then
+        # for HCGW2/LCGW first expected address is fe80::106:94bb (remove after BNW migration)
+        result=0
+
+    else
         result=3
     fi
 
