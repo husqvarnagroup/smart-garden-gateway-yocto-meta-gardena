@@ -13,6 +13,8 @@ SRC_URI = " \
 
 RDEPENDS_${PN} = " \
     busybox \
+    curl \
+    dropbear \
     jq \
 "
 
