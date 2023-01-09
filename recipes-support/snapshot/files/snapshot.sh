@@ -10,12 +10,12 @@ cd /tmp/ || exit 1
 ##################################
 cp -r /var/lib/shadoway /tmp/snapshot/
 if [ -d /var/run/log/shadoway/ ]; then
-  cp -r /var/run/log/shadoway/ /tmp/snapshot/shadoway/shadoway-volatile-logs
+    cp -r /var/run/log/shadoway/ /tmp/snapshot/shadoway/shadoway-volatile-logs
 fi
 if [ -f /var/run/shadoway/led_status ]; then
-  cp /var/run/shadoway/led_status /tmp/snapshot/shadoway/shadoway-led_status
+    cp /var/run/shadoway/led_status /tmp/snapshot/shadoway/shadoway-led_status
 else
-  echo 'led_status not (yet) available' > /tmp/snapshot/shadoway/shadoway-led_status
+    echo 'led_status not (yet) available' > /tmp/snapshot/shadoway/shadoway-led_status
 fi
 cp /etc/seluxit_env /tmp/snapshot/shadoway/
 # remove password & network key from snapshot for real customers
@@ -63,7 +63,7 @@ mkdir /tmp/snapshot/runtime
 /usr/bin/top -bn1 > /tmp/snapshot/runtime/top
 [ -f /usr/sbin/lsof ] && /usr/sbin/lsof > /tmp/snapshot/runtime/lsof
 if [ -f /sys/devices/virtual/misc/bootcount/bootcount ]; then
-  cp /sys/devices/virtual/misc/bootcount/bootcount /tmp/snapshot/runtime/bootcount
+    cp /sys/devices/virtual/misc/bootcount/bootcount /tmp/snapshot/runtime/bootcount
 fi
 /usr/bin/healthcheck  > /tmp/snapshot/runtime/healthcheck 2>&1 || true
 /bin/networkctl > /tmp/snapshot/runtime/networkctl
@@ -75,25 +75,25 @@ fi
 # Systemd units                  #
 ##################################
 for s in \
-  environment.service \
-  eoltest-check.service \
-  gateway-config-backend.service \
-  gateway-config-backend.socket \
-  healthcheck.service \
-  internet-led.service \
-  iptables.service \
-  lsdl-serializer-log.service \
-  manufacturing-statusfiles.service \
-  mdns.service \
-  openvpn.service \
-  power-led.service \
-  ppp.service \
-  rm-flashing.service \
-  rsyslog.service \
-  shadoway.service \
-  swupdate-check.timer \
-  swupdate-progress.service \
-  sysupgrade.service \
+    environment.service \
+    eoltest-check.service \
+    gateway-config-backend.service \
+    gateway-config-backend.socket \
+    healthcheck.service \
+    internet-led.service \
+    iptables.service \
+    lsdl-serializer-log.service \
+    manufacturing-statusfiles.service \
+    mdns.service \
+    openvpn.service \
+    power-led.service \
+    ppp.service \
+    rm-flashing.service \
+    rsyslog.service \
+    shadoway.service \
+    swupdate-check.timer \
+    swupdate-progress.service \
+    sysupgrade.service \
   ; do systemctl is-failed "${s}" >/dev/null && systemctl status "${s}" > "/tmp/snapshot/runtime/systemctl-status-${s}";
 done
 
