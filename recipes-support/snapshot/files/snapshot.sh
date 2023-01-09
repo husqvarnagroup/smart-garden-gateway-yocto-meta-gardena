@@ -6,27 +6,6 @@ mkdir /tmp/snapshot
 cd /tmp/ || exit 1
 
 ##################################
-# Shadoway stuff                 #
-##################################
-cp -r /var/lib/shadoway /tmp/snapshot/
-if [ -d /var/run/log/shadoway/ ]; then
-    cp -r /var/run/log/shadoway/ /tmp/snapshot/shadoway/shadoway-volatile-logs
-fi
-if [ -f /var/run/shadoway/led_status ]; then
-    cp /var/run/shadoway/led_status /tmp/snapshot/shadoway/shadoway-led_status
-else
-    echo 'led_status not (yet) available' > /tmp/snapshot/shadoway/shadoway-led_status
-fi
-cp /etc/seluxit_env /tmp/snapshot/shadoway/
-# remove password & network key from snapshot for real customers
-# shellcheck disable=SC1091
-. /etc/seluxit_env
-if [ "$SELUXIT_ENV" != "qa" ] && [ "$SELUXIT_ENV" != "dev" ]; then
-    sed -i '/"network_key"\|"password"/d' /tmp/snapshot/shadoway/work/Gateway.json
-    rm -f /tmp/snapshot/shadoway/work/Network_management/Network_key.json
-fi
-
-##################################
 # Generic base image information #
 ##################################
 mkdir /tmp/snapshot/etc/
@@ -82,7 +61,6 @@ for s in \
     healthcheck.service \
     internet-led.service \
     iptables.service \
-    lsdl-serializer-log.service \
     manufacturing-statusfiles.service \
     mdns.service \
     openvpn.service \
@@ -90,7 +68,6 @@ for s in \
     ppp.service \
     rm-flashing.service \
     rsyslog.service \
-    shadoway.service \
     swupdate-check.timer \
     swupdate-progress.service \
     sysupgrade.service \
