@@ -19,6 +19,9 @@ SRC_URI += "\
 export BINDGEN_EXTRA_CLANG_ARGS="-I${STAGING_INCDIR}"
 export CARGO_FEATURE_STD="1"
 
+export CARGO_PROFILE_RELEASE_OPT_LEVEL="z"
+export CARGO_PROFILE_RELEASE__CODEGEN_UNITS="1"
+
 do_install () {
     cargo_do_install
 

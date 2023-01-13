@@ -10,6 +10,8 @@ SRC_URI += " \
 "
 S = "${WORKDIR}"
 CARGO_SRC_DIR=""
+export CARGO_PROFILE_RELEASE_OPT_LEVEL="z"
+export CARGO_PROFILE_RELEASE__CODEGEN_UNITS="1"
 PV_append = ""
 
 # please note if you have entries that do not begin with crate://
