@@ -6,26 +6,10 @@
 # shellcheck shell=dash
 set -eu -o pipefail
 
-readonly ALLOWLIST=https://gateway.iot.sg.dss.husqvarnagroup.net/maintenance-allowlist
 readonly API=https://support.iot.sg-lab.dss.husqvarnagroup.net/v1/register
 readonly SSH_KEY=/home/root/.ssh/id_dropbear
 readonly TLS_CERT=/etc/ssl/certs/client-prod.crt
 readonly TLS_KEY=/etc/ssl/private/client-prod.key
-
-if ! gw_id_hash="$(fw_printenv -n gatewayid | tr -d '\n' | openssl sha1 | \
-        awk '{print $2}')"; then
-    echo "Failed to generate a hash of the gateway ID" >&2
-    exit 1
-fi
-
-return_code=0
-curl -sfI "$ALLOWLIST/$gw_id_hash" >/dev/null || return_code=$?
-if [ "$return_code" -eq 22 ]; then  # >= 400
-    exit
-elif [ "$return_code" -ne 0 ]; then
-    echo "Failed to check $ALLOWLIST" >&2
-    exit 1
-fi
 
 if [ ! -e "$SSH_KEY.pub" ]; then
     mkdir -p "$(dirname "$SSH_KEY")"

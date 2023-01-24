@@ -1,0 +1,12 @@
+[Unit]
+Description=SSH Tunnel Check
+Wants=network-online.target
+After=environment.service network-online.target
+ConditionPathExists=/etc/eol_test_passed
+
+[Service]
+Type=oneshot
+Restart=on-failure
+RestartSec=1m
+ExecCondition=/usr/sbin/sshtunnel-check
+ExecStart=systemctl start sshtunnel

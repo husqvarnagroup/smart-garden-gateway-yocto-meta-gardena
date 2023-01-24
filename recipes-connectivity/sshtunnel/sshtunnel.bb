@@ -8,14 +8,18 @@ inherit allarch systemd
 
 SRC_URI = " \
     file://sshtunnel.service \
-    file://sshtunnel.timer \
+    file://sshtunnel-check.service \
+    file://sshtunnel-check.timer \
     file://sshtunnel.sh \
+    file://sshtunnel-check.sh \
 "
 
 FILES_${PN} = " \
     ${systemd_unitdir}/system/sshtunnel.service \
-    ${systemd_unitdir}/system/sshtunnel.timer \
+    ${systemd_unitdir}/system/sshtunnel-check.service \
+    ${systemd_unitdir}/system/sshtunnel-check.timer \
     ${sbindir}/sshtunnel \
+    ${sbindir}/sshtunnel-check \
 "
 
 RDEPENDS_${PN} = " \
@@ -29,13 +33,15 @@ RDEPENDS_${PN} = " \
 do_install() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/sshtunnel.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/sshtunnel.timer ${D}${systemd_unitdir}/system
+    install -m 0644 ${WORKDIR}/sshtunnel-check.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${WORKDIR}/sshtunnel-check.timer ${D}${systemd_unitdir}/system
 
     install -d ${D}${sbindir}
     install -m 0755 ${WORKDIR}/sshtunnel.sh ${D}${sbindir}/sshtunnel
+    install -m 0755 ${WORKDIR}/sshtunnel-check.sh ${D}${sbindir}/sshtunnel-check
 }
 
 SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE_${PN} = " \
-    sshtunnel.timer \
+    sshtunnel-check.timer \
 "

@@ -1,5 +1,5 @@
 [Unit]
-Description=SSH Tunnel Timer
+Description=SSH Tunnel Check Timer
 After=network-online.target
 
 [Timer]
