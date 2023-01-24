@@ -10,6 +10,3 @@ Type=simple
 Restart=on-failure
 RestartSec=60
 ExecStart=/usr/sbin/sshtunnel
-
-[Install]
-WantedBy=multi-user.target
