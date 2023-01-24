@@ -8,6 +8,10 @@ set -eu -o pipefail
 
 readonly ALLOWLIST=https://gateway.iot.sg.dss.husqvarnagroup.net/maintenance-allowlist
 
+if fw_printenv bnw_cloud_tenant >/dev/null 2>&1; then
+    exit 0
+fi
+
 if ! gw_id_hash="$(fw_printenv -n gatewayid | tr -d '\n' | openssl sha1 | \
         awk '{print $2}')"; then
     echo "Failed to generate a hash of the gateway ID" >&2
