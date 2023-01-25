@@ -11,6 +11,13 @@ mkdir "${SNAPSHOT_DIR}"
 cd /tmp/ || exit 1
 
 ##################################
+# GARDENA services state         #
+##################################
+cp -r /var/lib/lemonbeatd "${SNAPSHOT_DIR}/"
+cp -r /var/lib/lwm2mserver "${SNAPSHOT_DIR}/"
+cp -r /var/lib/cloudadapter "${SNAPSHOT_DIR}/"
+
+##################################
 # Generic base image information #
 ##################################
 mkdir "${SNAPSHOT_DIR}/etc"
