@@ -8,7 +8,6 @@ RDEPENDS_${PN} += "\
     healthcheck \
 "
 
-PV = "2.0.0"
 PR = "r0"
 
 SRC_URI = "\
