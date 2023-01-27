@@ -13,7 +13,7 @@ cd /tmp/ || exit 1
 ##################################
 # Generic base image information #
 ##################################
-mkdir "${SNAPSHOT_DIR}/etc/"
+mkdir "${SNAPSHOT_DIR}/etc"
 cp /etc/os-release "${SNAPSHOT_DIR}/etc/"
 cp /etc/os-release.old "${SNAPSHOT_DIR}/etc/"
 cp /etc/build "${SNAPSHOT_DIR}/etc/"
@@ -87,7 +87,7 @@ done
 ##################################
 # User data                      #
 ##################################
-mkdir "${SNAPSHOT_DIR}/runtime/user/"
+mkdir "${SNAPSHOT_DIR}/runtime/user"
 cp /etc/sysupgrade.conf "${SNAPSHOT_DIR}/runtime/user/"
 /usr/bin/opkg list-installed > "${SNAPSHOT_DIR}/runtime/user/opkg-list-installed"
 
