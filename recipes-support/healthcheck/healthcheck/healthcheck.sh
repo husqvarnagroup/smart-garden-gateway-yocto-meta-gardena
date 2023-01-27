@@ -184,7 +184,7 @@ test_shadoway_corrupted_directories() {
     local result=0
 
     local corrupted=0
-    if corrupted="$(find /var/lib/shadoway/work -maxdepth 1 -type d | grep -a Device_descriptionID | grep -c -v Device_descriptionID_fc00)"; then
+    if corrupted="$(find /var/lib/lemonbeatd -maxdepth 1 -type d | grep -a Device_descriptionID | grep -c -v Device_descriptionID_fc00)"; then
         result=2
     fi
 
@@ -194,7 +194,7 @@ test_shadoway_corrupted_directories() {
 # Allow finding devices which have been affected by SGSE-965.
 # Intended allow attributing long-term side effects of a too low MAC counter.
 test_shadoway_sgse_965() {
-    if ! ls -1 /var/shadoway/work/Device_descriptionID_*/*/Partner_information_*.json >/dev/null 2>&1; then
+    if ! ls -1 /var/lib/lemonbeatd/Device_descriptionID_*/*/Partner_information_*.json >/dev/null 2>&1; then
         log_result "shadoway_sgse_965" 0 "Gateway has no partners"
         return
     fi
@@ -203,7 +203,7 @@ test_shadoway_sgse_965() {
     # (harmless) side effect of SGSE-965 which does not get fixed by Shadoway
     # and allows us to single out (previously) affected gateways.
     local affected_devices
-    if ! affected_devices="$(jq -r "select(.wakeup_interval > 0).address" /var/shadoway/work/Device_*/Partner_information/Partner_information_1.json 2>/dev/null)"; then
+    if ! affected_devices="$(jq -r "select(.wakeup_interval > 0).address" /var/lib/lemonbeatd/Device_*/Partner_information/Partner_information_1.json 2>/dev/null)"; then
         log_result "shadoway_sgse_965" 1 "failed to extract affected device addresses"
         return
     fi
@@ -219,13 +219,13 @@ test_shadoway_sgse_965() {
 
 # Find devices which have too high (>30) partner IDs
 test_shadoway_sgse_1020() {
-    if ! ls -1 /var/shadoway/work/Device_descriptionID_*/*/Partner_information_*.json >/dev/null 2>&1; then
+    if ! ls -1 /var/lib/lemonbeatd/Device_descriptionID_*/*/Partner_information_*.json >/dev/null 2>&1; then
         log_result "shadoway_sgse_1020" 0 "Gateway has no partners"
         return
     fi
 
     local count
-    if ! count="$(jq --slurp 'map(select(.id > 30)) | length' /var/shadoway/work/Device_descriptionID_*/*/Partner_information_*.json 2>/dev/null)"; then
+    if ! count="$(jq --slurp 'map(select(.id > 30)) | length' /var/lib/lemonbeatd/Device_descriptionID_*/*/Partner_information_*.json 2>/dev/null)"; then
         log_result "shadoway_sgse_1020" 1 "failed to extract number of affected partners"
         return
     fi
@@ -410,7 +410,7 @@ test_wifi_device() {
 
 test_network_key_sgse_1024() {
     local result=0
-    local key_file=/var/lib/shadoway/work/Network_management/Network_key.json
+    local key_file=/var/lib/lemonbeatd/Network_management/Network_key.json
 
     if [ -f ${key_file} ]; then
       if jq .encrypted_key ${key_file} | grep -q "[A-Z]"; then
@@ -432,7 +432,7 @@ test_rmver() {
     local dongle_count
 
     # shellcheck disable=SC2126
-    if ! dongle_count="$(grep -l DONGLE /var/lib/shadoway/work/Device_descriptionID_*/Device_descriptionID_*.json | wc -l)"; then
+    if ! dongle_count="$(grep -l DONGLE /var/lib/lemonbeatd/Device_descriptionID_*/Device_descriptionID_*.json | wc -l)"; then
         log_result "rmver" "3" "Dongle work folders could not be counted"
         return
     fi
@@ -441,7 +441,7 @@ test_rmver() {
         return
     fi
 
-    if filename="$(grep -l DONGLE /var/lib/shadoway/work/Device_descriptionID_*/Device_descriptionID_*.json)" \
+    if filename="$(grep -l DONGLE /var/lib/lemonbeatd/Device_descriptionID_*/Device_descriptionID_*.json)" \
         && [ -n "${filename}" ]; then
         # Normalize whitespace to support Shadoway and lemonbeatd serialized files
         local dongle_device_description="$(sed -En "s/([a-z_]+\")\ *:/\1 :/p" "$filename")"
