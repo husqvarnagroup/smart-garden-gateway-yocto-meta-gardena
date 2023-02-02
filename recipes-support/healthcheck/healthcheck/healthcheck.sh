@@ -191,53 +191,6 @@ test_shadoway_corrupted_directories() {
     log_result "shadoway_corrupted_directories" "${result}" "corrupted=${corrupted}"
 }
 
-# Allow finding devices which have been affected by SGSE-965.
-# Intended allow attributing long-term side effects of a too low MAC counter.
-test_shadoway_sgse_965() {
-    if ! ls -1 /var/lib/lemonbeatd/Device_descriptionID_*/*/Partner_information_*.json >/dev/null 2>&1; then
-        log_result "shadoway_sgse_965" 0 "Gateway has no partners"
-        return
-    fi
-
-    # Dongles have a wakeup_interval of 0. Having anything else here is a
-    # (harmless) side effect of SGSE-965 which does not get fixed by Shadoway
-    # and allows us to single out (previously) affected gateways.
-    local affected_devices
-    if ! affected_devices="$(jq -r "select(.wakeup_interval > 0).address" /var/lib/lemonbeatd/Device_*/Partner_information/Partner_information_1.json 2>/dev/null)"; then
-        log_result "shadoway_sgse_965" 1 "failed to extract affected device addresses"
-        return
-    fi
-
-    for affected_device in ${affected_devices}; do
-        log_result "shadoway_sgse_995" 2 "device=${affected_device}"
-    done
-
-    if [ -z "${affected_devices}" ]; then
-        log_result "shadoway_sgse_965" 0 "no affected devices"
-    fi
-}
-
-# Find devices which have too high (>30) partner IDs
-test_shadoway_sgse_1020() {
-    if ! ls -1 /var/lib/lemonbeatd/Device_descriptionID_*/*/Partner_information_*.json >/dev/null 2>&1; then
-        log_result "shadoway_sgse_1020" 0 "Gateway has no partners"
-        return
-    fi
-
-    local count
-    if ! count="$(jq --slurp 'map(select(.id > 30)) | length' /var/lib/lemonbeatd/Device_descriptionID_*/*/Partner_information_*.json 2>/dev/null)"; then
-        log_result "shadoway_sgse_1020" 1 "failed to extract number of affected partners"
-        return
-    fi
-
-    if [ "${count}" -gt 0 ]; then
-        log_result "shadoway_sgse_1020" 2 "count=${count}"
-        return
-    fi
-
-    log_result "shadoway_sgse_1020" 0 "All partner IDs <=30"
-}
-
 test_systemd_running() {
     local result=0
 
@@ -483,9 +436,7 @@ test_all() {
     test_meminfo_slab
     test_meminfo_s_unreclaim
     test_shadoway_corrupted_directories
-    test_shadoway_sgse_965
     test_shadoway_sgse_956
-    test_shadoway_sgse_1020
     test_zram_compr_ratio
     test_zram_huge_pages
     test_wifi_device \
