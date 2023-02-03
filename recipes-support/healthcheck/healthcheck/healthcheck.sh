@@ -179,17 +179,6 @@ test_meminfo_s_unreclaim() {
 
     log_result "meminfo_s_unreclaim" "${result}" "SUnreclaim=${s_unreclaim}"
 }
-# SGSE-770
-test_shadoway_corrupted_directories() {
-    local result=0
-
-    local corrupted=0
-    if corrupted="$(find /var/lib/lemonbeatd -maxdepth 1 -type d | grep -a Device_descriptionID | grep -c -v Device_descriptionID_fc00)"; then
-        result=2
-    fi
-
-    log_result "shadoway_corrupted_directories" "${result}" "corrupted=${corrupted}"
-}
 
 test_systemd_running() {
     local result=0
