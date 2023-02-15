@@ -424,7 +424,6 @@ test_all() {
     test_meminfo_mem_available
     test_meminfo_slab
     test_meminfo_s_unreclaim
-    test_shadoway_corrupted_directories
     test_shadoway_sgse_956
     test_zram_compr_ratio
     test_zram_huge_pages
