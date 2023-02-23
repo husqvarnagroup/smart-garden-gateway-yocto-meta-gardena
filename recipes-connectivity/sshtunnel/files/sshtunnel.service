@@ -6,7 +6,8 @@ After=environment.service network-online.target
 ConditionPathExists=/etc/eol_test_passed
 
 [Service]
-Type=simple
+Type=notify
+NotifyAccess=main
 Restart=on-failure
 RestartSec=60
 ExecStart=/usr/sbin/sshtunnel

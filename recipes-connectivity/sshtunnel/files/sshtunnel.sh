@@ -30,5 +30,7 @@ remote_port=$(echo "$ssh_params" | jq .remote_port)
 remote_user=$(echo "$ssh_params" | jq -r .remote_user)
 remote_host=$(echo "$ssh_params" | jq -r .remote_host)
 
+systemd-notify --ready
+
 ssh -NTy -K 60 -o "ExitOnForwardFailure=yes" -R "$tunnel_port:localhost:22" \
     -p "$remote_port" "$remote_user@$remote_host"
