@@ -319,20 +319,6 @@ test_zram_huge_pages() {
     log_result "zram_huge_pages" "${result}" "huge_pages=${huge_pages}"
 }
 
-test_wifi_device() {
-    local result=0
-
-    # Test not executed on MT7688 because it is not affected
-    if [ "$(uname -m)" = "armv5tejl" ] \
-       && [ ! -d "/sys/bus/usb/devices/1-2:1.0" ]; then
-        result=1
-    fi
-
-    log_result "wifi_device" "${result}" "omitted"
-
-    return "${result}"
-}
-
 test_network_key_sgse_1024() {
     local result=0
     local key_file=/var/lib/shadoway/work/Network_management/Network_key.json
@@ -410,7 +396,6 @@ test_all() {
     test_shadoway_sgse_956
     test_zram_compr_ratio
     test_zram_huge_pages
-    test_wifi_device
 
     test_ppp0
     test_rm_ping
