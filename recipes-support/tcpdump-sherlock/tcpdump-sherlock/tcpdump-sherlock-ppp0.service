@@ -2,7 +2,8 @@
 Description=Store ppp0 traffic locally to allow post mortem analysis
 BindsTo=sys-devices-virtual-net-ppp0.device
 After=sys-devices-virtual-net-ppp0.device
-Before=shadoway.service
+Before=lemonbeatd.service
+Before=lwm2mserver.service
 
 [Service]
 Environment="SAVE_DIR=/tmp/tcpdump-sherlock"
@@ -11,4 +12,5 @@ ExecStart=tcpdump --interface ppp0 --packet-buffered -W 2 -C 1 -w "${SAVE_DIR}/p
 
 [Install]
 WantedBy=basic.target
-WantedBy=shadoway.service
+WantedBy=lemonbeatd.service
+WantedBy=lwm2mserver.service
