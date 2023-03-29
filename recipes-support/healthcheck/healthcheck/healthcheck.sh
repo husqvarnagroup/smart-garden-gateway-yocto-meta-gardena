@@ -50,7 +50,7 @@ test_portcheck_https() {
 # check BSSID-unique disconnection events during the last 24h and compare against maximum acceptable
 test_wifi_connection_stability() {
     # maximum of acceptable BSSID-unique disconnection events during the last 24h
-    local readonly max_bssid_unique_disconnects=12
+    local max_bssid_unique_disconnects=12
 
     local result=0
     local result_string="omitted"
@@ -300,7 +300,7 @@ test_shadoway_sgse_956() {
 
 # Check if zram compression ratio is above minimum
 test_zram_compr_ratio() {
-    local readonly compr_ratio_min=4 # 3 is a hard limit, but we want the healthcheck to trigger earlier
+    local compr_ratio_min=4 # 3 is a hard limit, but we want the healthcheck to trigger earlier
 
     if ! orig_data_size="$(awk '{print $1}' /sys/block/zram0/mm_stat)"; then
         log_result "zram_compr_ratio" 1 "omitted"
@@ -321,7 +321,7 @@ test_zram_compr_ratio() {
 
 # Check if zram has not more than a limited amount of uncompressed pages
 test_zram_huge_pages() {
-    local readonly huge_pages_max=10 # maximum allowed uncompressed pages, none are expected, 10 is an arbitrary number
+    local huge_pages_max=10 # maximum allowed uncompressed pages, none are expected, 10 is an arbitrary number
 
     if ! huge_pages="$(awk '{print $8}' /sys/block/zram0/mm_stat)"; then
         log_result "zram_huge_pages" 1 "omitted"
