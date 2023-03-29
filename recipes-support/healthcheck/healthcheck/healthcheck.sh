@@ -386,10 +386,12 @@ test_rmver() {
     if filename="$(grep -l DONGLE /var/lib/lemonbeatd/Device_descriptionID_*/Device_descriptionID_*.json)" \
         && [ -n "${filename}" ]; then
         # Normalize whitespace to support Shadoway and lemonbeatd serialized files
-        local dongle_device_description="$(sed -En "s/([a-z_]+\")\ *:/\1 :/p" "$filename")"
+        local dongle_device_description
+        dongle_device_description="$(sed -En "s/([a-z_]+\")\ *:/\1 :/p" "$filename")"
         # Extract the needed information
         local radio_module_app_ver="unknown"
-        local etc_radio_module_app_ver_latest="$(cat /etc/rm-firmware-version.latest)"
+        local etc_radio_module_app_ver_latest
+        etc_radio_module_app_ver_latest="$(cat /etc/rm-firmware-version.latest)"
         if radio_module_app_ver="$(echo "$dongle_device_description" | awk '/version_app/ {print $3}' | cut -d '"' -f2)"; then
             if [ "${radio_module_app_ver}" = "$etc_radio_module_app_ver_latest" ]; then
                 result=0;
