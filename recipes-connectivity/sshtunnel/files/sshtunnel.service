@@ -10,4 +10,5 @@ Type=notify
 NotifyAccess=main
 Restart=on-failure
 RestartSec=60
+TimeoutSec=10m
 ExecStart=/usr/sbin/sshtunnel

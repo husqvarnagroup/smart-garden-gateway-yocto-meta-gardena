@@ -11,9 +11,13 @@ readonly SSH_KEY=/home/root/.ssh/id_dropbear
 readonly TLS_CERT=/etc/ssl/certs/client-prod.crt
 readonly TLS_KEY=/etc/ssl/private/client-prod.key
 
-if [ ! -e "$SSH_KEY.pub" ]; then
+if [ ! -s "$SSH_KEY" ] || [ ! -s "$SSH_KEY.pub" ]; then
     mkdir -p "$(dirname "$SSH_KEY")"
-    dropbearkey -t rsa -f "$SSH_KEY" | grep '^ssh-rsa ' > "$SSH_KEY.pub"
+    dropbearkey -t rsa -f "$SSH_KEY.tmp" | grep "^ssh-rsa " > "$SSH_KEY.pub.tmp"
+    sync
+    rm -f "$SSH_KEY" "$SSH_KEY.pub"
+    mv "$SSH_KEY.tmp" "$SSH_KEY"
+    mv "$SSH_KEY.pub.tmp" "$SSH_KEY.pub"
 fi
 
 # TODO: remove `--insecure`
