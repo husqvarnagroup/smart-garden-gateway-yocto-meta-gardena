@@ -132,6 +132,19 @@ test_vpn_key() {
     log_result "vpn_key" "0" "omitted"
 }
 
+test_client_crt_longevity() {
+    # Ensure certs do not expire for another 30 years.
+    # 30 years chosen because of weird behavior when checking for 100 years.
+    # See also https://stackoverflow.com/questions/21297853/how-to-determine-ssl-cert-expiration-date-from-a-pem-encoded-certificate#comment113143488_31718838
+
+    local result=0
+    if ! openssl x509 -checkend $(( 3600 * 24 * 365 * 30 )) -noout -in /etc/ssl/certs/client-prod.crt > /dev/null; then
+        result=1
+    fi
+
+    log_result "client_crt_longevity" "${result}" "omitted"
+}
+
 test_meminfo_mem_available() {
     local result=0
 
@@ -423,6 +436,7 @@ test_all() {
     test_vpn_crt_ca
     test_vpn_crt_subject
     test_vpn_key
+    test_client_crt_longevity
     test_meminfo_mem_available
     test_meminfo_slab
     test_meminfo_s_unreclaim
