@@ -7,7 +7,6 @@ set -eu -o pipefail
 
 readonly debug=1
 readonly led=/usr/bin/led-indicatorc
-readonly shadoway_status_file=/run/shadoway/led_status
 readonly cloudadapter_status_file=/run/cloudadapter/led_status
 
 info() {
@@ -64,10 +63,6 @@ vpn_connected() {
     ip route | grep -q '^10.* via 10.* dev vpn0'
 }
 
-shadoway_status() {
-    [ -f "$shadoway_status_file" ] && [ "$(cat $shadoway_status_file)" = "GREEN" ]
-}
-
 cloudadapter_status() {
     [ -f "$cloudadapter_status_file" ] && [ "$(cat $cloudadapter_status_file)" = "GREEN" ]
 }
@@ -78,9 +73,7 @@ while true; do
     if is_hotspot; then
         state=led_yellow_on
     elif has_ip eth0 || has_ip wlan0; then
-        if vpn_connected && shadoway_status; then
-            state=led_green_on
-        elif cloudadapter_status; then
+        if cloudadapter_status; then
             state=led_green_on
         else
             state=led_red_blink
