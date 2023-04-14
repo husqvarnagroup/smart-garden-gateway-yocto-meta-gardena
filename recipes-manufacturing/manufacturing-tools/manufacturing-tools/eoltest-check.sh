@@ -36,7 +36,7 @@ fi
 # note: during manufacturing, we can never be past the EOL test by
 # definition (we're either in bootstrapping, FCT or EOL test phase).
 # this also means, we will never try to do a system update or try to
-# contact the Seluxit servers during manufacturing.
+# contact the backend servers during manufacturing.
 eol_test_passed="$(fw_printenv -n eol_test_passed 2>/dev/null || echo 0)"
 if [ "$eol_test_passed" = "1" ]; then
     if grep -q "^search manufacturing.husqvarnagroup.net$" /etc/resolv.conf; then

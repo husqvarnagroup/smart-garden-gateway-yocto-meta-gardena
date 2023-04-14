@@ -24,7 +24,7 @@ SRC_URI = "git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-manufact
            file://keep.d/manufacturing-statusfiles \
            "
 
-PR = "r0"
+PR = "r1"
 
 PV = "20210812+git${SRCPV}"
 SRCREV = "e0db2ae9139c4331529b7c7a77fe830bef984b85"
