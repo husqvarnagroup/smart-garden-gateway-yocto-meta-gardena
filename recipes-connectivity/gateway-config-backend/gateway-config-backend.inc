@@ -1,11 +1,6 @@
-# This recipe does not build without either `accessory-server-bnw` or `accessory-server-seluxit` as build dependency.
-# See gateway-config-backend-<FLAVOR>_xxx.bb for details about those additional dependencies.
+PR = "r4"
 
-# This is a workaround because as of `accessory-server` version 0.17.0 it is no longer compatible with Shadoway/Seluxit.
-
-PR = "r3"
-
-DEPENDS += "openssl"
+DEPENDS += "openssl accessory-server"
 RDEPENDS_${PN} += "gateway-config-frontend openssl openssl-bin openssl-conf"
 
 SRC_URI += "\
