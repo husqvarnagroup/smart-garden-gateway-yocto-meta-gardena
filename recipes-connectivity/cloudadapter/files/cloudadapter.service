@@ -1,0 +1,26 @@
+[Unit]
+Description=BNW cloudadapter
+After=update-hw-revision.service eoltest-check.service
+Wants=update-hw-revision.service eoltest-check.service
+ConditionPathExists=/etc/eol_test_passed
+
+[Service]
+Type=notify
+Restart=on-failure
+RestartSec=10
+WatchdogSec=60
+TimeoutStartSec=300
+NotifyAccess=main
+WorkingDirectory=/var/lib/cloudadapter
+ExecStart=/usr/bin/cloudadapter_native -v
+ExecStopPost=-/bin/sh -c "mkdir -p /run/cloudadapter && echo -n 'RED' > /run/cloudadapter/led_status"
+Environment=PYTHONUNBUFFERED=1
+Environment=CLOUDADAPTER_ON_CONNECT_ACTIVITIES_WAIT_TIMEOUT=15
+Environment=CLOUDADAPTER_RATELIMIT_DEVICE_TELEMETRY_PATH_lemonbeat_status_message=20/3600!0
+
+# SG-18571 Turn memory bloat into a hard error
+MemoryHigh=25M
+MemoryMax=30M
+
+[Install]
+WantedBy=multi-user.target
