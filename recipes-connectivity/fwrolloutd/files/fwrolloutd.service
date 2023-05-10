@@ -1,0 +1,20 @@
+[Unit]
+Description=Firmware rollout service
+After=eoltest-check.service lemonbeatd.service lwm2mserver.service time-sync.target network-online.target
+Wants=eoltest-check.service lemonbeatd.service lwm2mserver.service time-sync.target network-online.target
+ConditionPathExists=/etc/eol_test_passed
+
+[Service]
+Type=simple
+Environment=RUST_LOG=info
+ExecStart=/usr/bin/fwrolloutd
+
+Restart=on-failure
+RestartSec=1m
+
+# SG-18571 Turn memory bloat into a hard error
+MemoryHigh=10M
+MemoryMax=15M
+
+[Install]
+WantedBy=multi-user.target
