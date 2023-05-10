@@ -1,0 +1,13 @@
+[Unit]
+Description=NNG Socket Forwarder for Lemonbeat Server
+After=eoltest-check.service ppp.service lemonbeatd.service
+Wants=eoltest-check.service ppp.service lemonbeatd.service
+ConditionPathExists=/etc/eol_test_passed
+
+[Service]
+Type=simple
+ExecCondition=sh -c '[ "$(fw_printenv -n dev_debug_enable_nngforward 2>/dev/null)" = "1" ] || exit 1'
+ExecStart=/usr/bin/nngforward -q lemonbeatd 28152
+
+[Install]
+WantedBy=multi-user.target

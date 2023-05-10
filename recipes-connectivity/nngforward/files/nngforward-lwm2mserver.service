@@ -1,0 +1,13 @@
+[Unit]
+Description=NNG Socket Forwarder for LWM2M Server
+After=eoltest-check.service ppp.service lwm2mserver.service
+Wants=eoltest-check.service ppp.service lwm2mserver.service
+ConditionPathExists=/etc/eol_test_passed
+
+[Service]
+Type=simple
+ExecCondition=sh -c '[ "$(fw_printenv -n dev_debug_enable_nngforward 2>/dev/null)" = "1" ] || exit 1'
+ExecStart=/usr/bin/nngforward -q lwm2mserver 28150
+
+[Install]
+WantedBy=multi-user.target
