@@ -1,0 +1,4 @@
+/var/lib/lemonbeatd
+# Preserve old Shadoway data so lemonbeatd can migrate it. The directory cannot
+# be removed as long as there are gateways with older software out there.
+/var/lib/shadoway/work
