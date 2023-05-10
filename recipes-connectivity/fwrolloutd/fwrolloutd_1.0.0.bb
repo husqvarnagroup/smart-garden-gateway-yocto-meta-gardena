@@ -6,12 +6,12 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get fwrolloutd could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/fwrolloutd/0.3.3"
+# SRC_URI += "crate://crates.io/fwrolloutd/1.0.0"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "84c033b400c3612ee1255a84ed6c2257e2b08bb5"
+SRCREV = "8e3451de5cc34bcc35d5be3e2a2cdd2e5bc9f500"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
-PV:append = ".AUTOINC+84c033b400"
+PV:append = ".AUTOINC+8e3451de5c"
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
