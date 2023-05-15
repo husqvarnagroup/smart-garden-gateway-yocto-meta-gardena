@@ -10,6 +10,7 @@ PR = "r0"
 RDEPENDS:${PN} = "iptables iptables-modules"
 
 SRC_URI = "\
+    file://firewall.nft \
     file://firewall.sh \
     file://firewall.service \
 "
@@ -17,6 +18,9 @@ SRC_URI = "\
 S = "${WORKDIR}/"
 
 do_install() {
+    install -d ${D}${sysconfdir}/nftables
+    install -m 0644 ${WORKDIR}/firewall.nft  ${D}/${sysconfdir}/nftables/gardena-firewall.nft
+
     install -d ${D}${sbindir}
     install -m 755 ${S}firewall.sh ${D}${sbindir}/firewall
 
