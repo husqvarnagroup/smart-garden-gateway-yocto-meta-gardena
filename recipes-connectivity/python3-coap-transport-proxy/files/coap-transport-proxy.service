@@ -1,0 +1,14 @@
+[Unit]
+Description=Proxy server allowing clients to open TCP sockets with optional TLS encryption using the CoAP protocol
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/etc/eol_test_passed
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=60
+ExecStart=/usr/bin/coap-transport-proxy
+
+[Install]
+WantedBy=multi-user.target
