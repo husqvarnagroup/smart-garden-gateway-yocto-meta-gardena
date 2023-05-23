@@ -8,7 +8,7 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=52a1707594d3c6694292db3dd1a7f960"
 
 DEPENDS = "libyaml"
-RDEPENDS_${PN} = "libyaml"
+RDEPENDS:${PN} = "libyaml"
 
 PR = "r1"
 

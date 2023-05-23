@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "7536c81f348e6c88c9dce4cd6eb5b09b422902bde8f76d7a0d4be2a0b9
 
 S = "${WORKDIR}/opentelemetry-sdk-1.8.0"
 
-RDEPENDS_${PN} = "python3-opentelemetry-api python3-opentelemetry-semantic-conventions"
+RDEPENDS:${PN} = "python3-opentelemetry-api python3-opentelemetry-semantic-conventions"
 
 inherit setuptools3

@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 PV = "0.2.1"
 PR = "r0"
 
-RDEPENDS_${PN} = "systemd"
+RDEPENDS:${PN} = "systemd"
 
 SRC_URI = "\
     file://wlan-stresstest.service \
@@ -22,4 +22,4 @@ do_install() {
 }
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "${PN}.service"
+SYSTEMD_SERVICE:${PN} = "${PN}.service"

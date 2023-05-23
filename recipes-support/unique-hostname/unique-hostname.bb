@@ -14,7 +14,7 @@ SRC_URI = "\
 
 S = "${WORKDIR}/"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${base_libdir}/upgrade/keep.d \
 "
 
@@ -31,4 +31,4 @@ do_install() {
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "unique-hostname.service"
+SYSTEMD_SERVICE:${PN} = "unique-hostname.service"

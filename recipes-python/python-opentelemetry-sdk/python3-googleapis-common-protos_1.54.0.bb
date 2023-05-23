@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "a4031d6ec6c2b1b6dc3e0be7e10a1bd72fb0b18b07ef9be7b51f2c1004
 
 S = "${WORKDIR}/googleapis-common-protos-1.54.0"
 
-RDEPENDS_${PN} = "python3-protobuf"
+RDEPENDS:${PN} = "python3-protobuf"
 
 inherit setuptools3

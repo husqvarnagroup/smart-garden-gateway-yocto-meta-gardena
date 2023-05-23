@@ -1,5 +1,5 @@
 DEPENDS += "openssl"
-RDEPENDS_${PN} += "openssl openssl-bin openssl-conf"
+RDEPENDS:${PN} += "openssl openssl-bin openssl-conf"
 
 SRC_URI += " \
     file://fwrolloutd.service \
@@ -11,11 +11,11 @@ export CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1"
 
 PR = "r0"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${systemd_unitdir}/system/ \
 "
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/fwrolloutd.service ${D}${systemd_unitdir}/system/
 
@@ -24,4 +24,4 @@ do_install_append() {
 }
 
 inherit systemd
-SYSTEMD_SERVICE_${PN} = "fwrolloutd.service"
+SYSTEMD_SERVICE:${PN} = "fwrolloutd.service"

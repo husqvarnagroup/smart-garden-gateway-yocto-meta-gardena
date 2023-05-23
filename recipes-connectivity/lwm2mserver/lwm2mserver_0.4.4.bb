@@ -29,7 +29,7 @@ DEPENDS = " \
     virtual/crypt \
 "
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     lemonbeatd \
     python3-aiorun \
     python3-core \
@@ -48,12 +48,12 @@ RDEPENDS_${PN} += " \
 
 S = "${WORKDIR}/git/lwm2mserver"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${localstatedir}/lib/${PN} \
     ${base_libdir}/upgrade/keep.d \
 "
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/lwm2mserver.service ${D}${systemd_unitdir}/system
 
@@ -73,6 +73,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = " \
+SYSTEMD_SERVICE:${PN} = " \
     lwm2mserver.service \
 "

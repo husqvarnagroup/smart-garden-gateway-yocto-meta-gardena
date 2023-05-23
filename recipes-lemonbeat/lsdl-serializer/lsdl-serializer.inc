@@ -16,7 +16,7 @@ EXTRA_OECMAKE = " -DBUILD_SHARED_LIBS=y"
 PACKAGES =+ "${PN}-lib"
 PROVIDES =+ "${PN}-lib"
 
-FILES_${PN}-lib += "\
+FILES:${PN}-lib += "\
   ${libdir}/liblsdl-serializer.so \
 "
 

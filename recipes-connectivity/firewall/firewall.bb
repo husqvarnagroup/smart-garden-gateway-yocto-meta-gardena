@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2
 PV = "1.1.2"
 PR = "r0"
 
-RDEPENDS_${PN} = "iptables iptables-modules"
+RDEPENDS:${PN} = "iptables iptables-modules"
 
 SRC_URI = "\
     file://firewall.sh \
@@ -26,4 +26,4 @@ do_install() {
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "firewall.service"
+SYSTEMD_SERVICE:${PN} = "firewall.service"

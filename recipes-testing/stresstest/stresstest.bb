@@ -5,8 +5,8 @@ PV = "0.1"
 
 PR = "r0"
 
-RDEPENDS_${PN}-upload = "curl systemd-extra-utils"
-RDEPENDS_${PN}-download = "curl systemd-extra-utils"
+RDEPENDS:${PN}-upload = "curl systemd-extra-utils"
+RDEPENDS:${PN}-download = "curl systemd-extra-utils"
 
 SRC_URI = "\
     file://50-stresstest-download.sh \
@@ -37,12 +37,12 @@ do_install() {
     install -m 0644 ${WORKDIR}/50-stresstest-download.sh ${D}${libexecdir}/dhcpcd-hooks/50-stresstest-download
 }
 
-FILES_${PN}-upload = "\
+FILES:${PN}-upload = "\
     ${bindir}/stresstest-upload \
     ${libexecdir}/dhcpcd-hooks/50-stresstest-upload \
 "
 
-FILES_${PN}-download = "\
+FILES:${PN}-download = "\
     ${bindir}/stresstest-download \
     ${libexecdir}/dhcpcd-hooks/50-stresstest-download \
 "

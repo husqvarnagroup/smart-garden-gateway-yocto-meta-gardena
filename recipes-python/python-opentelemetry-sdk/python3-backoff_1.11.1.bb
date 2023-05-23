@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "ccb962a2378418c667b3c979b504fdeb7d9e0d29c0579e3b13b8646717
 
 S = "${WORKDIR}/backoff-1.11.1"
 
-RDEPENDS_${PN} = ""
+RDEPENDS:${PN} = ""
 
 inherit setuptools3

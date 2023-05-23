@@ -26,13 +26,13 @@ PACKAGECONFIG ??= ""
 PACKAGECONFIG[mbedtls] = "-DNNG_ENABLE_TLS=ON,-DNNG_ENABLE_TLS=OFF,mbedtls"
 
 PACKAGES =+ "${PN}-tools"
-FILES_${PN}-tools = "${bindir}/*"
+FILES:${PN}-tools = "${bindir}/*"
 
 # Using our own pkgconfig file is a workaround because nng does not provide one.
 # There is an open issue on Github related to that topic:
 # https://github.com/nanomsg/nng/issues/926
 # As soon as upstream nng provides a pkgconfig file this should be removed.
-do_install_append() {
+do_install:append() {
 	install -d ${D}${libdir}/pkgconfig
 	install -m 0644 ${WORKDIR}/libnng.pc ${D}${libdir}/pkgconfig/
 }

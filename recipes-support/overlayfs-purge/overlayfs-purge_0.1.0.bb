@@ -12,7 +12,7 @@ S = "${WORKDIR}"
 CARGO_SRC_DIR=""
 export CARGO_PROFILE_RELEASE_OPT_LEVEL="z"
 export CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1"
-PV_append = ""
+PV:append = ""
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched

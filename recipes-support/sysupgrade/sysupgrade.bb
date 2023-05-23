@@ -2,7 +2,7 @@ SUMMARY = "Manage data migration on system upgrade"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-FILESEXTRAPATHS_append := "${THISDIR}/files:"
+FILESEXTRAPATHS:append := "${THISDIR}/files:"
 
 SRC_URI = " \
     file://keep.d/sysupgrade \
@@ -14,9 +14,9 @@ SRC_URI = " \
 PR = "r1"
 PV = "1.3"
 
-RDEPENDS_${PN} = "initscripts-readonly-rootfs-overlay overlayfs-purge"
+RDEPENDS:${PN} = "initscripts-readonly-rootfs-overlay overlayfs-purge"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${base_libdir}/upgrade/keep.d \
 "
 
@@ -37,6 +37,6 @@ do_install () {
     install -d ${D}${localstatedir}/lib/sysupgrade
 }
 
-SYSTEMD_SERVICE_${PN} += "sysupgrade.service"
+SYSTEMD_SERVICE:${PN} += "sysupgrade.service"
 
 inherit systemd allarch

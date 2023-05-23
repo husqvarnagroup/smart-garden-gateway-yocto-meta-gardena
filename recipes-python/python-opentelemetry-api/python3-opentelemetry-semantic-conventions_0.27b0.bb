@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "6f4cbef478c09056e76248a78cd2590dad6cd54f3854f713af155c8263
 
 S = "${WORKDIR}/opentelemetry-semantic-conventions-0.27b0"
 
-RDEPENDS_${PN} = ""
+RDEPENDS:${PN} = ""
 
 inherit setuptools3

@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 PV = "0.18.3"
 PR = "r0"
 
-RDEPENDS_${PN} = "curl openssl systemd"
+RDEPENDS:${PN} = "curl openssl systemd"
 
 SRC_URI = "\
     file://healthcheck.service \
@@ -27,9 +27,9 @@ do_install() {
     sed -i 's#@UPDATE_URL_PROTOCOLLESS@#${UPDATE_URL_PROTOCOLLESS}#' ${D}${bindir}/healthcheck
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${systemd_unitdir}/system \
 "
 
 inherit systemd allarch
-SYSTEMD_SERVICE_${PN} = "${PN}.timer"
+SYSTEMD_SERVICE:${PN} = "${PN}.timer"

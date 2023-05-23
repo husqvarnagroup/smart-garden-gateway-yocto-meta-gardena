@@ -20,14 +20,14 @@ SRC_URI[sha256sum] = "be430377b05c15971d5ccb6e44b4d95470f561024ed6d701fe3da3a188
 
 inherit autotools-brokensep pkgconfig
 
-PACKAGES_prepend = "${PN}-test "
+PACKAGES:prepend = "${PN}-test "
 
 EXTRA_OECONF = "--libdir=${base_libdir}"
 TARGET_CC_ARCH += "${LDFLAGS}"
 export PREFIX="${prefix}"
 
 #we want tegrarcm binary to run on a 32-bit architecture, on x86_64 this requires the 32-bit compatibility libs
-EXTRA_OEMAKE_class-native = "CC='${CC}' CXX='${CXX}'"
+EXTRA_OEMAKE:class-native = "CC='${CC}' CXX='${CXX}'"
 
 do_compile() {
     sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
@@ -36,13 +36,13 @@ do_compile() {
 }
 
 # do not provide the shared object file, so we force to link statically for host tools
-do_compile_class-native() {
+do_compile:class-native() {
     sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
     export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"
     oe_runmake all
 }
 
-FILES_${PN}-test = " \
+FILES:${PN}-test = " \
     ${bindir} \
     ${datadir}/cryptopp \
 "

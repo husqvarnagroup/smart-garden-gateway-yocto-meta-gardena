@@ -17,10 +17,10 @@ SRC_URI = " \
 "
 
 DEFAULT_BOARD_NAME = "unknown"
-DEFAULT_BOARD_NAME_mt7688 = "smart-gateway-mt7688"
-DEFAULT_BOARD_NAME_at91sam9x5 = "smart-gateway-at91sam"
+DEFAULT_BOARD_NAME:mt7688 = "smart-gateway-mt7688"
+DEFAULT_BOARD_NAME:at91sam9x5 = "smart-gateway-at91sam"
 
-do_install_append () {
+do_install:append () {
     install -d ${D}${bindir}
     install -d ${D}${systemd_unitdir}/system
 
@@ -33,4 +33,4 @@ do_install_append () {
     install -m 755 ${WORKDIR}/update-sw-versions.sh ${D}${bindir}/update-sw-versions
 }
 
-SYSTEMD_SERVICE_${PN} = "update-hw-revision.service update-sw-versions.service"
+SYSTEMD_SERVICE:${PN} = "update-hw-revision.service update-sw-versions.service"

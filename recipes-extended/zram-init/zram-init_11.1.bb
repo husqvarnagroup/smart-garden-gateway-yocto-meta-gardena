@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://${S}/README.md;beginline=5;endline=7;md5=1c6f4971407e
 
 inherit allarch
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     e2fsprogs-mke2fs \
     e2fsprogs-tune2fs \
     "
@@ -24,6 +24,6 @@ do_install () {
     install -m 0755 ${S}/sbin/zram-init.in ${D}${base_sbindir}/zram-init
 }
 
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${base_sbindir} \
     "

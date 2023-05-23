@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 
 inherit allarch
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
     mtd-utils \
     wpa-supplicant-passphrase \
 "

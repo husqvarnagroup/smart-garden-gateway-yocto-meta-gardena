@@ -17,7 +17,7 @@ SRC_URI += " \
 
 DEPENDS += "${PYTHON_PN}-pytest-runner-native ${PYTHON_PN}-cffi-native cmake-native mbedtls nng"
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     libatomic \
     python3-cffi \
     python3-asyncio \
@@ -25,7 +25,7 @@ RDEPENDS_${PN} += " \
     python3-typing \
 "
 
-do_compile_prepend () {
+do_compile:prepend () {
     prefix="${RECIPE_SYSROOT}/${prefix}" outfile="${S}/nng_api.h" tmpfile="${S}/nng_api.h.tmp" "${S}/generate_api.sh"
 }
 

@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "43ac5335da90c31c24ba028af536a91d41d53f9e6901ddb021bcc572ce
 
 S = "${WORKDIR}/Deprecated-1.2.13"
 
-RDEPENDS_${PN} = "python3-wrapt"
+RDEPENDS:${PN} = "python3-wrapt"
 
 inherit setuptools3

@@ -15,13 +15,13 @@ SRCREV = "63cd320851e875ee278a4b019b9ad537104cc21b"
 DEPENDS = "libtirpc"
 
 # procps supports the arguments 'a' and 'x' which are used by WTS
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
   procps \
   wpa-supplicant-cli \
 "
 
 S = "${WORKDIR}/git"
-FILES_${PN} += "\
+FILES:${PN} += "\
     /usr/local/sbin/ \
     ${systemd_unitdir}/network \
 "

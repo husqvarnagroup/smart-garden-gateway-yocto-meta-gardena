@@ -12,7 +12,7 @@ inherit setuptools3
 
 DEPENDS += "python3-setuptools-scm-native python3-pytest-runner-native"
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     python3-plistlib \
 "
 

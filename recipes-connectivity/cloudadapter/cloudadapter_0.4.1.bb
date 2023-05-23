@@ -32,12 +32,12 @@ DEPENDS = " \
 
 S = "${WORKDIR}/git"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${localstatedir}/lib/${PN} \
     ${base_libdir}/upgrade/keep.d \
 "
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/cloudadapter.service ${D}${systemd_unitdir}/system
 
@@ -55,7 +55,7 @@ do_install_append() {
     install -m 0644 ${WORKDIR}/keep.d/cloudadapter ${D}${base_libdir}/upgrade/keep.d
 }
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     python3-core \
     python3-typing \
     python3-pkg-resources \
@@ -75,6 +75,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = " \
+SYSTEMD_SERVICE:${PN} = " \
     cloudadapter.service \
 "

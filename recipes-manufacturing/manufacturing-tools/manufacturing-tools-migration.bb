@@ -15,11 +15,11 @@ SRC_URI += " \
 PV = "2019-10-22"
 PR = "r0"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${base_libdir}/upgrade/keep.d \
 "
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     migration \
 "
 
@@ -36,5 +36,5 @@ do_install () {
     install -m 0644 ${WORKDIR}/keep.d/manufacturing-statusfiles ${D}${base_libdir}/upgrade/keep.d
 }
 
-SYSTEMD_SERVICE_${PN} += "manufacturing-statusfiles.service"
-SYSTEMD_SERVICE_${PN} += "eoltest-check.service"
+SYSTEMD_SERVICE:${PN} += "manufacturing-statusfiles.service"
+SYSTEMD_SERVICE:${PN} += "eoltest-check.service"

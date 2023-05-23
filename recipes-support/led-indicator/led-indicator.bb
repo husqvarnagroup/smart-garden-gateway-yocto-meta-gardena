@@ -14,7 +14,7 @@ SRC_URI = "\
     file://power-ledd.sh \
     file://power-led.service \
 "
-SRC_URI_append_mt7688 = " \
+SRC_URI:append:mt7688 = " \
     file://rf-led.service \
     file://rf-led-setup.sh \
     file://ethernet-leds.service \
@@ -39,7 +39,7 @@ do_install() {
     install -m 0644 ${WORKDIR}/internet-led.service ${D}${systemd_unitdir}/system
 }
 
-do_install_append_mt7688() {
+do_install:append:mt7688() {
     install -m 755 ${S}rf-led-setup.sh ${D}${bindir}/rf-led-setup
     install -m 755 ${S}ethernet-led-setup.sh ${D}${bindir}/ethernet-led-setup
 
@@ -49,5 +49,5 @@ do_install_append_mt7688() {
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "power-led.service internet-led.service"
-SYSTEMD_SERVICE_${PN}_append_mt7688 = " rf-led.service ethernet-leds.service"
+SYSTEMD_SERVICE:${PN} = "power-led.service internet-led.service"
+SYSTEMD_SERVICE:${PN}:append:mt7688 = " rf-led.service ethernet-leds.service"

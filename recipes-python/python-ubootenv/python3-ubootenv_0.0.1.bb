@@ -20,6 +20,6 @@ DEPENDS += " \
     libubootenv \
 "
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     ${PYTHON_PN}-cffi \
 "

@@ -10,13 +10,13 @@ S = "${WORKDIR}/git"
 
 inherit python3-dir
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${PYTHON_SITEPACKAGES_DIR}/* \
     ${PYTHON_SITEPACKAGES_DIR}/emc_testing/* \
     ${PYTHON_SITEPACKAGES_DIR}/scripts/gateway_autoconfig.sh \
 "
 
-RDEPENDS_emc-tools += " \
+RDEPENDS:emc-tools += " \
     python3-core \
     python3-fcntl \
     python3-json \
@@ -53,7 +53,7 @@ do_install () {
     sed -i 's|/usr/lib/python3.7/site-packages|${PYTHON_SITEPACKAGES_DIR}|g' ${D}${bindir}/emc-tools-autoconfig
 }
 
-pkg_postinst_${PN} () {
+pkg_postinst:${PN} () {
     # do autoconfig
     emc-tools-autoconfig
 }

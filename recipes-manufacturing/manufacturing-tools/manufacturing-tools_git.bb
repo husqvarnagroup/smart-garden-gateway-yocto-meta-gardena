@@ -31,7 +31,7 @@ SRCREV = "e0db2ae9139c4331529b7c7a77fe830bef984b85"
 
 S = "${WORKDIR}/git"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${PYTHON_SITEPACKAGES_DIR}/bootstrap.py \
     ${PYTHON_SITEPACKAGES_DIR}/util.py \
     ${PYTHON_SITEPACKAGES_DIR}/testing.py \
@@ -41,7 +41,7 @@ FILES_${PN} += " \
     ${base_libdir}/upgrade/keep.d \
 "
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     fct-tool \
     python3-core \
     python3-datetime \
@@ -51,7 +51,7 @@ RDEPENDS_${PN} += " \
 "
 
 # additional python modules (not part of core python3 packages)
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     python3-crcmod \
     python3-pyserial \
 "
@@ -92,23 +92,23 @@ do_install () {
     install -m 0644 ${WORKDIR}/keep.d/manufacturing-statusfiles ${D}${base_libdir}/upgrade/keep.d
 }
 
-pkg_postinst_${PN} () {
+pkg_postinst:${PN} () {
     cd $D${PYTHON_SITEPACKAGES_DIR} && python3 -m compileall .
 }
 
-SYSTEMD_SERVICE_${PN} += "manufacturing-statusfiles.service"
-SYSTEMD_SERVICE_${PN} += "ipr.service"
-SYSTEMD_SERVICE_${PN} += "selftest.service"
-SYSTEMD_SERVICE_${PN} += "eoltest-check.service"
-SYSTEMD_SERVICE_${PN} += "eoltest.service"
-SYSTEMD_SERVICE_${PN} += "homekit-setup.service"
+SYSTEMD_SERVICE:${PN} += "manufacturing-statusfiles.service"
+SYSTEMD_SERVICE:${PN} += "ipr.service"
+SYSTEMD_SERVICE:${PN} += "selftest.service"
+SYSTEMD_SERVICE:${PN} += "eoltest-check.service"
+SYSTEMD_SERVICE:${PN} += "eoltest.service"
+SYSTEMD_SERVICE:${PN} += "homekit-setup.service"
 
 PACKAGES =+ "fct-tool"
 PROVIDES =+ "fct-tool"
 
-FILES_fct-tool += "${bindir}/fct-tool"
+FILES:fct-tool += "${bindir}/fct-tool"
 
-RDEPENDS_fct-tool += " \
+RDEPENDS:fct-tool += " \
     iw \
     openocd \
     python3-core \
@@ -117,6 +117,6 @@ RDEPENDS_fct-tool += " \
     systemd \
 "
 
-RCONFLICTS_fct-tool += " \
+RCONFLICTS:fct-tool += " \
     procps \
 "

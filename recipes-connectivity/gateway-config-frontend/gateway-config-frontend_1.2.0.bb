@@ -22,6 +22,6 @@ do_install () {
     find ${D}${WWWDIR} \( -type d \! -perm 0755 -exec chmod 00755 -- '{}' + \) -o \( -type f \! -perm 0644 -exec chmod 00644 -- '{}' + \)
 }
 
-FILES_${PN} += "\
+FILES:${PN} += "\
     ${WWWDIR} \
     "

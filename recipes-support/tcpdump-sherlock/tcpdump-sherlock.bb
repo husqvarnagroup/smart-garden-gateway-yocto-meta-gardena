@@ -23,9 +23,9 @@ do_install() {
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 
-RDEPENDS_${PN}-ppp0 = "tcpdump"
+RDEPENDS:${PN}-ppp0 = "tcpdump"
 
-FILES_${PN}-ppp0 = " \
+FILES:${PN}-ppp0 = " \
     ${nonarch_base_libdir}/udev/rules.d \
     ${systemd_unitdir}/system/${BPN}-ppp0.service \
 "
@@ -35,7 +35,7 @@ PACKAGES = "${PN}-ppp0"
 inherit systemd allarch
 SYSTEMD_PACKAGES = "${PN}-ppp0"
 
-SYSTEMD_SERVICE_${PN}-ppp0 = " \
+SYSTEMD_SERVICE:${PN}-ppp0 = " \
     ${BPN}-ppp0.service \
 "
-SYSTEMD_AUTO_ENABLE_${PN}-ppp0 = "enable"
+SYSTEMD_AUTO_ENABLE:${PN}-ppp0 = "enable"

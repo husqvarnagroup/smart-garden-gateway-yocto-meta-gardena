@@ -12,7 +12,7 @@ SRC_URI += " \
 SRCREV = "${AUTOREV}"
 PR = "r0"
 
-do_install_append() {
+do_install:append() {
     # copy systemd files
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/nngforward-lwm2mserver.service ${D}${systemd_unitdir}/system
@@ -23,14 +23,14 @@ do_install_append() {
     install -m 0755 ${WORKDIR}/nngforward.sh ${D}${bindir}/nngforward
 }
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     socat \
 "
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = " \
+SYSTEMD_SERVICE:${PN} = " \
     nngforward-lwm2mserver.service \
     nngforward-lemonbeatd.service \
 "

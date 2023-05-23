@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "7908c201b4eea566fa2b844e937b0ea76ca173b20ce8e1fc429099e8f5
 
 S = "${WORKDIR}/opentelemetry-proto-1.8.0"
 
-RDEPENDS_${PN} = "python3-protobuf"
+RDEPENDS:${PN} = "python3-protobuf"
 
 inherit setuptools3

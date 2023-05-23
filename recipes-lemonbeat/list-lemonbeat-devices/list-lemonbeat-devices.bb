@@ -10,9 +10,9 @@ SRC_URI = " \
 
 PV = "1.0.1"
 
-RDEPENDS_${PN} = "busybox"
+RDEPENDS:${PN} = "busybox"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${bindir}/list-lemonbeat-devices \
 "
 

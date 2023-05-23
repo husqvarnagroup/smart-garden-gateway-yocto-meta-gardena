@@ -14,7 +14,7 @@ SRCREV = "b23cdbb60d19a2d0d7a39e9962d499db8757fd74"
 
 S = "${WORKDIR}/git"
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     lsdl-serializer-lib \
     python3-core \
     python3-ctypes \
@@ -34,18 +34,18 @@ do_install() {
     install -m 0755 ${S}/examples/gateway_scripts/upload.py ${D}${bindir}/upload
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${PYTHON_SITEPACKAGES_DIR}/lemonbeat/* \
 "
 
-RDEPENDS_lemonbeat-firmware-upload = " \
+RDEPENDS:lemonbeat-firmware-upload = " \
     ${PN} \
     lsdl-serializer-lib \
     python3-crcmod \
     python3-multiprocessing \
 "
 
-FILES_lemonbeat-firmware-upload = "${bindir}/upload"
+FILES:lemonbeat-firmware-upload = "${bindir}/upload"
 
 PROVIDES =+ "lemonbeat-firmware-upload"
 PACKAGES =+ "lemonbeat-firmware-upload"

@@ -15,7 +15,7 @@ SRC_URI = " \
     file://keep.d/sshtunnel \
 "
 
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${systemd_unitdir}/system/sshtunnel.service \
     ${systemd_unitdir}/system/sshtunnel-check.service \
     ${systemd_unitdir}/system/sshtunnel-check.timer \
@@ -24,7 +24,7 @@ FILES_${PN} = " \
     ${base_libdir}/upgrade/keep.d \
 "
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     busybox \
     curl \
     dropbear \
@@ -47,6 +47,6 @@ do_install() {
 }
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = " \
+SYSTEMD_SERVICE:${PN} = " \
     sshtunnel-check.timer \
 "

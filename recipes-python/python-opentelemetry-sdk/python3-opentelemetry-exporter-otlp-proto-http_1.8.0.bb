@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "ad6107569b9ba8d10e836c03bb66ac258864972a765c6518d0c89db755
 
 S = "${WORKDIR}/opentelemetry-exporter-otlp-proto-http-1.8.0"
 
-RDEPENDS_${PN} = "python3-requests python3-googleapis-common-protos python3-opentelemetry-api python3-opentelemetry-sdk python3-opentelemetry-proto python3-backoff"
+RDEPENDS:${PN} = "python3-requests python3-googleapis-common-protos python3-opentelemetry-api python3-opentelemetry-sdk python3-opentelemetry-proto python3-backoff"
 
 inherit setuptools3

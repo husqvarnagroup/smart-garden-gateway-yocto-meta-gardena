@@ -19,7 +19,7 @@ DEPENDS += " \
     libgpiod \
 "
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     libcyaml \
     libgpiod \
 "
@@ -41,4 +41,4 @@ do_install() {
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "reset-rm.service"
+SYSTEMD_SERVICE:${PN} = "reset-rm.service"

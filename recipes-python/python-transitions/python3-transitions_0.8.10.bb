@@ -6,4 +6,4 @@ inherit pypi setuptools3
 
 SRC_URI[sha256sum] = "b0385975a842e885c1a55c719d2f90164471665794d39d51f9eb3f11e1d9c8ac"
 
-RDEPENDS_${PN} += "python3-six python3-logging"
+RDEPENDS:${PN} += "python3-six python3-logging"
