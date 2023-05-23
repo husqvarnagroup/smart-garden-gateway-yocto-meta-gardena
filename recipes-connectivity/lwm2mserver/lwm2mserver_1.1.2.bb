@@ -16,7 +16,7 @@ SRC_URI += " \
     file://0001-packaging-Exclude-lwm2mserver-IPSO-definitions-from-.patch;patchdir=.. \
 "
 
-PR = "r0"
+PR = "r1"
 
 DEPENDS = " \
     cmake-native \
@@ -49,10 +49,6 @@ do_install:append() {
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/lwm2mserver.service ${D}${systemd_unitdir}/system
-
-    # Move executables to /usr/bin/
-    mv ${D}${datadir}/bin/${PN}_native ${D}${bindir}
-    rmdir ${D}${datadir}/bin ${D}${datadir}
 
     # Ensure lwm2mserver data dir exists
     install -d ${D}${localstatedir}/lib/${PN}
