@@ -16,6 +16,7 @@ ExecStart=/usr/bin/cloudadapter_native -v
 ExecStopPost=-/bin/sh -c "mkdir -p /run/cloudadapter && echo -n 'RED' > /run/cloudadapter/led_status"
 Environment=PYTHONUNBUFFERED=1
 Environment=CLOUDADAPTER_ON_CONNECT_ACTIVITIES_WAIT_TIMEOUT=15
+Environment=CLOUDADAPTER_RATELIMIT_DEVICE_TELEMETRY=20000/86400!0
 Environment=CLOUDADAPTER_RATELIMIT_DEVICE_TELEMETRY_PATH_lemonbeat_status_message=20/3600!0
 
 # SG-18571 Turn memory bloat into a hard error
