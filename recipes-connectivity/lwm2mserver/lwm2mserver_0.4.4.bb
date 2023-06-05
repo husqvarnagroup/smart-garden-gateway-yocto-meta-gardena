@@ -15,7 +15,7 @@ SRC_URI += " \
     file://keep.d/lwm2mserver \
 "
 
-PR = "r0"
+PR = "r1"
 
 DEPENDS = " \
     cmake-native \
@@ -31,19 +31,7 @@ DEPENDS = " \
 
 RDEPENDS:${PN} += " \
     lemonbeatd \
-    python3-aiorun \
-    python3-core \
-    python3-netifaces \
-    python3-pkg-resources \
-    python3-pkgutil \
-    python3-plistlib \
-    python3-pynng \
-    python3-typing \
-    python3-transitions \
-    python3-opentelemetry-api \
-    python3-opentelemetry-semantic-conventions \
-    python3-cryptography \
-    python3-crcmod \
+    lwm2mserver-foss-dependencies \
 "
 
 S = "${WORKDIR}/git/lwm2mserver"
