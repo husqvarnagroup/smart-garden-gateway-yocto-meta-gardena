@@ -1,7 +1,7 @@
-PR = "r4"
+PR = "r5"
 
 DEPENDS += "openssl accessory-server"
-RDEPENDS:${PN} += "gateway-config-frontend openssl openssl-bin openssl-conf"
+RDEPENDS:${PN} += "gateway-config-frontend gateway-config-backend-foss-dependencies"
 
 SRC_URI += "\
     file://gateway-config-backend-sslkey.service \
