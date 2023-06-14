@@ -15,7 +15,7 @@ SRC_URI += " \
     file://keep.d/lwm2mserver \
 "
 
-PR = "r1"
+PR = "r2"
 
 DEPENDS = " \
     cmake-native \
@@ -30,8 +30,8 @@ DEPENDS = " \
 "
 
 RDEPENDS:${PN} += " \
-    lemonbeatd \
     lwm2mserver-foss-dependencies \
+    virtual/gardena-lemonbeatd \
 "
 
 S = "${WORKDIR}/git/lwm2mserver"

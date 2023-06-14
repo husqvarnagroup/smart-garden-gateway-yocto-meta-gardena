@@ -7,7 +7,7 @@ SRC_URI += " \
     file://lemonbeatd.service \
 "
 
-PR = "r1"
+PR = "r2"
 
 CARGO_FEATURES="release_max_level_debug"
 CARGO_BUILD_FLAGS += "--features '${CARGO_FEATURES}'"
@@ -31,3 +31,5 @@ do_install:append() {
 
 inherit systemd
 SYSTEMD_SERVICE:${PN} = "lemonbeatd.service"
+
+RPROVIDES:${PN} += "virtual/gardena-lemonbeatd"
