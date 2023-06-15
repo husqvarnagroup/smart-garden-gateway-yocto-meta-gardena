@@ -257,3 +257,12 @@ LICENSE = "CLOSED"
 # what cargo-bitbake generates.
 include lemonbeatd-${PV}.inc
 include lemonbeatd.inc
+
+# Added by rust-recipe.sh
+SRC_URI += " \
+    file://THIRDPARTY.toml \
+"
+
+LIC_FILES_CHKSUM += " \
+    file://../THIRDPARTY.toml;md5=448e622ee67db903f6392f3313a653c2 \
+"
