@@ -1,5 +1,5 @@
 DEPENDS += "openssl dbus"
-RDEPENDS:${PN} += "list-lemonbeat-devices openssl openssl-bin openssl-conf"
+RDEPENDS:${PN} += "lemonbeatd-foss-dependencies"
 RCONFLICTS:${PN} = "shadoway"
 
 SRC_URI += " \
