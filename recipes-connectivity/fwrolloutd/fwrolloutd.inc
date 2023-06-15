@@ -9,7 +9,7 @@ CARGO_SRC_DIR = "fwrolloutd"
 export CARGO_PROFILE_RELEASE_OPT_LEVEL="z"
 export CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1"
 
-PR = "r0"
+PR = "r1"
 
 FILES:${PN} += " \
     ${systemd_unitdir}/system/ \

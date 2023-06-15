@@ -189,3 +189,12 @@ LICENSE = "CLOSED"
 # what cargo-bitbake generates.
 include fwrolloutd-${PV}.inc
 include fwrolloutd.inc
+
+# Added by rust-recipe.sh
+SRC_URI += " \
+    file://THIRDPARTY.toml \
+"
+
+LIC_FILES_CHKSUM += " \
+    file://../THIRDPARTY.toml;md5=35c6fdd85f6da27e30855e44b3840f1e \
+"
