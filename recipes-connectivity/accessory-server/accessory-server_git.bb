@@ -8,7 +8,7 @@ SRC_URI = " \
     file://keep.d/${BPN} \
 "
 
-PR = "r0"
+PR = "r1"
 PV = "0.19.1"
 SRCREV = "345e11a1fc89c2dae8aff0d201759e464a241051"
 
@@ -22,8 +22,7 @@ FILES:${PN} += " \
 "
 
 DEPENDS = "mdns cjson mbedtls openssl curl util-linux gnutls nng systemd libevdev"
-# TODO: ifconfig ip uname
-RDEPENDS:${PN} += "hostapd dnsmasq wpa-supplicant u-boot-fw-utils led-indicator wpa-supplicant-cli environment"
+RDEPENDS:${PN} += "accessory-server-foss-dependencies"
 
 EXTRA_OECMAKE += " \
   -DHAVE_MFI_HW_AUTH=${@oe.utils.conditional('HOMEKIT_HWAUTH','1','1','0',d)} \
