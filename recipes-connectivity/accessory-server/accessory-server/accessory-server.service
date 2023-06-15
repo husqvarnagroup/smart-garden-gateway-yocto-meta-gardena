@@ -1,0 +1,16 @@
+[Unit]
+Description=Accessory server daemon
+After=syslog.target network.target mdns.service lemonbeatd.service eoltest-check.service systemd-random-seed.service environment.service
+Requires=mdns.service environment.service systemd-random-seed.service
+Wants=lemonbeatd.service eoltest-check.service
+ConditionPathExists=/etc/eol_test_passed
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/gardena-accessory-server
+ExecReload=/bin/kill -SIGTERM $MAINPID
+Restart=on-failure
+RestartSec=10m
+
+[Install]
+WantedBy=multi-user.target
