@@ -215,7 +215,7 @@ test_systemd_running() {
 test_ppp0() {
     local result=0
 
-    if ! ip_address="$(networkctl status ppp0 | grep "Address:" | awk '{print $2}')"; then
+    if ! ip_address="$(ip -6 route list | grep fe80::6:94bb | awk '{print $1}')"; then
         log_result "ppp0" "2" "ppp0 interface has no IP address"
         return
     fi
@@ -228,13 +228,8 @@ test_ppp0() {
 
     # SG-16012: Check for multiple IP addresses on ppp0.
     if [ "$(ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:0:0:1/64 scope global" ]; then
-        # for BNW GW, the only global address must be fc00::6:0:0:1
+        # The only global address must be fc00::6:0:0:1
         result=0
-
-    elif echo "${ip_address}" | grep -q "^fe80::106:94bb";then
-        # for HCGW2/LCGW first expected address is fe80::106:94bb (remove after BNW migration)
-        result=0
-
     else
         result=3
     fi
