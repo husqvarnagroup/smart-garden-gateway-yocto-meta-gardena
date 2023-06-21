@@ -212,13 +212,8 @@ test_systemd_running() {
     log_result "systemd_running" "${result}" "status=${status}${failed_units}"
 }
 
-test_ppp0() {
+test_ppp0_sg_16012() {
     local result=0
-
-    if ! ip_address="$(ip -6 route list | grep fe80::6:94bb | awk '{print $1}')"; then
-        log_result "ppp0" "2" "ppp0 interface has no IP address"
-        return
-    fi
 
     # SG-16012: Having a DNS server configured on ppp0 makes no sense at all
     if dns_address="$(networkctl status ppp0 | grep "DNS:" | awk '{print $2}')"; then
@@ -228,20 +223,34 @@ test_ppp0() {
 
     # SG-16012: Check for multiple IP addresses on ppp0.
     if [ "$(ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:0:0:1/64 scope global" ]; then
-        # The only global address must be fc00::6:0:0:1
+        # The only global address must be fc00::6:0:0:1 when using legacy RM firmwares
+        result=0
+    elif [ "$(ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:100:0:0/64 scope global" ]; then
+        # The only global address must be fc00::6:100:0:0 when using Zephyr based RM firmwares
         result=0
     else
         result=3
     fi
 
-    log_result "ppp0" "${result}" "ip_address=${ip_address}"
+    log_result "ppp0" "${result}" "omitted"
+}
+
+test_rm_address() {
+    if ! /sbin/fw_printenv -n rmaddr > /dev/null; then
+        log_result "rm_address" "1" "missing rmaddr"
+        return
+    fi
+
+    log_result "rm_address" 0 "omitted"
+
 }
 
 test_rm_ping() {
     local result=0
+    local rm_ip_address
 
-    if ! rm_ip_address="$(/sbin/fw_printenv -n rmaddr | awk -F: '{print "fc00::6:" $1$2 ":" $3$4 ":" $5$6 }')"; then
-        log_result "rm_ping" "1" "missing rmaddr"
+    if ! rm_ip_address="$(ip -6 route list | grep -e "^fe80::.*dev ppp0" | head -n1 | awk '{print $1}')"; then
+        log_result "ppp0" "2" "ppp0 interface has no IP address"
         return
     fi
 
@@ -373,46 +382,6 @@ test_network_key_sgse_1024() {
     return "${result}"
 }
 
-test_rmver() {
-    # Only for version 1.4.2 (and potentially newer!) we have not locked the
-    # flash after programming.
-    local result=1
-    local data="unknown"
-    local filename
-    local dongle_count
-
-    # shellcheck disable=SC2126
-    if ! dongle_count="$(grep -l DONGLE /var/lib/lemonbeatd/Device_descriptionID_*/Device_descriptionID_*.json | wc -l)"; then
-        log_result "rmver" "3" "Dongle work folders could not be counted"
-        return
-    fi
-    if [ "${dongle_count}" -ne "1" ]; then
-        log_result "rmver" "4" "${dongle_count} dongle folders folders found"
-        return
-    fi
-
-    if filename="$(grep -l DONGLE /var/lib/lemonbeatd/Device_descriptionID_*/Device_descriptionID_*.json)" \
-        && [ -n "${filename}" ]; then
-        # Normalize whitespace to support Shadoway and lemonbeatd serialized files
-        local dongle_device_description
-        dongle_device_description="$(sed -En "s/([a-z_]+\")\ *:/\1 :/p" "$filename")"
-        # Extract the needed information
-        local radio_module_app_ver="unknown"
-        local etc_radio_module_app_ver_latest
-        etc_radio_module_app_ver_latest="$(cat /etc/rm-firmware-version.latest)"
-        if radio_module_app_ver="$(echo "$dongle_device_description" | awk '/version_app/ {print $3}' | cut -d '"' -f2)"; then
-            if [ "${radio_module_app_ver}" = "$etc_radio_module_app_ver_latest" ]; then
-                result=0;
-            else
-                result=2;
-            fi
-            data="${radio_module_app_ver}"
-        fi
-    fi
-
-    log_result "rmver" "${result}" "${data}"
-}
-
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -441,11 +410,11 @@ test_all() {
     test_wifi_device \
       && test_wifi_connection_stability
 
-    test_ppp0
+    test_ppp0_sg_16012
+    test_rm_address
     test_rm_ping
 
     test_network_key_sgse_1024
-    test_rmver
 
     return "${something_failed}"
 }
