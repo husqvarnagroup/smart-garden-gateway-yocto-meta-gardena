@@ -10,7 +10,7 @@ SRC_URI += " \
     file://coap-transport-proxy.service \
 "
 
-PR = "r1"
+PR = "r0"
 
 RDEPENDS:${PN} += " \
     python3-core \
