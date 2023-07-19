@@ -59,4 +59,4 @@ FILES:${PN} += "\
 
 SYSTEMD_SERVICE:${PN} += "rm-flashing.service"
 
-RPROVIDES_${PN} += "virtual/gardena-gateway-firmware"
+RPROVIDES:${PN} += "virtual/gardena-gateway-firmware"
