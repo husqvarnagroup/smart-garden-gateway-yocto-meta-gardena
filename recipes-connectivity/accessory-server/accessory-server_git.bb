@@ -8,7 +8,7 @@ SRC_URI = " \
     file://keep.d/${BPN} \
 "
 
-PR = "r2"
+PR = "r3"
 PV = "0.19.1"
 SRCREV = "345e11a1fc89c2dae8aff0d201759e464a241051"
 
