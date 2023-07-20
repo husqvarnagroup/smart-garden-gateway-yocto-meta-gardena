@@ -6,9 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get lemonbeatd could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/lemonbeatd/1.7.0"
+# SRC_URI += "crate://crates.io/lemonbeatd/1.8.0"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-cargo;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "82257d355127e0378f23ed7dbe3b02337216d446"
+SRCREV = "94d007ff1110d817a1adde31013bed53a6749a64"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
 
@@ -163,6 +163,7 @@ SRC_URI += " \
     crate://crates.io/serial_test_derive/1.0.0 \
     crate://crates.io/sha2/0.10.6 \
     crate://crates.io/sharded-slab/0.1.4 \
+    crate://crates.io/single-trait-impl/0.1.0 \
     crate://crates.io/slab/0.4.8 \
     crate://crates.io/smallvec/1.10.0 \
     crate://crates.io/socket2/0.4.9 \
@@ -238,7 +239,7 @@ LIC_FILES_CHKSUM = " \
 "
 
 SUMMARY = "lemonbeatd"
-HOMEPAGE = "git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-cloud-adapter"
+HOMEPAGE = "https://dev.azure.com/HQV-Gardena/SG-Gateway/_git/sg-lemonbeat-cargo"
 LICENSE = "Proprietary"
 
 # includes this file if it exists but does not fail
@@ -253,5 +254,5 @@ SRC_URI += " \
 "
 
 LIC_FILES_CHKSUM += " \
-    file://../THIRDPARTY.toml;md5=0e22bd2c4546a7d6cdac7cddf43c22b1 \
+    file://../THIRDPARTY.toml;md5=e8732e27820aae9819cbc7890ad40af6 \
 "

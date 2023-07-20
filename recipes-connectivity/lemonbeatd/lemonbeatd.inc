@@ -33,3 +33,5 @@ inherit systemd
 SYSTEMD_SERVICE:${PN} = "lemonbeatd.service"
 
 RPROVIDES:${PN} += "virtual/gardena-lemonbeatd"
+
+RUSTFLAGS += "-latomic"

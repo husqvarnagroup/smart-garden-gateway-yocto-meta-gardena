@@ -1571,15 +1571,6 @@ END OF TERMS AND CONDITIONS
 """
 
 [[third_party_libraries]]
-package_name = "atomic64-workaround"
-package_version = "0.1.0"
-license = "No license specified"
-
-[[third_party_libraries.licenses]]
-license = "No license specified"
-text = "NOT FOUND"
-
-[[third_party_libraries]]
 package_name = "base64"
 package_version = "0.13.1"
 license = "MIT/Apache-2.0"
@@ -25215,10 +25206,10 @@ THE SOFTWARE.
 [[third_party_libraries]]
 package_name = "single-trait-impl"
 package_version = "0.1.0"
-license = "No license specified"
+license = "MIT"
 
 [[third_party_libraries.licenses]]
-license = "No license specified"
+license = "MIT"
 text = "NOT FOUND"
 
 [[third_party_libraries]]
