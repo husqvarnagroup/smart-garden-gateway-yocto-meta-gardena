@@ -7,7 +7,7 @@
 
 set -eu -o pipefail
 
-unfiltered_interfaces="ppp0 vpn0"
+unfiltered_interfaces="ppp0"
 hap_port="8001"
 allowed_tcp_ports="http https $hap_port"
 allowed_udp_ports="mdns"
