@@ -382,6 +382,38 @@ test_network_key_sgse_1024() {
     return "${result}"
 }
 
+# Run netstat on listening tcp and udp sockets to get socket queue utilization.
+# Truncate the first two lines of the output. Report sockets with a backlog of
+# a certain amount of bytes in the send queue. This may indicate that the radio
+# module has a problem accepting packets from ppp reported in SG-20421.
+test_socket_queue_ppp0_sg_20421() {
+    local result=0
+    # Set check limit in bytes. Use a few bytes more than current MTU of 1500
+    # bytes to allow one large packet in queue before warning.
+    readonly RECVQ_LIMIT=1600
+    readonly SENDQ_LIMIT=1600
+
+    local netstat_lines
+    netstat_lines=$(netstat -ltun | tail -n +3 | sed -E 's/[[:space:]]+/,/g')
+    for line in $netstat_lines; do
+        local recvq_bytes
+        recvq_bytes=$(echo "${line}" | cut -d , -f2)
+        if [ "${recvq_bytes}" -gt ${RECVQ_LIMIT} ]; then
+            result=2
+            log_result "test_socket_queue" "${result}" "${line}"
+        fi
+        local sendq_bytes
+        sendq_bytes=$(echo "$line" | cut -d , -f3)
+        if [ "${sendq_bytes}" -gt ${SENDQ_LIMIT} ]; then
+            result=3
+            log_result "test_socket_queue" "${result}" "${line}"
+        fi
+    done
+    if [ "${result}" -eq 0 ]; then
+        log_result "test_socket_queue" "${result}" "omitted"
+    fi
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -413,6 +445,7 @@ test_all() {
     test_ppp0_sg_16012
     test_rm_address
     test_rm_ping
+    test_socket_queue_ppp0_sg_20421
 
     test_network_key_sgse_1024
 
