@@ -400,17 +400,17 @@ test_socket_queue_ppp0_sg_20421() {
         recvq_bytes=$(echo "${line}" | cut -d , -f2)
         if [ "${recvq_bytes}" -gt ${RECVQ_LIMIT} ]; then
             result=2
-            log_result "test_socket_queue" "${result}" "${line}"
+            log_result "test_socket_queue_ppp0_sg_20421" "${result}" "${line}"
         fi
         local sendq_bytes
         sendq_bytes=$(echo "$line" | cut -d , -f3)
         if [ "${sendq_bytes}" -gt ${SENDQ_LIMIT} ]; then
             result=3
-            log_result "test_socket_queue" "${result}" "${line}"
+            log_result "test_socket_queue_ppp0_sg_20421" "${result}" "${line}"
         fi
     done
     if [ "${result}" -eq 0 ]; then
-        log_result "test_socket_queue" "${result}" "omitted"
+        log_result "test_socket_queue_ppp0_sg_20421" "${result}" "omitted"
     fi
 }
 
