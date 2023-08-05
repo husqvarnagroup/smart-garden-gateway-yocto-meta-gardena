@@ -11,7 +11,7 @@ SRC_URI = "\
     file://keep.d/rm-flashing \
 "
 
-INC_PR = "r0"
+INC_PR = "r1"
 
 RDEPENDS:${PN} = " \
     python3-io \

@@ -1,8 +1,8 @@
 [Unit]
 Description=Check RM firmware version and flash RM if needed
 ConditionPathExists=/etc/fct_finalized
-Requires=manufacturing-statusfiles.service
-After=manufacturing-statusfiles.service
+Requires=environment.service
+After=environment.service
 
 [Service]
 ExecStart=/usr/bin/rm-flashing
