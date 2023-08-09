@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 PV = "2.0.0"
 
-PR = "r1"
+PR = "r2"
 
 SRC_URI = "\
     file://internet-ledd.sh \

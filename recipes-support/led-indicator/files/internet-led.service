@@ -1,8 +1,8 @@
 [Unit]
 Description=Internet LED indication
 ConditionPathExists=/etc/eol_test_passed
-After=network.target eoltest-check.service
-Wants=eoltest-check.service
+After=network.target environment.service
+Wants=environment.service
 
 [Service]
 Type=simple
@@ -12,4 +12,3 @@ RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
-
