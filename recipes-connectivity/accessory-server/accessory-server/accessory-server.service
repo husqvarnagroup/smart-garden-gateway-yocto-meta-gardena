@@ -1,7 +1,7 @@
 [Unit]
 Description=Accessory server daemon
-After=syslog.target network.target mdns.service lemonbeatd.service lwm2mserver.service eoltest-check.service systemd-random-seed.service
-Wants=lemonbeatd.service lwm2mserver.service eoltest-check.service
+After=syslog.target network.target mdns.service lemonbeatd.service lwm2mserver.service environment.service systemd-random-seed.service
+Wants=lemonbeatd.service lwm2mserver.service environment.service
 ConditionPathExists=/etc/eol_test_passed
 
 [Service]
