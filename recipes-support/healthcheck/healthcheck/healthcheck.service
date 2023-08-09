@@ -1,7 +1,7 @@
 [Unit]
 Description=Healthcheck
-After=network-online.target manufacturing-statusfiles.service eoltest-check.service
-Wants=network-online.target manufacturing-statusfiles.service eoltest-check.service
+After=network-online.target environment.service
+Wants=network-online.target environment.service
 # prevent script from running during manufacturing
 ConditionPathExists=/etc/eol_test_passed
 
