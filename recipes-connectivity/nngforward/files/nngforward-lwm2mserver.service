@@ -1,7 +1,7 @@
 [Unit]
 Description=NNG Socket Forwarder for LWM2M Server
-After=eoltest-check.service ppp.service lwm2mserver.service
-Wants=eoltest-check.service ppp.service lwm2mserver.service
+After=environment.service ppp.service lwm2mserver.service
+Wants=environment.service ppp.service lwm2mserver.service
 ConditionPathExists=/etc/eol_test_passed
 
 [Service]
