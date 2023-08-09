@@ -1,7 +1,7 @@
 [Unit]
 Description=Firmware rollout service
-After=eoltest-check.service lemonbeatd.service lwm2mserver.service time-sync.target network-online.target
-Wants=eoltest-check.service lemonbeatd.service lwm2mserver.service time-sync.target network-online.target
+After=environment.service lemonbeatd.service lwm2mserver.service time-sync.target network-online.target
+Wants=environment.service lemonbeatd.service lwm2mserver.service time-sync.target network-online.target
 ConditionPathExists=/etc/eol_test_passed
 
 [Service]
