@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 PV = "0.21.0"
 PR = "r0"
 
-RDEPENDS:${PN} = "curl openssl systemd"
+RDEPENDS:${PN} = "curl mdns openssl systemd"
 
 SRC_URI = "\
     file://healthcheck.service \
