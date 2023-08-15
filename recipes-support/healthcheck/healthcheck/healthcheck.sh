@@ -75,7 +75,7 @@ test_system_clock_synced() {
     log_result "system_clock_synced" "${result}" "omitted"
 }
 
-test_vpn_crt_ca() {
+test_x509_crt_ca() {
     local result=0
 
     # verify client certificate against CA
@@ -83,30 +83,30 @@ test_vpn_crt_ca() {
         result=2
     fi
 
-    log_result "vpn_crt_ca" "${result}" "omitted"
+    log_result "x509_crt_ca" "${result}" "omitted"
 }
 
-test_vpn_crt_subject() {
+test_x509_crt_subject() {
     # gatewayid and cert subject must match
 
     local gatewayid
     if ! gatewayid="$(/sbin/fw_printenv -n gatewayid)"; then
-        log_result "vpn_crt_subject" "1" "Failed to extract gatewayid"
+        log_result "x509_crt_subject" "1" "Failed to extract gatewayid"
         return
     fi
 
     local subject
     if ! subject="$(openssl x509 -in /etc/ssl/certs/client-prod.crt -subject -noout | awk '{print $3}')"; then
-        log_result "vpn_crt_subject" "1" "Failed to extract certificate subject"
+        log_result "x509_crt_subject" "1" "Failed to extract certificate subject"
         return
     fi
 
     if [ "${gatewayid}" != "${subject}" ]; then
-        log_result "vpn_crt_subject" "2" "subject=${subject}"
+        log_result "x509_crt_subject" "2" "subject=${subject}"
         return
     fi
 
-    log_result "vpn_crt_subject" "0" "omitted"
+    log_result "x509_crt_subject" "0" "omitted"
 }
 
 test_vpn_key() {
@@ -429,8 +429,8 @@ test_all() {
     # No dependencies on internet connectivity
     test_squashfs
     test_shared_library_loading
-    test_vpn_crt_ca
-    test_vpn_crt_subject
+    test_x509_crt_ca
+    test_x509_crt_subject
     test_vpn_key
     test_client_crt_longevity
     test_meminfo_mem_available
