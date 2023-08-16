@@ -7,29 +7,38 @@ COMPATIBLE_MACHINE = "mt7688"
 
 inherit systemd allarch python3-dir python3native
 
-SRC_URI = "git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-manufacturing-scripts;protocol=ssh;branch=main \
+SRC_URI = "file://bootstrap.py \
+           file://cpms_client.py \
+           file://cpms_config.py \
            file://eoltest-check.service \
            file://eoltest-check.sh \
            file://eoltest-run.sh \
+           file://eoltest.py \
            file://eoltest.service \
+           file://errorhandler.py \
+           file://fct-tool.py \
            file://homekit-setup \
            file://homekit-setup.service \
+           file://homekit-tool.py \
            file://ipr-setup \
+           file://ipr-tool.py \
            file://ipr.service \
            file://keep.d/eoltest \
            file://keep.d/manufacturing-statusfiles \
            file://manufacturing-statusfiles.service \
            file://manufacturing-statusfiles.sh \
+           file://radio_module_test.py \
            file://selftest-check \
+           file://selftest.py \
            file://selftest.service \
+           file://testing.py \
+           file://util.py \
 "
 
-PR = "r2"
+PR = "r0"
 
-PV = "20210812+git${SRCPV}"
-SRCREV = "e0db2ae9139c4331529b7c7a77fe830bef984b85"
-
-S = "${WORKDIR}/git"
+PV = "2023-08-16"
+PE = "1"
 
 FILES:${PN} += " \
     ${PYTHON_SITEPACKAGES_DIR}/bootstrap.py \
@@ -58,18 +67,18 @@ RDEPENDS:${PN} += " \
 
 do_install () {
     install -d ${D}${bindir}
-    install -m 0755 ${S}/eoltest.py ${D}${bindir}/eoltest
-    install -m 0755 ${S}/errorhandler.py ${D}${bindir}/cpms-errorhandler
-    install -m 0755 ${S}/fct-tool.py ${D}${bindir}/fct-tool
-    install -m 0755 ${S}/homekit-tool.py ${D}${bindir}/homekit-tool
-    install -m 0755 ${S}/ipr-tool.py ${D}${bindir}/ipr-tool
-    install -m 0755 ${S}/selftest.py ${D}${bindir}/selftest
     install -m 0755 ${WORKDIR}/eoltest-check.sh ${D}${bindir}/eoltest-check
     install -m 0755 ${WORKDIR}/eoltest-run.sh ${D}${bindir}/eoltest-run
+    install -m 0755 ${WORKDIR}/eoltest.py ${D}${bindir}/eoltest
+    install -m 0755 ${WORKDIR}/errorhandler.py ${D}${bindir}/cpms-errorhandler
+    install -m 0755 ${WORKDIR}/fct-tool.py ${D}${bindir}/fct-tool
     install -m 0755 ${WORKDIR}/homekit-setup ${D}${bindir}
+    install -m 0755 ${WORKDIR}/homekit-tool.py ${D}${bindir}/homekit-tool
     install -m 0755 ${WORKDIR}/ipr-setup ${D}${bindir}
+    install -m 0755 ${WORKDIR}/ipr-tool.py ${D}${bindir}/ipr-tool
     install -m 0755 ${WORKDIR}/manufacturing-statusfiles.sh ${D}${bindir}/manufacturing-statusfiles
     install -m 0755 ${WORKDIR}/selftest-check ${D}${bindir}
+    install -m 0755 ${WORKDIR}/selftest.py ${D}${bindir}/selftest
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/eoltest-check.service ${D}${systemd_unitdir}/system
@@ -80,12 +89,12 @@ do_install () {
     install -m 0644 ${WORKDIR}/selftest.service ${D}${systemd_unitdir}/system
 
     install -d 0755 ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${S}/bootstrap.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${S}/cpms_client.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${S}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${S}/radio_module_test.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${S}/testing.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${S}/util.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${WORKDIR}/bootstrap.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${WORKDIR}/cpms_client.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${WORKDIR}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${WORKDIR}/radio_module_test.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${WORKDIR}/testing.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${WORKDIR}/util.py ${D}${PYTHON_SITEPACKAGES_DIR}
 
     install -d ${D}${base_libdir}/upgrade/keep.d
     install -m 0644 ${WORKDIR}/keep.d/eoltest ${D}${base_libdir}/upgrade/keep.d
