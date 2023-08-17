@@ -20,7 +20,7 @@ from util import set_all_leds, get_fw_printenv, fw_getenv, manufacturing_event_t
 
 SYSTEMD_MANUFACTURING_SERVICES = ["ipr", "homekit-setup", "selftest", "eoltest"]
 # variables that are confidential and should not be stored in manufacturing event
-UBOOT_ENV_BLACKLIST_KEYS = ["conf_openvpn_key", "hk-device-key", "secure_token"]
+UBOOT_ENV_BLACKLIST_KEYS = ["x509_key", "hk-device-key", "secure_token"]
 
 def run_process(process, args_=None, timeout=10):
     """Run process and collect output."""

@@ -28,8 +28,8 @@ from radio_module_test import RMTestFW
 
 RANDOM_TOKEN_LENGTH = 256
 
-KEY_BEGIN = "-----BEGIN PRIVATE KEY-----"
-KEY_END = "-----END PRIVATE KEY-----"
+KEY_BEGIN = "-----BEGIN EC PRIVATE KEY-----"
+KEY_END = "-----END EC PRIVATE KEY-----"
 CERT_BEGIN = "-----BEGIN CERTIFICATE-----"
 CERT_END = "-----END CERTIFICATE-----"
 
@@ -47,24 +47,23 @@ def get_batch_id():
     config = json.loads(body.decode("ascii"))
     return config['id']
 
-def initialize_openvpn_credentials(ipr_id):
-    """Fetch & store OpenVPN certificate & key."""
-    # fetch certificats
-    bootstrap_server_put('/openvpn/seluxit/register.py',
+def initialize_x509_credentials(ipr_id):
+    """Fetch & store X.509 certificate & key."""
+    # fetch credentials
+    bootstrap_server_put('/pki/register.py',
                          {'env': 'prod', 'eth_mac': fw_getenv("ethaddr"), 'ipr_id': ipr_id})
-    client_key = bootstrap_server_get('/openvpn/seluxit/pki/private/{}.key'.format(ipr_id)).decode("ascii")
-    client_crt = bootstrap_server_get('/openvpn/seluxit/pki/{}.crt'.format(ipr_id)).decode("ascii")
+    client_key = bootstrap_server_get('/pki/work/{}.key'.format(ipr_id)).decode("ascii")
+    client_crt = bootstrap_server_get('/pki/work/{}.crt'.format(ipr_id)).decode("ascii")
 
     # sanity checks
-    # note: old certificates are always ~5.5k, new certificates ~4.5k (IPR uses different issuer); keys are ~1.7k
-    if len(client_key) < 500 or len(client_key) > 20000:
-        exit_error("unexpected size of Seluxit OpenVPN key")
-    if len(client_crt) < 500 or len(client_crt) > 20000:
-        exit_error("unexpected size of Seluxit OpenVPN certificate")
+    if len(client_key) < 200 or len(client_key) > 400:
+        exit_error("unexpected size of X.509 key")
+    if len(client_crt) < 500 or len(client_crt) > 1000:
+        exit_error("unexpected size of X.509 certificate")
     if client_key.find(KEY_BEGIN) < 0 or client_key.find(KEY_END) < 0:
-        exit_error("expected to find BEGIN/END PRIVATE KEY strings in Seluxit OpenVPN key")
+        exit_error("expected to find BEGIN/END PRIVATE KEY strings in X.509 key")
     if client_crt.find(CERT_BEGIN) < 0 or client_crt.find(CERT_END) < 0:
-        exit_error("expected to find BEGIN/END CERTIFICATE strings in Seluxit OpenVPN certificate")
+        exit_error("expected to find BEGIN/END CERTIFICATE strings in X.509 certificate")
 
     # process certificate with openssl
     proc = subprocess.run(["openssl", "x509", "-in", "-", "-text"],
@@ -79,18 +78,18 @@ def initialize_openvpn_credentials(ipr_id):
                       if l.strip().startswith("Not Before:")][0].split("Not Before: ")[1]
     not_before = datetime.datetime.strptime(not_before_str, "%b %d %H:%M:%S %Y %Z")
     if not_before > now:
-        exit_error("OpenVPN certificate is not yet valid")
+        exit_error("X.509 certificate is not valid yet")
     not_after_str = [l for l in cert_text.split("\n")
                      if l.strip().startswith("Not After :")][0].split("Not After : ")[1]
     not_after = datetime.datetime.strptime(not_after_str, "%b %d %H:%M:%S %Y %Z")
     not_after_delta = not_after - now
-    if not_after_delta.days < 80*365:
-        exit_error("OpenVPN certificate is not valid for at least 80 years")
+    if not_after_delta.days < 49 * 365:
+        exit_error("X.509 certificate is not valid for at least 49 years")
 
     # check subject (CN)
     subject = [l for l in cert_text.split("\n") if l.strip().startswith("Subject:")][0].split("Subject: ")[1].strip()
     if not subject == f"CN = {ipr_id}":
-        exit_error("OpenVPN certificate subject common name does not match IPR ID")
+        exit_error("X.509 certificate subject common name does not match IPR ID")
 
     # check against CA
     try:
@@ -98,11 +97,11 @@ def initialize_openvpn_credentials(ipr_id):
                               input=client_crt.encode('ascii'),
                               check=True)
     except subprocess.CalledProcessError:
-        exit_error("OpenVPN certificate verification failed")
+        exit_error("X.509 certificate verification failed")
 
     # store certificate & key in U-Boot environment
-    fw_setenv('conf_openvpn_key', client_key.replace('\n', '%'))
-    fw_setenv('conf_openvpn_crt', client_crt.replace('\n', '%'))
+    fw_setenv('x509_key', client_key.replace('\n', '%'))
+    fw_setenv('x509_crt', client_crt.replace('\n', '%'))
 
 # commands
 
@@ -116,7 +115,7 @@ def initialize_gateway():
     - reserve radio module & do assembly in IPR
     - write RM IPR ID ('radiomoduleid') and MAC address ('rmaddr') to U-Boot
     - initialize random secure_token; store in U-Boot & IPR
-    - set up OpenVPN certificates
+    - set up X.509 certificates
     - store HW revision ('gateway_hardware_revision') from batch configuration in U-Boot"""
     # check if we already have a gateway ID
     env = get_fw_printenv()
@@ -184,8 +183,8 @@ def initialize_gateway():
     fw_setenv('secure_token', token_base64)
     cpms.set_value(ipr_id, '/configuration/secure_token', token_base64)
 
-    # fetch & store the OpenVPN certificates in U-Boot
-    initialize_openvpn_credentials(ipr_id)
+    # fetch & store the X.509 certificate/key in U-Boot
+    initialize_x509_credentials(ipr_id)
 
     # store the gateway revision number in uboot env
     fw_setenv("gateway_hardware_revision", batch_item['configuration']['hardwareVersion'])

@@ -324,19 +324,19 @@ class SelfTest(unittest.TestCase):
         md5sum = md5("/dev/ubi0_%s" % bootslot)
         self.assertEqual(md5sum, get_batch_config_json()['md5sums']['gardena-image-factory-gardena-sg-mt7688.squashfs-xz'])
 
-    def test_012_openvpn_client_key(self):
-        """Check the plausibility of the stored OpenVPN key"""
-        conf_openvpn_key = fw_getenv("conf_openvpn_key")
-        self.assertTrue(conf_openvpn_key)
-        self.assertTrue('-----BEGIN PRIVATE KEY-----%' in conf_openvpn_key)
-        self.assertTrue('%-----END PRIVATE KEY-----' in conf_openvpn_key)
+    def test_012_x509_client_key(self):
+        """Check the plausibility of the stored X.509 key"""
+        x509_key = fw_getenv("x509_key")
+        self.assertTrue(x509_key)
+        self.assertTrue('-----BEGIN EC PRIVATE KEY-----%' in x509_key)
+        self.assertTrue('%-----END EC PRIVATE KEY-----' in x509_key)
 
-    def test_013_openvpn_client_certificate(self):
-        """Check the plausibility of the stored OpenVPN certificate"""
-        conf_openvpn_crt = fw_getenv("conf_openvpn_crt")
-        self.assertTrue(conf_openvpn_crt)
-        self.assertTrue('-----BEGIN CERTIFICATE-----%' in conf_openvpn_crt)
-        self.assertTrue('%-----END CERTIFICATE-----' in conf_openvpn_crt)
+    def test_013_x509_client_certificate(self):
+        """Check the plausibility of the stored X.509 certificate"""
+        x509_crt = fw_getenv("x509_crt")
+        self.assertTrue(x509_crt)
+        self.assertTrue('-----BEGIN CERTIFICATE-----%' in x509_crt)
+        self.assertTrue('%-----END CERTIFICATE-----' in x509_crt)
 
     def test_014_check_sysfs_nand_stats(self):
         """Read out MTD info for NAND flash from sysfs (mostly for statistics)."""
