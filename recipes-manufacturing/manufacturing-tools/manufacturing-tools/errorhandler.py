@@ -123,6 +123,9 @@ def main():
         # store information as manufacturing event
         add_event(info)
 
+    # Prevent power LED from turning yellow (red + green) once GW is booted
+    run_process("systemctl", ["stop", "power-led"])
+
     # indicate error – set LEDs to red
     set_all_leds("red")
 
