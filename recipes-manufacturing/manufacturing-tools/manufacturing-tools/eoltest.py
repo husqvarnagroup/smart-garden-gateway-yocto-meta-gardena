@@ -70,7 +70,7 @@ class EolTest(unittest.TestCase):
 
         This test can be tripped by holding the RM in reset."""
         data = subprocess.check_output(["/sbin/ip", "-6", "address", "show", "dev", "ppp0"]).decode("ascii")
-        self.assertTrue(re.search("inet6 fe80::[0-9a-f:]+/10 scope link", data))
+        self.assertTrue(re.search("inet6 fc00::[0-9a-f:]+/64 scope global", data))
 
     # def test_999_error(self):
     #     """ For testing ... """
