@@ -78,9 +78,11 @@ test_system_clock_synced() {
 test_x509_crt_ca() {
     local result=0
 
-    # verify client certificate against CA
-    if ! openssl verify -no-CApath -CAfile /etc/ssl/certs/ca-prod.crt /etc/ssl/certs/client-prod.crt >/dev/null; then
-        result=2
+    # only check new certificates against CA
+    if /sbin/fw_printenv -n x509_crt >/dev/null 2>&1; then
+        if ! openssl verify -no-CApath -CAfile /etc/ssl/certs/ca-prod.crt /etc/ssl/certs/client-prod.crt >/dev/null; then
+            result=2
+        fi
     fi
 
     log_result "x509_crt_ca" "${result}" "omitted"
@@ -109,27 +111,92 @@ test_x509_crt_subject() {
     log_result "x509_crt_subject" "0" "omitted"
 }
 
-test_vpn_key() {
-    # compare modulus
+test_x509_crt_key_match() {
+    # Ensure the client certificate and key belong to each other
 
+    local key_pubkey
+    if ! key_pubkey="$(openssl pkey -pubout -in /etc/ssl/private/client-prod.key)"; then
+        log_result "x509_crt_key_match" "1" "Failed to extract public part from key"
+        return
+    fi
+
+    local crt_pubkey
+    if ! crt_pubkey="$(openssl x509 -noout -pubkey -in /etc/ssl/certs/client-prod.crt)"; then
+        log_result "x509_crt_key_match" "2" "Failed to extract public key from from cert"
+        return
+    fi
+
+    if [ "${key_pubkey}" != "${crt_pubkey}" ]; then
+        log_result "x509_crt_key_match" "3" "key_pubkey=${key_pubkey}, crt_pubkey=${crt_pubkey}"
+        return
+    fi
+
+    log_result "x509_crt_key_match" "0" "omitted"
+}
+
+test_x509_key_rsa() {
+    # Check RSA-specific properties
+
+    # Certificates and keys provided by x509_{crt,key} take precedence over the old conf_openvpn_{crt,key} U-Boot
+    # variables. Therefore, if x509_crt is set, then there is no need to run the RSA-based tests.
+    if /sbin/fw_printenv -n x509_crt >/dev/null 2>&1; then
+        return
+    fi
+
+    # compare modulus
     local mod_key
-    if ! mod_key=$(openssl rsa -modulus -noout -in /etc/ssl/private/client-prod.key);then
-        log_result "ubootvar_vpnkey" "2" "omitted"
+    if ! mod_key=$(openssl rsa -modulus -noout -in /etc/ssl/private/client-prod.key); then
+        log_result "x509_key_rsa" "2" "omitted"
         return
     fi
 
     local mod_crt
-    if ! mod_crt=$(openssl x509 -modulus -noout -in /etc/ssl/certs/client-prod.crt);then
-        log_result "ubootvar_vpnkey" "3" "omitted"
+    if ! mod_crt=$(openssl x509 -modulus -noout -in /etc/ssl/certs/client-prod.crt); then
+        log_result "x509_key_rsa" "3" "omitted"
         return
     fi
 
     if [ "${mod_key}" != "${mod_crt}" ];then
-        log_result "ubootvar_vpnkey" "4" "omitted"
+        log_result "x509_key_rsa" "4" "omitted"
         return
     fi
 
-    log_result "vpn_key" "0" "omitted"
+    # Check the consistency of the RSA private key
+    if ! result="$(openssl rsa -check -noout -in /etc/ssl/private/client-prod.key 2>&1)"; then
+        log_result "x509_key_rsa" "5" "${result}"
+        return
+    fi
+
+    if [ "${result}" != "RSA key ok" ]; then
+        log_result "x509_key_rsa" "6" "${result}"
+        return
+    fi
+
+    log_result "x509_key_rsa" "0" "omitted"
+}
+
+test_x509_key_ec() {
+    # Check EC-specific properties
+
+    # Certificates and keys provided by x509_{crt,key} take precedence over the old conf_openvpn_{crt,key} U-Boot
+    # variables. Therefore, if x509_crt is set, we can assume the client-prod.{crt,key} files to be based on EC.
+    if ! /sbin/fw_printenv -n x509_crt >/dev/null 2>&1; then
+        return
+    fi
+
+    # Check the consistency of the EC private key
+    if ! result="$(openssl ec -check -noout -in /etc/ssl/private/client-prod.key 2>&1)"; then
+        log_result "x509_key_ec" "1" "${result}"
+        return
+    fi
+
+    # shellcheck disable=SC3003
+    if [ "${result}" != "read EC key"$'\n'"EC Key valid." ]; then
+        log_result "x509_key_ec" "2" "${result}"
+        return
+    fi
+
+    log_result "x509_key_ec" "0" "omitted"
 }
 
 test_client_crt_longevity() {
@@ -431,7 +498,9 @@ test_all() {
     test_shared_library_loading
     test_x509_crt_ca
     test_x509_crt_subject
-    test_vpn_key
+    test_x509_crt_key_match
+    test_x509_key_ec
+    test_x509_key_rsa
     test_client_crt_longevity
     test_meminfo_mem_available
     test_meminfo_slab
