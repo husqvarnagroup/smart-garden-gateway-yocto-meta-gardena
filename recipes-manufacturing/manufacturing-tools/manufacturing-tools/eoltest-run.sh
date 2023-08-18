@@ -14,24 +14,16 @@ exit_error()
 {
     message=$1
 
-    # set power LED to red
-    echo 0 > /sys/class/leds/smartgw:power:green/brightness
-    echo 0 > /sys/class/leds/smartgw:power:blue/brightness
-    echo 100 > /sys/class/leds/smartgw:power:red/brightness
-
+    # We print a helpful error message to stderr and exit with a non-zero code.
+    # This causes the calling service unit to invoke the error handler. The
+    # error handler will then upload the results to the manufacturing server
+    # and turn all LEDs red.
     echo "$message" >&2
     exit 1
 }
 
-
 # wait for system to be fully booted
-# TODO once we have systemd v240, the while loop can be replaced
-# by using systemctl is-system-running --wait above
-systemd_status="$(systemctl is-system-running || true)"
-while [ "$systemd_status" = "starting" ] || [ "$systemd_status" = "initializing" ]; do
-    sleep 1
-    systemd_status="$(systemctl is-system-running || true)"
-done
+systemctl is-system-running --wait
 
 # check preconditions
 fct_finalized="$(fw_printenv -n fct_finalized 2>/dev/null || echo 0)"
