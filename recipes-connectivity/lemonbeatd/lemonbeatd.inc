@@ -1,13 +1,12 @@
 DEPENDS += "openssl dbus"
 RDEPENDS:${PN} += "lemonbeatd-foss-dependencies"
-RCONFLICTS:${PN} = "shadoway"
 
 SRC_URI += " \
     file://keep.d/lemonbeatd \
     file://lemonbeatd.service \
 "
 
-PR = "r3"
+PR = "r4"
 
 CARGO_FEATURES="release_max_level_debug"
 CARGO_BUILD_FLAGS += "--features '${CARGO_FEATURES}'"
