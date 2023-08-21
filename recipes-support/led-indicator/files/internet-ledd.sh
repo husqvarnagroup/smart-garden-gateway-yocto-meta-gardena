@@ -59,10 +59,6 @@ is_hotspot() {
     pgrep hostapd > /dev/null
 }
 
-vpn_connected() {
-    ip route | grep -q '^10.* via 10.* dev vpn0'
-}
-
 cloudadapter_status() {
     [ -f "$cloudadapter_status_file" ] && [ "$(cat $cloudadapter_status_file)" = "GREEN" ]
 }
