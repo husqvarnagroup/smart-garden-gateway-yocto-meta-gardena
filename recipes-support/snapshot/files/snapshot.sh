@@ -78,7 +78,6 @@ for s in \
     lemonbeatd.service \
     lwm2mserver.service \
     mdns.service \
-    openvpn.service \
     power-led.service \
     ppp.service \
     rm-flashing.service \
