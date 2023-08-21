@@ -8,7 +8,7 @@ SRC_URI = " \
     file://list_devices.sh \
 "
 
-PV = "1.0.1"
+PV = "1.0.2"
 
 RDEPENDS:${PN} = "busybox"
 
