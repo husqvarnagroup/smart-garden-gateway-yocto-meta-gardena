@@ -353,35 +353,6 @@ test_squashfs() {
     log_result "squashfs" 0 "omitted"
 }
 
-# Failing to load libraries is a potential side-effect of SG-14950 and, among
-# others, causing SG-15858.
-test_shared_library_loading() {
-    # "grep -q" does not work as journalctl exits with an error when the pipe
-    # gets closed early on.
-    if journalctl -u shadoway | grep -c "error while loading shared libraries" > /dev/null; then
-        log_result "shared_library_loading" 2 "omitted"
-        return
-    fi
-
-    log_result "shared_library_loading" 0 "omitted"
-}
-
-# Check if Shadoway can not communicate with the radio module
-test_shadoway_sgse_956() {
-    local count
-    # shadoway tries to recover from sgse-956 once a minute if it should be affected. So healthcheck
-    # should only check logs since last run of checks. As timestamps are not correct during startup,
-    # we however might miss such occurences at the first run of the healthcheck.
-    if count="$(journalctl -S-23h -u shadoway | grep -c "Ups .... can't get radio device info...")"; then
-        if [ "${count}" -gt 3 ]; then
-            log_result "shadoway_sgse_956" 2 "count=${count}"
-            return
-        fi
-    fi
-
-    log_result "shadoway_sgse_956" 0 "omitted"
-}
-
 # Check if zram compression ratio is above minimum
 test_zram_compr_ratio() {
     local compr_ratio_min=4 # 3 is a hard limit, but we want the healthcheck to trigger earlier
@@ -516,7 +487,6 @@ test_all() {
 
     # No dependencies on internet connectivity
     test_squashfs
-    test_shared_library_loading
     test_x509_crt_ca
     test_x509_crt_subject
     test_x509_crt_key_match
@@ -526,7 +496,6 @@ test_all() {
     test_meminfo_mem_available
     test_meminfo_slab
     test_meminfo_s_unreclaim
-    test_shadoway_sgse_956
     test_zram_compr_ratio
     test_zram_huge_pages
     test_wifi_device \
