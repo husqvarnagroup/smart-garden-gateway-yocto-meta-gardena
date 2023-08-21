@@ -23,15 +23,16 @@ EOF
 cp /lib/systemd/network/eth0.network.disabled /etc/systemd/network/eth0.network
 
 systemctl enable wpa_supplicant@wlan0.service
-systemctl enable openvpn.service
 systemctl disable accessory-server.service
+systemctl disable cloudadapter.service
 systemctl disable internet-led.service
+systemctl disable lemonbeatd.service
+systemctl disable lwm2mserver.service
 systemctl disable mdns.service
 systemctl disable ntpd.service
 systemctl disable ppp.service
 systemctl disable rm-flashing.service
 systemctl disable rsyslog.service
-systemctl disable shadoway.service
 systemctl disable swupdate-progress.service
 systemctl disable systemd-timesyncd.service
 systemctl disable tcpdump-sherlock-ppp0.service
