@@ -1,9 +1,8 @@
 [Unit]
 Description=Run HomeKit setup during manufacturing
-Requires=ipr.service manufacturing-statusfiles.service systemd-random-seed.service
-After=ipr.service manufacturing-statusfiles.service systemd-random-seed.service
+Requires=ipr.service systemd-random-seed.service
+After=ipr.service systemd-random-seed.service
 Before=serial-getty@ttyS0.service
-ConditionPathExists=!/etc/hk_setup_done
 
 [Service]
 ExecStart=/usr/bin/homekit-setup

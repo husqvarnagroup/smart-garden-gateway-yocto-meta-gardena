@@ -8,7 +8,7 @@ set -u
 
 hk_setup_done="$(fw_printenv -n hk_setup_done 2>/dev/null || echo 0)"
 if [ "${hk_setup_done}" = "1" ]; then
-    # quit because the HomeKit setup is already done
+    echo "HomeKit setup already done. Skipping." >&2
     exit 0
 fi
 
