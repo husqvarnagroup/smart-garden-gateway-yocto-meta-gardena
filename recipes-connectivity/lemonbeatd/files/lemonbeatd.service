@@ -1,8 +1,7 @@
 [Unit]
 Description=Lemonbeat service
-After=update-hw-revision.service environment.service ppp.service
-Wants=update-hw-revision.service environment.service
-ConditionPathExists=/etc/eol_test_passed
+After=update-hw-revision.service ppp.service
+Wants=update-hw-revision.service
 
 [Service]
 Type=notify
