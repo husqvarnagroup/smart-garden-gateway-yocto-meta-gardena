@@ -8,9 +8,9 @@ SRC_URI = " \
     file://keep.d/accessory-server \
 "
 
-PR = "r1"
-PV = "0.20.0"
-SRCREV = "613fc79965a0ac7dedfc1e7a9f7be53f1bd27802"
+PR = "r0"
+PV = "0.20.1"
+SRCREV = "1fb3e3edfa645c2c2eed27065b4e801690f298b1"
 
 S = "${WORKDIR}/git"
 
