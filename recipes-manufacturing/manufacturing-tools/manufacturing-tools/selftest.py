@@ -326,14 +326,21 @@ class SelfTest(unittest.TestCase):
 
     def test_012_x509_client_key(self):
         """Check the plausibility of the stored X.509 key"""
-        x509_key = fw_getenv("x509_key")
-        self.assertTrue(x509_key)
-        self.assertTrue('-----BEGIN EC PRIVATE KEY-----%' in x509_key)
-        self.assertTrue('%-----END EC PRIVATE KEY-----' in x509_key)
+        if x509_key := fw_getenv("x509_key"):
+            self.assertTrue(x509_key)
+            self.assertTrue('-----BEGIN EC PRIVATE KEY-----%' in x509_key)
+            self.assertTrue('%-----END EC PRIVATE KEY-----' in x509_key)
+        else:
+            x509_key = fw_getenv("conf_openvpn_key")
+            self.assertTrue(x509_key)
+            self.assertTrue('-----BEGIN PRIVATE KEY-----%' in x509_key)
+            self.assertTrue('%-----END PRIVATE KEY-----' in x509_key)
 
     def test_013_x509_client_certificate(self):
         """Check the plausibility of the stored X.509 certificate"""
         x509_crt = fw_getenv("x509_crt")
+        if x509_crt is None:
+            x509_crt = fw_getenv("conf_openvpn_crt")
         self.assertTrue(x509_crt)
         self.assertTrue('-----BEGIN CERTIFICATE-----%' in x509_crt)
         self.assertTrue('%-----END CERTIFICATE-----' in x509_crt)
