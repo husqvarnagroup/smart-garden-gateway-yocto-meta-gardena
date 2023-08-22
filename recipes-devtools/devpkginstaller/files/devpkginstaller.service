@@ -2,7 +2,6 @@
 Description=Automatic Development Package Installer
 Wants=network-online.target
 After=network-online.target
-ConditionPathExists=/etc/eol_test_passed
 
 [Service]
 Type=simple
