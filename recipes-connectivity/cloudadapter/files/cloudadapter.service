@@ -2,7 +2,6 @@
 Description=BNW cloudadapter
 After=update-hw-revision.service environment.service
 Wants=update-hw-revision.service environment.service
-ConditionPathExists=/etc/eol_test_passed
 
 [Service]
 Type=notify
