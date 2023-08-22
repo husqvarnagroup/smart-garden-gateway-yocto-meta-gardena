@@ -23,10 +23,6 @@ SRC_URI = "file://bootstrap.py \
            file://ipr-setup \
            file://ipr-tool.py \
            file://ipr.service \
-           file://keep.d/eoltest \
-           file://keep.d/manufacturing-statusfiles \
-           file://manufacturing-statusfiles.service \
-           file://manufacturing-statusfiles.sh \
            file://radio_module_test.py \
            file://selftest-check \
            file://selftest.py \
@@ -47,7 +43,6 @@ FILES:${PN} += " \
     ${PYTHON_SITEPACKAGES_DIR}/cpms_client.py \
     ${PYTHON_SITEPACKAGES_DIR}/cpms_config.py \
     ${PYTHON_SITEPACKAGES_DIR}/radio_module_test.py \
-    ${base_libdir}/upgrade/keep.d \
 "
 
 RDEPENDS:${PN} += " \
@@ -76,7 +71,6 @@ do_install () {
     install -m 0755 ${WORKDIR}/homekit-tool.py ${D}${bindir}/homekit-tool
     install -m 0755 ${WORKDIR}/ipr-setup ${D}${bindir}
     install -m 0755 ${WORKDIR}/ipr-tool.py ${D}${bindir}/ipr-tool
-    install -m 0755 ${WORKDIR}/manufacturing-statusfiles.sh ${D}${bindir}/manufacturing-statusfiles
     install -m 0755 ${WORKDIR}/selftest-check ${D}${bindir}
     install -m 0755 ${WORKDIR}/selftest.py ${D}${bindir}/selftest
 
@@ -85,7 +79,6 @@ do_install () {
     install -m 0644 ${WORKDIR}/eoltest.service ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/homekit-setup.service ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/ipr.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/manufacturing-statusfiles.service ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/selftest.service ${D}${systemd_unitdir}/system
 
     install -d 0755 ${D}${PYTHON_SITEPACKAGES_DIR}
@@ -95,17 +88,12 @@ do_install () {
     install -m 0755 ${WORKDIR}/radio_module_test.py ${D}${PYTHON_SITEPACKAGES_DIR}
     install -m 0755 ${WORKDIR}/testing.py ${D}${PYTHON_SITEPACKAGES_DIR}
     install -m 0755 ${WORKDIR}/util.py ${D}${PYTHON_SITEPACKAGES_DIR}
-
-    install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/eoltest ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/manufacturing-statusfiles ${D}${base_libdir}/upgrade/keep.d
 }
 
 pkg_postinst:${PN} () {
     cd $D${PYTHON_SITEPACKAGES_DIR} && python3 -m compileall .
 }
 
-SYSTEMD_SERVICE:${PN} += "manufacturing-statusfiles.service"
 SYSTEMD_SERVICE:${PN} += "ipr.service"
 SYSTEMD_SERVICE:${PN} += "selftest.service"
 SYSTEMD_SERVICE:${PN} += "eoltest-check.service"
