@@ -190,6 +190,8 @@ LICENSE = "CLOSED"
 include fwrolloutd-${PV}.inc
 include fwrolloutd.inc
 
+PR="r1"
+
 # Added by rust-recipe.sh
 SRC_URI += " \
     file://THIRDPARTY.toml \
