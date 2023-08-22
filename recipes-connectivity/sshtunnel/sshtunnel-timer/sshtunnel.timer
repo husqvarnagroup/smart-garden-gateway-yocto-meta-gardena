@@ -4,9 +4,8 @@ After=network-online.target
 
 [Timer]
 # Give the factory image enough time to upgrade, otherwise start sshtunnel for troubleshooting.
-OnBootSec=15m
-# Retry daily
-OnUnitActiveSec=13h
+OnBootSec=1h
+OnUnitActiveSec=30m
 
 [Install]
 WantedBy=timers.target

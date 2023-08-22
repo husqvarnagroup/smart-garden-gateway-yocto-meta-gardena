@@ -4,8 +4,9 @@ After=network-online.target
 
 [Timer]
 # On boot, wait a little so we might actually have an Internet connection
-OnBootSec=1h
-OnUnitActiveSec=30m
+OnBootSec=1m
+# Retry daily
+OnUnitActiveSec=13h
 
 [Install]
 WantedBy=timers.target
