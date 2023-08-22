@@ -8,7 +8,7 @@
 
 set -eu
 
-for var in self_test_passed hk_setup_done fct_finalized; do
+for var in hk_setup_done fct_finalized; do
     statusfile="/etc/$var"
     status="$(fw_printenv -n $var 2>/dev/null || echo 0)"
     if [ "${status}" = "1" ] || [ "$(uname -m)" = "armv5tejl" ]; then

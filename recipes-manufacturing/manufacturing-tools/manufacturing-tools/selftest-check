@@ -25,7 +25,7 @@ if [ "${self_test_passed}" = "1" ]; then
     if [ ! -f /etc/fct_finalized ]; then
         /usr/bin/fct-tool --set-leds green
     fi
-    # Quit because the selftest has already been passed in the past.
+    echo "Selftest has already been passed. Skipping." >&2
     exit 0
 fi
 
