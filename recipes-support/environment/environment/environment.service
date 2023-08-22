@@ -1,0 +1,9 @@
+[Unit]
+Description=U-Boot Environment Extractor
+After=syslog.target
+
+[Service]
+PrivateTmp=true
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/environment

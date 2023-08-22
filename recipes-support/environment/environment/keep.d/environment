@@ -1,0 +1,4 @@
+/etc/eol_test_passed
+/etc/fct_finalized
+/etc/ssl/certs/client-*.crt
+/etc/ssl/private/client-*.key
