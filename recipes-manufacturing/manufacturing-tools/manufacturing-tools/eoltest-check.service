@@ -14,4 +14,8 @@ RemainAfterExit=yes
 ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then cpms-errorhandler; fi'
 
 [Install]
+WantedBy=accessory-server.service
+WantedBy=internet-led.service
 WantedBy=serial-getty@ttyS0.service
+WantedBy=sshtunnel.service
+WantedBy=swupdate-check.service
