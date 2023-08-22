@@ -2,8 +2,6 @@
 Description=Healthcheck
 After=network-online.target environment.service
 Wants=network-online.target environment.service
-# prevent script from running during manufacturing
-ConditionPathExists=/etc/eol_test_passed
 
 [Service]
 ExecStart=/usr/bin/healthcheck
