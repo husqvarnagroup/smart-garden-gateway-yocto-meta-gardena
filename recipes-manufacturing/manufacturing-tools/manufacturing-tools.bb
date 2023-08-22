@@ -33,7 +33,7 @@ SRC_URI = "file://bootstrap.py \
 
 PR = "r0"
 
-PV = "2023-08-18"
+PV = "2023-08-22"
 PE = "1"
 
 FILES:${PN} += " \
