@@ -1,8 +1,7 @@
 [Unit]
 Description=BNW lwm2mserver
-After=environment.service ppp.service lemonbeatd.service
-Wants=environment.service ppp.service lemonbeatd.service
-ConditionPathExists=/etc/eol_test_passed
+After=ppp.service lemonbeatd.service
+Wants=ppp.service lemonbeatd.service
 
 [Service]
 Type=notify
