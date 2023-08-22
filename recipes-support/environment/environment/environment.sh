@@ -13,6 +13,13 @@
 
 set -eu -o pipefail
 
+# Extracting the following variables because:
+# - fct_finalized: Needed by rm-flashing.service,
+#                  gateway-config-backend.service and EOL code during EOL
+#                  testing, but not before FCT is finished.
+# - eol_test_passed: Needed by internet-led daemon, accessory-server, SWUpdate
+#                    and sshtunnel to ensure that they do not run before or
+#                    during EOL testing.
 for var in fct_finalized eol_test_passed; do
     status="$(fw_printenv -n ${var} 2>/dev/null || echo 0)"
     if [ "${status}" = "1" ] || [ "$(uname -m)" = "armv5tejl" ]; then
