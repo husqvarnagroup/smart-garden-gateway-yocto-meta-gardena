@@ -1,8 +1,7 @@
 [Unit]
 Description=SSH Tunnel Check
 Wants=network-online.target
-After=environment.service network-online.target
-ConditionPathExists=/etc/eol_test_passed
+After=network-online.target
 
 [Service]
 Type=oneshot
