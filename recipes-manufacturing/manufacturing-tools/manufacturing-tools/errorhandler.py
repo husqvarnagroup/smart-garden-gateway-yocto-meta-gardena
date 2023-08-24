@@ -98,6 +98,10 @@ def add_event(info):
 
 def main():
     """Main entry point."""
+
+    # Prevent power LED from turning yellow (red + green) once GW is booted
+    run_process("systemctl", ["stop", "power-led"])
+
     # indicate error with blinking red LEDs
     #
     # note: some step below may fail (e.g. when CPMS is unavailable).
@@ -122,9 +126,6 @@ def main():
     else:
         # store information as manufacturing event
         add_event(info)
-
-    # Prevent power LED from turning yellow (red + green) once GW is booted
-    run_process("systemctl", ["stop", "power-led"])
 
     # indicate error – set LEDs to red
     set_all_leds("red")
