@@ -4,6 +4,7 @@ Before=serial-getty@ttyS0.service
 
 [Service]
 ExecStart=/usr/bin/ipr-setup
+TimeoutStartSec=3m
 Type=oneshot
 RemainAfterExit=yes
 ExecStopPost=/bin/sh -c 'if [ "$$EXIT_STATUS" != 0 ]; then cpms-errorhandler; fi'
