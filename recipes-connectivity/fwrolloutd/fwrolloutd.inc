@@ -25,3 +25,5 @@ do_install:append() {
 
 inherit systemd
 SYSTEMD_SERVICE:${PN} = "fwrolloutd.service"
+
+RUSTFLAGS += "-latomic"
