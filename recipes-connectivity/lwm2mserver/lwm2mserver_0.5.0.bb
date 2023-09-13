@@ -13,9 +13,10 @@ SRC_URI += " \
     gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-lwm2m-server;protocol=ssh;branch=main;tag=v${PV} \
     file://lwm2mserver.service \
     file://keep.d/lwm2mserver \
+    file://0001-packaging-Exclude-lwm2mserver-IPSO-definitions-from-.patch;patchdir=.. \
 "
 
-PR = "r2"
+PR = "r3"
 
 DEPENDS = " \
     cmake-native \
@@ -30,6 +31,7 @@ DEPENDS = " \
 "
 
 RDEPENDS:${PN} += " \
+    ipso-registry \
     lwm2mserver-foss-dependencies \
     virtual/gardena-lemonbeatd \
 "
@@ -42,6 +44,9 @@ FILES:${PN} += " \
 "
 
 do_install:append() {
+    # Remove IPSO registry Python module only used during development
+    rm -r ${S}/lwm2mserver_registry
+
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/lwm2mserver.service ${D}${systemd_unitdir}/system
 
