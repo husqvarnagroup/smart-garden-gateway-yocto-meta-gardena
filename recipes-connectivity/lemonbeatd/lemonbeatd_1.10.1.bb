@@ -6,9 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get lemonbeatd could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/lemonbeatd/1.9.0"
+# SRC_URI += "crate://crates.io/lemonbeatd/1.10.1"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-cargo;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "f07e5993ff6c9f3891bf23130699b8d211d02089"
+SRCREV = "7fb9f4409f393bd18efbd60a854884cb218752d7"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
 
