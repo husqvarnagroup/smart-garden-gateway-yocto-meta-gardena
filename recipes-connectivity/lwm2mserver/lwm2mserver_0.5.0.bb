@@ -60,6 +60,11 @@ do_install:append() {
     # Retain persisted data
     install -d ${D}${base_libdir}/upgrade/keep.d
     install -m 0644 ${WORKDIR}/keep.d/lwm2mserver ${D}${base_libdir}/upgrade/keep.d
+
+    # Ensure required IPSO directories exist
+    install -d ${D}${localstatedir}/lib/ipso_definitions/base
+    install -d ${D}${localstatedir}/lib/ipso_definitions/fwrolloutd
+    install -d ${D}${localstatedir}/lib/ipso_definitions/dev
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
