@@ -16,7 +16,7 @@ SRC_URI += " \
     file://0001-packaging-Exclude-lwm2mserver-IPSO-definitions-from-.patch;patchdir=.. \
 "
 
-PR = "r3"
+PR = "r0"
 
 DEPENDS = " \
     cmake-native \
