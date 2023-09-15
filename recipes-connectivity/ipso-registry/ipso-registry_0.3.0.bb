@@ -20,7 +20,7 @@ do_install:append() {
     install -d ${D}${localstatedir}/lib/ipso_definitions/base
 
     # Copy definition files
-    install -m 0644 ${S}/*.xml ${D}${localstatedir}/lib/ipso_definitions/base
+    install -m 0644 ${S}/definitions/*.xml ${D}${localstatedir}/lib/ipso_definitions/base
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
