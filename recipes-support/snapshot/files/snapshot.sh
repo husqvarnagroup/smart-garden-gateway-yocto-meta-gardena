@@ -18,6 +18,12 @@ cp -r /var/lib/lwm2mserver "${SNAPSHOT_DIR}/"
 cp -r /var/lib/cloudadapter "${SNAPSHOT_DIR}/"
 
 ##################################
+# IPSO definitions (fwrolloutd)  #
+##################################
+mkdir -p "${SNAPSHOT_DIR}/ipso_definitions"
+cp -r /var/lib/ipso_definitions/fwrolloutd "${SNAPSHOT_DIR}/ipso_definitions"
+
+##################################
 # Generic base image information #
 ##################################
 mkdir "${SNAPSHOT_DIR}/etc"
