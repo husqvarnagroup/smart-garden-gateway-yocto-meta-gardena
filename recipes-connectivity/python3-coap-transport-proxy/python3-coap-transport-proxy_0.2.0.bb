@@ -17,6 +17,8 @@ RDEPENDS:${PN} += " \
     python3-aiocoap \
 "
 
+RCONFLICTS:${PN} += "coap-transport-proxy"
+
 inherit pypi setuptools3 allarch
 
 S = "${WORKDIR}/git"
