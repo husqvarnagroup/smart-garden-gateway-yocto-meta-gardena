@@ -4,10 +4,10 @@ HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28"
 
-PV = "1.1.3"
+PV = "1.2.0"
 PR = "r0"
 
-RDEPENDS:${PN} = "iptables iptables-modules"
+RDEPENDS:${PN} = "iptables iptables-modules kernel-module-xt-dscp"
 
 SRC_URI = "\
     file://firewall.nft \

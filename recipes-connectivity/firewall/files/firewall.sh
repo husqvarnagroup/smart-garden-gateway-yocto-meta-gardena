@@ -2,12 +2,12 @@
 
 # Author: Adrian Friedli <adrian.friedli@husqvarnagroup.com>
 # Author: Andreas Müller <andreas.mueller@husqvarnagroup.com>
+# Author: Marc Lasch <marc.lasch@husqvarnagroup.com>
 #
-# Copyright (c) 2019 Gardena GmbH
+# Copyright (c) 2019, 2023 Gardena GmbH
 
 set -eu -o pipefail
 
-unfiltered_interfaces="ppp0"
 hap_port="8001"
 allowed_tcp_ports="http https $hap_port"
 allowed_udp_ports="mdns"
@@ -58,13 +58,16 @@ ip6tables -A rejectclosed -j REJECT --reject-with icmp6-adm-prohibited
 # loopback is always allowed
 ip46tables -A INPUT -i lo -j ACCEPT
 
-# unfiltered interfaces are allowed
-for iface in $unfiltered_interfaces; do
-    ip46tables -A INPUT -i "$iface" -j ACCEPT
-done
-
 # allow open connections and their related packets
 ip46tables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Traffic Class based filtering on ppp0. Only allow unencrypted traffic on specific ports.
+# 0x0c -> unencrypted (default key)
+# 0x1c -> encrypted with network key
+# More information: https://confluence-husqvarna.riada.se/display/SGS/Brave+New+World+Development+Radio+Module+Ports
+ip6tables -A INPUT -i ppp0 -p udp --match multiport --dport 20001,20003,20017 -m tos --tos 0x0c -j ACCEPT
+ip6tables -A INPUT -i ppp0 -p udp -m tos --tos 0x1c -j ACCEPT
+ip6tables -A INPUT -i ppp0 -p udp -m tos --tos 0x0c -j DROP
 
 # allow ICMP
 iptables -A INPUT -p icmp -j ACCEPT
