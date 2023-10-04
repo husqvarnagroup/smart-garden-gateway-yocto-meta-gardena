@@ -6,9 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get fwrolloutd could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/fwrolloutd/1.1.0"
+# SRC_URI += "crate://crates.io/fwrolloutd/1.1.1"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "d0e45d81339c8d1572c5e62a84eb24ba428520a6"
+SRCREV = "ad4dd7573c87c5ee841a8cbb421b538fdaf33eb3"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
@@ -235,7 +235,7 @@ SRC_URI += " \
     crate://crates.io/windows_x86_64_msvc/0.42.1 \
     crate://crates.io/windows_x86_64_msvc/0.48.5 \
     crate://crates.io/winreg/0.10.1 \
-    crate://crates.io/wiremock/0.5.19 \
+    crate://crates.io/wiremock/0.5.18 \
     crate://crates.io/xattr/0.2.3 \
     git://github.com/Amanieu/thread_local-rs.git;protocol=https;nobranch=1;name=thread_local;destsuffix=thread_local \
 "
