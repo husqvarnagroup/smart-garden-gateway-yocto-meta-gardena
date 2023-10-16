@@ -3,14 +3,14 @@ MAINTAINER = "Gardena GmbH"
 LICENSE = "CLOSED"
 
 PYPI_SRC_URI = " \
-    git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Embedded/sg-coap-transport-proxy;protocol=ssh;branch=main;tag=v${PV} \
+    git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Embedded/sg-coap-transport-proxy-python;protocol=ssh;branch=main;tag=v${PV} \
 "
 
 SRC_URI += " \
     file://coap-transport-proxy.service \
 "
 
-PR = "r1"
+PR = "r2"
 
 RDEPENDS:${PN} += " \
     python3-core \
