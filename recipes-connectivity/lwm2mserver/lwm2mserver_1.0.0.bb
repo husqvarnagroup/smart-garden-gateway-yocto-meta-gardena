@@ -23,6 +23,7 @@ DEPENDS = " \
     python3 \
     python3-cython-native \
     python3-distro-native \
+    python3-importlib-resources \
     python3-native \
     python3-ninja-native \
     python3-scikit-build-native \

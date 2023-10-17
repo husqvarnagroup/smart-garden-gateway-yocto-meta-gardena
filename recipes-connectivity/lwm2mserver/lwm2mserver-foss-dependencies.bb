@@ -7,8 +7,8 @@ PR = "r0"
 RDEPENDS:${PN} += " \
     python3-aiorun \
     python3-core \
+    python3-importlib-resources \
     python3-netifaces \
-    python3-pkg-resources \
     python3-pkgutil \
     python3-plistlib \
     python3-pynng \
