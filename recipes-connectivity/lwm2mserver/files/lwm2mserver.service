@@ -9,6 +9,7 @@ Type=notify
 Restart=on-failure
 RestartSec=10
 WatchdogSec=60
+TimeoutStartSec=2m
 NotifyAccess=main
 ExecStart=/usr/bin/lwm2mserver_native ppp0 --bind-to-device \
                                            --server-uri "coap://[fc00::6:100:0:0]" \
