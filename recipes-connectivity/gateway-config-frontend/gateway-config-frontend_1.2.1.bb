@@ -4,13 +4,13 @@ LICENSE = "Proprietary"
 
 LIC_FILES_CHKSUM = " \
     file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://third-party-licenses.txt;md5=05b4c6864c181049f0a08b49242f97e7 \
+    file://third-party-licenses.txt;md5=6c24c8fd4432798e872cc059d6322a66 \
     "
 
-PR = "r1"
+PR = "r0"
 
 SRC_URI += "git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-frontend;protocol=ssh;branch=build"
-SRCREV = "5126abb259f79ae7504dc5f9b45806a489ed42eb"
+SRCREV = "70c9cff615f20f5be38cb1e39887e8b1b72956a0"
 S = "${WORKDIR}/git"
 
 WWWDIR = "${datadir}/gateway-config-interface/www"
