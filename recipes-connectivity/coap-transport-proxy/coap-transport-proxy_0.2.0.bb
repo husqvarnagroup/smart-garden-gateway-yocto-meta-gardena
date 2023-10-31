@@ -6,8 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get coap-transport-proxy could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/coap-transport-proxy/0.1.0"
-SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;nobranch=1;tag=v0.1.0"
+# SRC_URI += "crate://crates.io/coap-transport-proxy/0.2.0"
+SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;nobranch=1;branch=main"
+SRCREV = "0885501cec8cee40e9093a65d1575fddc2c49b28"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
@@ -36,10 +37,8 @@ SRC_URI += " \
     crate://crates.io/clap/2.34.0 \
     crate://crates.io/coap-lite/0.4.1 \
     crate://crates.io/coap-lite/0.9.1 \
-    crate://crates.io/coap-server/0.1.1 \
+    crate://crates.io/coap/0.12.0 \
     crate://crates.io/core-foundation-sys/0.8.4 \
-    crate://crates.io/dyn-clone/1.0.14 \
-    crate://crates.io/env_logger/0.9.3 \
     crate://crates.io/foreign-types-shared/0.1.1 \
     crate://crates.io/foreign-types/0.3.2 \
     crate://crates.io/form_urlencoded/1.2.0 \
@@ -72,6 +71,7 @@ SRC_URI += " \
     crate://crates.io/memchr/2.5.0 \
     crate://crates.io/miniz_oxide/0.7.1 \
     crate://crates.io/mio/0.8.8 \
+    crate://crates.io/num-derive/0.3.3 \
     crate://crates.io/num-traits/0.2.16 \
     crate://crates.io/num_cpus/1.16.0 \
     crate://crates.io/object/0.31.1 \
@@ -82,9 +82,7 @@ SRC_URI += " \
     crate://crates.io/parking_lot/0.12.1 \
     crate://crates.io/parking_lot_core/0.9.8 \
     crate://crates.io/percent-encoding/2.3.0 \
-    crate://crates.io/pin-project-internal/1.1.3 \
     crate://crates.io/pin-project-lite/0.2.13 \
-    crate://crates.io/pin-project/1.1.3 \
     crate://crates.io/pin-utils/0.1.0 \
     crate://crates.io/pkg-config/0.3.27 \
     crate://crates.io/ppv-lite86/0.2.17 \
@@ -116,7 +114,6 @@ SRC_URI += " \
     crate://crates.io/strum_macros/0.20.1 \
     crate://crates.io/syn/1.0.109 \
     crate://crates.io/syn/2.0.37 \
-    crate://crates.io/sync_wrapper/0.1.1 \
     crate://crates.io/termcolor/1.1.3 \
     crate://crates.io/textwrap/0.11.0 \
     crate://crates.io/thiserror-impl/1.0.48 \
@@ -126,10 +123,8 @@ SRC_URI += " \
     crate://crates.io/tokio-macros/2.1.0 \
     crate://crates.io/tokio-openssl/0.6.3 \
     crate://crates.io/tokio-stream/0.1.14 \
-    crate://crates.io/tokio-util/0.7.8 \
+    crate://crates.io/tokio-util/0.6.10 \
     crate://crates.io/tokio/1.29.1 \
-    crate://crates.io/tracing-core/0.1.31 \
-    crate://crates.io/tracing/0.1.37 \
     crate://crates.io/unicode-bidi/0.3.13 \
     crate://crates.io/unicode-ident/1.0.12 \
     crate://crates.io/unicode-normalization/0.1.22 \
@@ -163,7 +158,7 @@ SRC_URI += " \
 "
 
 SRCREV_FORMAT .= "_coap-client"
-SRCREV_coap-client = "fba3e19d1d4d390999b20b4d4a9fca2965fcb6a8"
+SRCREV_coap-client = "edd9b2e93da7990e140f6155c547fceff448e043"
 EXTRA_OECARGO_PATHS += "${WORKDIR}/coap-client"
 
 # FIXME: update generateme with the real MD5 of the license file
@@ -171,7 +166,7 @@ LIC_FILES_CHKSUM = " \
     "
 
 SUMMARY = "coap-transport-proxy"
-HOMEPAGE = "https://dev.azure.com/HQV-Gardena/SG-Gateway/_git/sg-coap-transport-proxy-rust"
+HOMEPAGE = "https://dev.azure.com/HQV-Gardena/SG-Gateway/_git/sg-coap-transport-proxy"
 LICENSE = "CLOSED"
 
 # includes this file if it exists but does not fail
