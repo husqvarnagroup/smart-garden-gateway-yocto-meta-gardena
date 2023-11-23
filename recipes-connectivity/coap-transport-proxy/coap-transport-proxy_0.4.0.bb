@@ -6,9 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get coap-transport-proxy could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/coap-transport-proxy/0.2.0"
-SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "0885501cec8cee40e9093a65d1575fddc2c49b28"
+# SRC_URI += "crate://crates.io/coap-transport-proxy/0.4.0"
+SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;nobranch=1;branch=main"
+SRCREV = "e99f42f6c955ee8ddd513f66c8a25ec65e600edc"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
@@ -68,9 +68,11 @@ SRC_URI += " \
     crate://crates.io/lock_api/0.4.10 \
     crate://crates.io/log/0.4.18 \
     crate://crates.io/lru_time_cache/0.11.11 \
+    crate://crates.io/matchers/0.1.0 \
     crate://crates.io/memchr/2.5.0 \
     crate://crates.io/miniz_oxide/0.7.1 \
     crate://crates.io/mio/0.8.8 \
+    crate://crates.io/nu-ansi-term/0.46.0 \
     crate://crates.io/num-derive/0.3.3 \
     crate://crates.io/num-traits/0.2.16 \
     crate://crates.io/num_cpus/1.16.0 \
@@ -79,6 +81,7 @@ SRC_URI += " \
     crate://crates.io/openssl-macros/0.1.1 \
     crate://crates.io/openssl-sys/0.9.93 \
     crate://crates.io/openssl/0.10.57 \
+    crate://crates.io/overload/0.1.1 \
     crate://crates.io/parking_lot/0.12.1 \
     crate://crates.io/parking_lot_core/0.9.8 \
     crate://crates.io/percent-encoding/2.3.0 \
@@ -94,6 +97,7 @@ SRC_URI += " \
     crate://crates.io/rand_chacha/0.3.1 \
     crate://crates.io/rand_core/0.6.4 \
     crate://crates.io/redox_syscall/0.3.5 \
+    crate://crates.io/regex-automata/0.1.10 \
     crate://crates.io/regex-syntax/0.6.29 \
     crate://crates.io/regex/1.7.3 \
     crate://crates.io/rustc-demangle/0.1.23 \
@@ -102,6 +106,7 @@ SRC_URI += " \
     crate://crates.io/serde/1.0.188 \
     crate://crates.io/serde_derive/1.0.188 \
     crate://crates.io/serde_json/1.0.107 \
+    crate://crates.io/sharded-slab/0.1.7 \
     crate://crates.io/signal-hook-registry/1.4.1 \
     crate://crates.io/simplelog/0.9.0 \
     crate://crates.io/slab/0.4.9 \
@@ -118,6 +123,7 @@ SRC_URI += " \
     crate://crates.io/textwrap/0.11.0 \
     crate://crates.io/thiserror-impl/1.0.48 \
     crate://crates.io/thiserror/1.0.48 \
+    crate://crates.io/thread_local/1.1.4 \
     crate://crates.io/tinyvec/1.6.0 \
     crate://crates.io/tinyvec_macros/0.1.1 \
     crate://crates.io/tokio-macros/2.1.0 \
@@ -125,12 +131,18 @@ SRC_URI += " \
     crate://crates.io/tokio-stream/0.1.14 \
     crate://crates.io/tokio-util/0.6.10 \
     crate://crates.io/tokio/1.29.1 \
+    crate://crates.io/tracing-attributes/0.1.27 \
+    crate://crates.io/tracing-core/0.1.32 \
+    crate://crates.io/tracing-log/0.1.3 \
+    crate://crates.io/tracing-subscriber/0.3.17 \
+    crate://crates.io/tracing/0.1.39 \
     crate://crates.io/unicode-bidi/0.3.13 \
     crate://crates.io/unicode-ident/1.0.12 \
     crate://crates.io/unicode-normalization/0.1.22 \
     crate://crates.io/unicode-segmentation/1.10.1 \
     crate://crates.io/unicode-width/0.1.11 \
     crate://crates.io/url/2.4.1 \
+    crate://crates.io/valuable/0.1.0 \
     crate://crates.io/vcpkg/0.2.15 \
     crate://crates.io/vec_map/0.8.2 \
     crate://crates.io/version_check/0.9.4 \
@@ -158,7 +170,7 @@ SRC_URI += " \
 "
 
 SRCREV_FORMAT .= "_coap-client"
-SRCREV_coap-client = "edd9b2e93da7990e140f6155c547fceff448e043"
+SRCREV_coap-client = "879405a53d86d79d4dd5de524a9212470f7c3514"
 EXTRA_OECARGO_PATHS += "${WORKDIR}/coap-client"
 
 # FIXME: update generateme with the real MD5 of the license file
