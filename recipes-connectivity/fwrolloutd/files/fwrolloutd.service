@@ -12,7 +12,6 @@ Restart=on-failure
 RestartSec=1m
 
 # SG-18571 Turn memory bloat into a hard error
-MemoryHigh=10M
 MemoryMax=15M
 
 [Install]
