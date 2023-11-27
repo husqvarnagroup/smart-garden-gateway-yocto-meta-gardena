@@ -20,7 +20,6 @@ Environment=CLOUDADAPTER_RATELIMIT_DEVICE_TELEMETRY_PATH_lemonbeat_status_messag
 Environment=CLOUDADAPTER_CLOUD_RECONNECT_ON_IPADDRESS_CHANGE=true
 
 # SG-18571 Turn memory bloat into a hard error
-MemoryHigh=25M
 MemoryMax=30M
 
 [Install]
