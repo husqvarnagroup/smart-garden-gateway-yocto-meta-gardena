@@ -21,7 +21,6 @@ ExecStart=/usr/bin/lwm2mserver_native ppp0 --bind-to-device \
 ExecReload=kill -HUP $MAINPID
 
 # SG-18571 Turn memory bloat into a hard error
-MemoryHigh=25M
 MemoryMax=30M
 
 [Install]
