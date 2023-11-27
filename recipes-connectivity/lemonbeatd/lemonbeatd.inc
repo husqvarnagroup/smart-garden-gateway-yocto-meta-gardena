@@ -6,7 +6,7 @@ SRC_URI += " \
     file://lemonbeatd.service \
 "
 
-PR = "r4"
+PR = "r5"
 
 CARGO_FEATURES="release_max_level_debug"
 CARGO_BUILD_FLAGS += "--features '${CARGO_FEATURES}'"
