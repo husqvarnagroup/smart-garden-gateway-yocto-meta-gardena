@@ -8,6 +8,7 @@ Type=simple
 Restart=on-failure
 RestartSec=60
 MemoryMax=15M
+Environment=RUST_LOG=info
 ExecStart=/usr/bin/coap-transport-proxy
 
 [Install]
