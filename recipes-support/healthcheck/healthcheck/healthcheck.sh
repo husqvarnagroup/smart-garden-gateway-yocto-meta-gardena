@@ -289,10 +289,10 @@ test_ppp0_sg_16012() {
     fi
 
     # SG-16012: Check for multiple IP addresses on ppp0.
-    if [ "$(ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:0:0:1/64 scope global" ]; then
+    if [ "$(/sbin/ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:0:0:1/64 scope global" ]; then
         # The only global address must be fc00::6:0:0:1 when using legacy RM firmwares
         result=0
-    elif [ "$(ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:100:0:0/64 scope global" ]; then
+    elif [ "$(/sbin/ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:100:0:0/64 scope global" ]; then
         # The only global address must be fc00::6:100:0:0 when using Zephyr based RM firmwares
         result=0
     else
@@ -316,7 +316,7 @@ test_rm_ping() {
     local result=0
     local rm_ip_address
 
-    if ! rm_ip_address="$(ip -6 route list | grep -e "^fe80::.*dev ppp0" | head -n1 | awk '{print $1}')"; then
+    if ! rm_ip_address="$(/sbin/ip -6 route list | grep -e "^fe80::.*dev ppp0" | head -n1 | awk '{print $1}')"; then
         log_result "ppp0" "2" "ppp0 interface has no IP address"
         return
     fi
