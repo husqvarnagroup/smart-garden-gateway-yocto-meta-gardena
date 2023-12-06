@@ -109,6 +109,24 @@ if [ -d /tmp/tcpdump-sherlock ]; then
 fi
 
 ##################################
+# Radio module RAM               #
+##################################
+filename="${SNAPSHOT_DIR}/runtime/radio-module-ram-$(date +%Y-%m-%dT%H-%M-%S)"
+# Open in background so we can interact with it via telnet interface
+openocd -f board/gardena_radio.cfg > "${filename}-openocd.log" 2>&1 &
+
+# Wait for OpenOCD to start
+sleep 2
+
+# Sleep because connection needs to be open during dump_image execution (~6 sec
+# on MT7688, so 15 sec might be enought for at91sam too)
+(echo "halt
+    dump_image ${filename}.bin 0x20000000 0x8000
+    reg
+    resume
+    shutdown" && sleep 15) | telnet localhost 4444 > "${filename}.log" 2>&1
+
+##################################
 # Create tarball & delete files  #
 ##################################
 tar cfz "${SNAPSHOT_TAR}" "./$(basename "${SNAPSHOT_DIR}")"
