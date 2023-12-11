@@ -8,10 +8,10 @@ inherit cargo
 # how to get lemonbeatd could be as easy as but default to a git checkout:
 # SRC_URI += "crate://crates.io/lemonbeatd/1.10.1"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-cargo;protocol=ssh;nobranch=1;branch=gateway3"
-SRCREV = "5981bb5a67d77bab3be85033989cb9beb7a78b18"
+SRCREV = "3d864044d1d29c2b623fe79da73d4c178e61221c"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
-PV:append = ".AUTOINC+5981bb5a67"
+PV:append = ".AUTOINC+3d864044d1"
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
