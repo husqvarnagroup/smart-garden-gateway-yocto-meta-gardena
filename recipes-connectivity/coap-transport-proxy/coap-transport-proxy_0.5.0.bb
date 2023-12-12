@@ -6,13 +6,11 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get coap-transport-proxy could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/coap-transport-proxy/0.4.0"
+# SRC_URI += "crate://crates.io/coap-transport-proxy/0.5.0"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "e99f42f6c955ee8ddd513f66c8a25ec65e600edc"
+SRCREV = "d7b8e155b56d8ea1ee3cb960d720f347df6460b9"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
-
-PR = "r1"
 
 
 # please note if you have entries that do not begin with crate://
@@ -172,7 +170,7 @@ SRC_URI += " \
 "
 
 SRCREV_FORMAT .= "_coap-client"
-SRCREV_coap-client = "879405a53d86d79d4dd5de524a9212470f7c3514"
+SRCREV_coap-client = "8803d017fba4f1fe61b518448b02b6e474a6a6a1"
 EXTRA_OECARGO_PATHS += "${WORKDIR}/coap-client"
 
 # FIXME: update generateme with the real MD5 of the license file
