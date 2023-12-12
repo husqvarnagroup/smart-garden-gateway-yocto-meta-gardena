@@ -6,6 +6,8 @@
 set -eu -o pipefail
 
 readonly update_url_protocolless=@UPDATE_URL_PROTOCOLLESS@
+readonly lemonbeatd_rm_api_socket=/runtime/radiomodule_api
+readonly lb_radio_gateway_client=/usr/bin/lb_radio_gateway
 
 something_failed=0
 
@@ -452,6 +454,41 @@ test_socket_queue_ppp0_sg_20421() {
     fi
 }
 
+# Check lb_radio_gateway API. This ensures the TCP API on the radio
+# module works and the forwarding from the Unix socket provided by
+# lemonbeatd works.
+test_lb_radio_gateway_api() {
+    local result=0
+
+    if ! version="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_app_version)"; then
+        result=1
+    fi
+
+    log_result "lb_radio_gateway_api" "${result}" "${version}"
+}
+
+# Check lb_radio driver state to make sure state machine is not stuck.
+# The state may legitimately be something else than `listen` if the
+# gateway is currently sending or receiving a Lemonbeat packet. For
+# this reason, we run the check multiple times and accept it as passed
+# if the state is `listen` at least once.
+test_lb_radio_driver_state() {
+    local result=1
+
+    for i in $(seq 1 10); do
+        if ! state="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_lb_radio_driver_state)"; then
+            result=2
+            break
+        fi
+        if [ "$state" = "listen" ]; then
+            result=0
+            break
+        fi
+    done
+
+    log_result "lb_radio_driver_state" "${result}" "${state}"
+}
+
 # Check if Thread Border Routers are advertised on the local network.
 find_thread_border_router() {
     local result=0
@@ -508,6 +545,12 @@ test_all() {
     find_thread_border_router
 
     test_network_key_sgse_1024
+
+    if [ -x "${lb_radio_gateway_client}" ]; then
+        # tests for Zephyr-based gateways
+        test_lb_radio_gateway_api
+        test_lb_radio_driver_state
+    fi
 
     return "${something_failed}"
 }
