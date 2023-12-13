@@ -418,8 +418,6 @@ test_network_key_sgse_1024() {
     fi
 
     log_result "network_key_sgse_1024" "${result}" "omitted"
-
-    return "${result}"
 }
 
 # Run netstat on listening tcp and udp sockets to get socket queue utilization.
