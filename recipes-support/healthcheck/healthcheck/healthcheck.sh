@@ -457,8 +457,10 @@ test_socket_queue_ppp0_sg_20421() {
 # lemonbeatd works.
 test_lb_radio_gateway_api() {
     local result=0
+    local version
 
     if ! version="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_app_version)"; then
+        version="undetermined"
         result=1
     fi
 
@@ -472,10 +474,12 @@ test_lb_radio_gateway_api() {
 # if the state is `listen` at least once.
 test_lb_radio_driver_state() {
     local result=1
+    local state
 
     for i in $(seq 1 10); do
         if ! state="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_lb_radio_driver_state)"; then
             result=2
+            state="undetermined"
             break
         fi
         if [ "$state" = "listen" ]; then
