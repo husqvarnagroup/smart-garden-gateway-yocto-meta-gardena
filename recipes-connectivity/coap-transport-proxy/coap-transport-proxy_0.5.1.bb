@@ -6,9 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get coap-transport-proxy could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/coap-transport-proxy/0.5.0"
+# SRC_URI += "crate://crates.io/coap-transport-proxy/0.5.1"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "d7b8e155b56d8ea1ee3cb960d720f347df6460b9"
+SRCREV = "f439d7c741112403bd609595e58de51c762d1bfc"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
