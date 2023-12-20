@@ -6,7 +6,7 @@ SRC_URI += " \
     file://lemonbeatd.service \
 "
 
-PR = "r5"
+inherit pkgconfig
 
 CARGO_FEATURES="release_max_level_debug"
 CARGO_BUILD_FLAGS += "--features '${CARGO_FEATURES}'"
