@@ -32,8 +32,8 @@ EXTRA_OECMAKE += " \
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 0755 ${B}/main/gardena-accessory-server ${D}${bindir}/
-    install -m 0755 ${B}/tools/provision/gardena-provision ${D}${bindir}/
+    install -m 0755 ${WORKDIR}/build/main/gardena-accessory-server ${D}${bindir}/
+    install -m 0755 ${WORKDIR}/build/tools/provision/gardena-provision ${D}${bindir}/
 
     install -d ${D}${includedir}/accessoryserver
     install -m 0644 ${S}/main/include/wifiapi_public.h ${D}${includedir}/accessoryserver/
