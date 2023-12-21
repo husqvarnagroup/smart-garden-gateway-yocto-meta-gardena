@@ -14,7 +14,7 @@ SRCREV = "3d0e6af839610698472d8fe3c6703b5604c7a4dc"
 
 S = "${WORKDIR}/git"
 
-inherit cmake systemd
+inherit cmake systemd pkgconfig
 
 FILES:${PN} += " \
     ${base_libdir}/upgrade/keep.d \
