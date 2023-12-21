@@ -1,4 +1,3 @@
-PR = "r6"
 
 DEPENDS += "openssl accessory-server"
 RDEPENDS:${PN} += "gateway-config-frontend gateway-config-backend-foss-dependencies"
@@ -9,6 +8,8 @@ SRC_URI += "\
     file://gateway-config-backend.socket \
     file://keep.d/gateway-config-backend \
     "
+
+inherit pkgconfig
 
 # BUG: meta-rust doesn't add the include directories to bindgen runs
 export BINDGEN_EXTRA_CLANG_ARGS="-I${STAGING_INCDIR}"
