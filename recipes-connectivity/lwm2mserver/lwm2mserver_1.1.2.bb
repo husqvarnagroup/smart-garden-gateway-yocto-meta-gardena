@@ -45,7 +45,7 @@ FILES:${PN} += " \
 
 do_install:append() {
     # Remove IPSO registry Python module only used during development
-    rm -r ${S}/lwm2mserver_registry
+    rm -rf ${S}/lwm2mserver_registry
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/lwm2mserver.service ${D}${systemd_unitdir}/system
