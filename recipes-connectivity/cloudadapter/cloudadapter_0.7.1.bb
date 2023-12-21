@@ -15,7 +15,7 @@ SRC_URI += " \
     file://keep.d/cloudadapter \
 "
 
-PR = "r1"
+PR = "r2"
 
 DEPENDS = " \
     python3 \
@@ -44,10 +44,6 @@ do_install:append() {
     install -m 0644 ${WORKDIR}/aws-root-ca.crt ${D}${sysconfdir}/ssl/certs
 
     install -d ${D}${localstatedir}/lib/${PN}
-
-    # Move executables to /usr/bin/
-    mv ${D}${datadir}/bin/${PN}_native ${D}${bindir}
-    rmdir ${D}${datadir}/bin ${D}${datadir}
 
     # Retain persisted data
     install -d ${D}${base_libdir}/upgrade/keep.d
