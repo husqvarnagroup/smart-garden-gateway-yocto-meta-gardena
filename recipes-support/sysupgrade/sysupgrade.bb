@@ -7,12 +7,11 @@ FILESEXTRAPATHS:append := "${THISDIR}/files:"
 SRC_URI = " \
     file://keep.d/sysupgrade \
     file://sysupgrade.conf \
-    file://sysupgrade.service \
     file://sysupgrade.sh \
 "
 
 PR = "r0"
-PV = "1.4"
+PV = "2.0"
 
 RDEPENDS:${PN} = "initscripts-readonly-rootfs-overlay overlayfs-purge"
 
@@ -30,13 +29,8 @@ do_install () {
     install -d ${D}${sysconfdir}
     install -m 0644 ${WORKDIR}/sysupgrade.conf ${D}${sysconfdir}
 
-    install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/sysupgrade.service ${D}${systemd_unitdir}/system
-
     # Create persistent log dir
     install -d ${D}${localstatedir}/lib/sysupgrade
 }
 
-SYSTEMD_SERVICE:${PN} += "sysupgrade.service"
-
-inherit systemd allarch
+inherit allarch

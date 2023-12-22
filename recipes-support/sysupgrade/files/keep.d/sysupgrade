@@ -1,2 +1,5 @@
 /etc/sysupgrade.conf
 /etc/os-release.old
+/var/lib/sysupgrade/overlayfs-purge-stderr.log
+/var/lib/sysupgrade/overlayfs-purge-stdout.log
+/var/lib/sysupgrade/sysupgrade.log
