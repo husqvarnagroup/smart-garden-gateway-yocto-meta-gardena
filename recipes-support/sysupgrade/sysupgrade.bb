@@ -21,8 +21,8 @@ FILES:${PN} += " \
 "
 
 do_install () {
-    install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/sysupgrade.sh ${D}${bindir}/sysupgrade
+    install -d ${D}${sbindir}
+    install -m 0755 ${WORKDIR}/sysupgrade.sh ${D}${sbindir}/sysupgrade
 
     install -d ${D}${base_libdir}/upgrade/keep.d
     install -m 0644 ${WORKDIR}/keep.d/sysupgrade ${D}${base_libdir}/upgrade/keep.d
