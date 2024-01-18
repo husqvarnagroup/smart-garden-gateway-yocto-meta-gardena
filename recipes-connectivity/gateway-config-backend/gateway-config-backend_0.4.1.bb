@@ -6,9 +6,9 @@ inherit cargo
 # DEFAULT_PREFERENCE = "-1"
 
 # how to get gateway-config-backend could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/gateway-config-backend/0.3.3"
-SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;nobranch=1"
-SRCREV = "c76a566feb1602867159dbd5bc52f10dc4aa1700"
+# SRC_URI += "crate://crates.io/gateway-config-backend/0.4.1"
+SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;nobranch=1;branch=main"
+SRCREV = "d0680e13cd343c16bb7aa8eeb56ffb98165a0028"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
@@ -20,36 +20,36 @@ SRC_URI += " \
     crate://crates.io/actix-web/0.7.16 \
     crate://crates.io/actix/0.7.9 \
     crate://crates.io/actix_derive/0.3.2 \
-    crate://crates.io/addr2line/0.14.1 \
-    crate://crates.io/adler/0.2.3 \
-    crate://crates.io/aho-corasick/0.7.15 \
-    crate://crates.io/ansi_term/0.11.0 \
+    crate://crates.io/addr2line/0.17.0 \
+    crate://crates.io/adler/1.0.2 \
+    crate://crates.io/aho-corasick/0.7.19 \
+    crate://crates.io/ansi_term/0.12.1 \
     crate://crates.io/askama_escape/0.1.0 \
     crate://crates.io/atty/0.2.14 \
-    crate://crates.io/autocfg/0.1.7 \
-    crate://crates.io/autocfg/1.0.1 \
-    crate://crates.io/backtrace/0.3.56 \
+    crate://crates.io/autocfg/0.1.8 \
+    crate://crates.io/autocfg/1.1.0 \
+    crate://crates.io/backtrace/0.3.66 \
     crate://crates.io/base64/0.10.1 \
     crate://crates.io/bindgen/0.57.0 \
-    crate://crates.io/bitflags/1.2.1 \
-    crate://crates.io/byteorder/1.4.2 \
+    crate://crates.io/bitflags/1.3.2 \
+    crate://crates.io/byteorder/1.4.3 \
     crate://crates.io/bytes/0.4.12 \
-    crate://crates.io/cc/1.0.66 \
+    crate://crates.io/cc/1.0.74 \
     crate://crates.io/cexpr/0.4.0 \
     crate://crates.io/cfg-if/0.1.10 \
     crate://crates.io/cfg-if/1.0.0 \
-    crate://crates.io/clang-sys/1.1.0 \
-    crate://crates.io/clap/2.33.3 \
+    crate://crates.io/clang-sys/1.4.0 \
+    crate://crates.io/clap/2.34.0 \
     crate://crates.io/cloudabi/0.0.3 \
-    crate://crates.io/cookie/0.11.3 \
+    crate://crates.io/cookie/0.11.5 \
     crate://crates.io/crossbeam-channel/0.3.9 \
-    crate://crates.io/crossbeam-deque/0.7.3 \
+    crate://crates.io/crossbeam-deque/0.7.4 \
     crate://crates.io/crossbeam-epoch/0.8.2 \
     crate://crates.io/crossbeam-queue/0.1.2 \
     crate://crates.io/crossbeam-queue/0.2.3 \
     crate://crates.io/crossbeam-utils/0.6.6 \
     crate://crates.io/crossbeam-utils/0.7.2 \
-    crate://crates.io/dtoa/0.4.7 \
+    crate://crates.io/dtoa/0.4.8 \
     crate://crates.io/encoding-index-japanese/1.20141219.5 \
     crate://crates.io/encoding-index-korean/1.20141219.5 \
     crate://crates.io/encoding-index-simpchinese/1.20141219.5 \
@@ -58,7 +58,7 @@ SRC_URI += " \
     crate://crates.io/encoding/0.2.33 \
     crate://crates.io/encoding_index_tests/0.1.4 \
     crate://crates.io/env_logger/0.6.2 \
-    crate://crates.io/env_logger/0.8.3 \
+    crate://crates.io/env_logger/0.8.4 \
     crate://crates.io/error-chain/0.8.1 \
     crate://crates.io/failure/0.1.8 \
     crate://crates.io/failure_derive/0.1.8 \
@@ -68,64 +68,66 @@ SRC_URI += " \
     crate://crates.io/fuchsia-cprng/0.1.1 \
     crate://crates.io/fuchsia-zircon-sys/0.3.3 \
     crate://crates.io/fuchsia-zircon/0.3.3 \
-    crate://crates.io/futures-channel/0.3.12 \
-    crate://crates.io/futures-core/0.3.12 \
+    crate://crates.io/futures-channel/0.3.25 \
+    crate://crates.io/futures-core/0.3.25 \
     crate://crates.io/futures-cpupool/0.1.8 \
-    crate://crates.io/futures-executor/0.3.12 \
-    crate://crates.io/futures-io/0.3.12 \
-    crate://crates.io/futures-macro/0.3.12 \
-    crate://crates.io/futures-sink/0.3.12 \
-    crate://crates.io/futures-task/0.3.12 \
-    crate://crates.io/futures-util/0.3.12 \
-    crate://crates.io/futures/0.1.30 \
-    crate://crates.io/futures/0.3.12 \
-    crate://crates.io/gimli/0.23.0 \
+    crate://crates.io/futures-executor/0.3.25 \
+    crate://crates.io/futures-io/0.3.25 \
+    crate://crates.io/futures-macro/0.3.25 \
+    crate://crates.io/futures-sink/0.3.25 \
+    crate://crates.io/futures-task/0.3.25 \
+    crate://crates.io/futures-util/0.3.25 \
+    crate://crates.io/futures/0.1.31 \
+    crate://crates.io/futures/0.3.25 \
+    crate://crates.io/gimli/0.26.2 \
     crate://crates.io/glob/0.3.0 \
     crate://crates.io/h2/0.1.26 \
-    crate://crates.io/hashbrown/0.9.1 \
-    crate://crates.io/hermit-abi/0.1.18 \
+    crate://crates.io/hashbrown/0.12.3 \
+    crate://crates.io/hermit-abi/0.1.19 \
     crate://crates.io/hostname/0.3.1 \
     crate://crates.io/http/0.1.21 \
-    crate://crates.io/httparse/1.3.5 \
+    crate://crates.io/httparse/1.8.0 \
     crate://crates.io/humantime/1.3.0 \
     crate://crates.io/humantime/2.1.0 \
     crate://crates.io/idna/0.1.5 \
-    crate://crates.io/indexmap/1.6.1 \
+    crate://crates.io/indexmap/1.9.1 \
     crate://crates.io/iovec/0.1.4 \
     crate://crates.io/ipconfig/0.1.9 \
-    crate://crates.io/itoa/0.4.7 \
+    crate://crates.io/itoa/0.4.8 \
+    crate://crates.io/itoa/1.0.4 \
     crate://crates.io/kernel32-sys/0.2.2 \
     crate://crates.io/language-tags/0.2.2 \
     crate://crates.io/lazy_static/1.4.0 \
     crate://crates.io/lazycell/1.3.0 \
-    crate://crates.io/libc/0.2.86 \
-    crate://crates.io/libloading/0.6.7 \
-    crate://crates.io/linked-hash-map/0.5.4 \
-    crate://crates.io/listenfd/0.3.3 \
+    crate://crates.io/libc/0.2.137 \
+    crate://crates.io/libloading/0.7.3 \
+    crate://crates.io/linked-hash-map/0.5.6 \
+    crate://crates.io/listenfd/0.3.5 \
     crate://crates.io/lock_api/0.1.5 \
     crate://crates.io/lock_api/0.3.4 \
-    crate://crates.io/log/0.4.14 \
+    crate://crates.io/log/0.4.17 \
     crate://crates.io/lru-cache/0.1.2 \
     crate://crates.io/match_cfg/0.1.0 \
-    crate://crates.io/matches/0.1.8 \
+    crate://crates.io/matches/0.1.9 \
     crate://crates.io/maybe-uninit/2.0.0 \
-    crate://crates.io/memchr/2.3.4 \
+    crate://crates.io/memchr/2.5.0 \
     crate://crates.io/memoffset/0.5.6 \
     crate://crates.io/mime/0.3.16 \
-    crate://crates.io/mime_guess/2.0.3 \
-    crate://crates.io/miniz_oxide/0.4.3 \
+    crate://crates.io/mime_guess/2.0.4 \
+    crate://crates.io/miniz_oxide/0.5.4 \
     crate://crates.io/mio-named-pipes/0.1.7 \
     crate://crates.io/mio-uds/0.6.8 \
     crate://crates.io/mio/0.6.23 \
     crate://crates.io/miow/0.2.2 \
-    crate://crates.io/miow/0.3.6 \
-    crate://crates.io/net2/0.2.37 \
+    crate://crates.io/miow/0.3.7 \
+    crate://crates.io/net2/0.2.38 \
     crate://crates.io/nom/5.1.2 \
-    crate://crates.io/num_cpus/1.13.0 \
-    crate://crates.io/object/0.23.0 \
-    crate://crates.io/once_cell/1.5.2 \
-    crate://crates.io/openssl-sys/0.9.60 \
-    crate://crates.io/openssl/0.10.32 \
+    crate://crates.io/num_cpus/1.13.1 \
+    crate://crates.io/object/0.29.0 \
+    crate://crates.io/once_cell/1.16.0 \
+    crate://crates.io/openssl-macros/0.1.0 \
+    crate://crates.io/openssl-sys/0.9.77 \
+    crate://crates.io/openssl/0.10.42 \
     crate://crates.io/owning_ref/0.4.1 \
     crate://crates.io/parking_lot/0.7.1 \
     crate://crates.io/parking_lot/0.9.0 \
@@ -133,17 +135,15 @@ SRC_URI += " \
     crate://crates.io/parking_lot_core/0.6.2 \
     crate://crates.io/peeking_take_while/0.1.2 \
     crate://crates.io/percent-encoding/1.0.1 \
-    crate://crates.io/percent-encoding/2.1.0 \
-    crate://crates.io/pin-project-lite/0.2.4 \
+    crate://crates.io/percent-encoding/2.2.0 \
+    crate://crates.io/pin-project-lite/0.2.9 \
     crate://crates.io/pin-utils/0.1.0 \
-    crate://crates.io/pkg-config/0.3.19 \
-    crate://crates.io/proc-macro-hack/0.5.19 \
-    crate://crates.io/proc-macro-nested/0.1.7 \
+    crate://crates.io/pkg-config/0.3.26 \
     crate://crates.io/proc-macro2/0.4.30 \
-    crate://crates.io/proc-macro2/1.0.24 \
+    crate://crates.io/proc-macro2/1.0.47 \
     crate://crates.io/quick-error/1.2.3 \
     crate://crates.io/quote/0.6.13 \
-    crate://crates.io/quote/1.0.9 \
+    crate://crates.io/quote/1.0.21 \
     crate://crates.io/rand/0.5.6 \
     crate://crates.io/rand/0.6.5 \
     crate://crates.io/rand_chacha/0.1.1 \
@@ -157,40 +157,40 @@ SRC_URI += " \
     crate://crates.io/rand_xorshift/0.1.1 \
     crate://crates.io/rdrand/0.4.0 \
     crate://crates.io/redox_syscall/0.1.57 \
-    crate://crates.io/regex-syntax/0.6.22 \
-    crate://crates.io/regex/1.4.3 \
+    crate://crates.io/regex-syntax/0.6.27 \
+    crate://crates.io/regex/1.6.0 \
     crate://crates.io/resolv-conf/0.6.3 \
-    crate://crates.io/rustc-demangle/0.1.18 \
+    crate://crates.io/rustc-demangle/0.1.21 \
     crate://crates.io/rustc-hash/1.1.0 \
     crate://crates.io/rustc_version/0.2.3 \
-    crate://crates.io/ryu/1.0.5 \
+    crate://crates.io/ryu/1.0.11 \
     crate://crates.io/scopeguard/0.3.3 \
     crate://crates.io/scopeguard/1.1.0 \
     crate://crates.io/semver-parser/0.7.0 \
     crate://crates.io/semver/0.9.0 \
-    crate://crates.io/serde/1.0.123 \
-    crate://crates.io/serde_derive/1.0.123 \
-    crate://crates.io/serde_json/1.0.62 \
+    crate://crates.io/serde/1.0.147 \
+    crate://crates.io/serde_derive/1.0.147 \
+    crate://crates.io/serde_json/1.0.87 \
     crate://crates.io/serde_urlencoded/0.5.5 \
-    crate://crates.io/sha1/0.6.0 \
+    crate://crates.io/sha1/0.6.1 \
+    crate://crates.io/sha1_smol/1.0.0 \
     crate://crates.io/shlex/0.1.1 \
-    crate://crates.io/signal-hook-registry/1.3.0 \
-    crate://crates.io/slab/0.4.2 \
+    crate://crates.io/signal-hook-registry/1.4.0 \
+    crate://crates.io/slab/0.4.7 \
     crate://crates.io/smallvec/0.6.14 \
     crate://crates.io/socket2/0.3.19 \
     crate://crates.io/stable_deref_trait/1.2.0 \
     crate://crates.io/string/0.2.1 \
     crate://crates.io/strsim/0.8.0 \
     crate://crates.io/syn/0.15.44 \
-    crate://crates.io/syn/1.0.60 \
-    crate://crates.io/synstructure/0.12.4 \
-    crate://crates.io/termcolor/1.1.2 \
+    crate://crates.io/syn/1.0.103 \
+    crate://crates.io/synstructure/0.12.6 \
+    crate://crates.io/termcolor/1.1.3 \
     crate://crates.io/textwrap/0.11.0 \
     crate://crates.io/thiserror-impl/1.0.23 \
     crate://crates.io/thiserror/1.0.23 \
-    crate://crates.io/thread_local/1.1.3 \
     crate://crates.io/time/0.1.44 \
-    crate://crates.io/tinyvec/1.1.1 \
+    crate://crates.io/tinyvec/1.6.0 \
     crate://crates.io/tinyvec_macros/0.1.0 \
     crate://crates.io/tokio-codec/0.1.2 \
     crate://crates.io/tokio-current-thread/0.1.7 \
@@ -212,18 +212,19 @@ SRC_URI += " \
     crate://crates.io/trust-dns-proto/0.5.0 \
     crate://crates.io/trust-dns-resolver/0.10.0 \
     crate://crates.io/unicase/2.6.0 \
-    crate://crates.io/unicode-bidi/0.3.4 \
-    crate://crates.io/unicode-normalization/0.1.17 \
-    crate://crates.io/unicode-width/0.1.8 \
+    crate://crates.io/unicode-bidi/0.3.8 \
+    crate://crates.io/unicode-ident/1.0.5 \
+    crate://crates.io/unicode-normalization/0.1.22 \
+    crate://crates.io/unicode-width/0.1.10 \
     crate://crates.io/unicode-xid/0.1.0 \
-    crate://crates.io/unicode-xid/0.2.1 \
+    crate://crates.io/unicode-xid/0.2.4 \
     crate://crates.io/url/1.7.2 \
-    crate://crates.io/uuid/0.6.5 \
     crate://crates.io/uuid/0.7.4 \
-    crate://crates.io/vcpkg/0.2.11 \
+    crate://crates.io/uuid/0.8.2 \
+    crate://crates.io/vcpkg/0.2.15 \
     crate://crates.io/vec_map/0.8.2 \
     crate://crates.io/version_check/0.1.5 \
-    crate://crates.io/version_check/0.9.2 \
+    crate://crates.io/version_check/0.9.4 \
     crate://crates.io/wasi/0.10.0+wasi-snapshot-preview1 \
     crate://crates.io/which/3.1.1 \
     crate://crates.io/widestring/0.2.2 \
@@ -241,7 +242,7 @@ SRC_URI += " \
 
 LIC_FILES_CHKSUM = " \
     file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://third_party_licenses;md5=cada3d1c3911df859d168bf95d3af2c3 \
+    file://third_party_licenses;md5=f058988aadaa9ec7f48bee9bda5ee7f2 \
 "
 
 SUMMARY = "Backend component for the GARDENA smart Gateway config interface"
