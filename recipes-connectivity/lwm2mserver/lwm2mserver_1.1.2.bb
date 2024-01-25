@@ -1,9 +1,9 @@
 DESCRIPTION = "Brave New World LWM2M Server"
-LICENSE = "EPL-1.0 & EPL-2.0 & EDL-1.0"
+LICENSE = "EPL-1.0 & EPL-2.0 & BSD-3-Clause"
 LIC_FILES_CHKSUM = " \
     file://../wakaama/wakaama-c/coap/er-coap-13/LICENSE;md5=bd9db1399d32da2d482fb0afb64b3d20 \
-    file://../wakaama/wakaama-c/LICENSE.edl-v1.0.md;md5=ce96a44bdd528b21c008d7cb818439e1 \
-    file://../wakaama/wakaama-c/LICENSE-epl-v2.0.md;md5=6654f12d7f7ba53cf796b622931e86d4 \
+    file://../wakaama/wakaama-c/LICENSE.BSD-3-Clause;md5=fdff207498fc09f895880fe73373bae2 \
+    file://../wakaama/wakaama-c/LICENSE.EPL-2;md5=6654f12d7f7ba53cf796b622931e86d4 \
 "
 
 inherit python3native
