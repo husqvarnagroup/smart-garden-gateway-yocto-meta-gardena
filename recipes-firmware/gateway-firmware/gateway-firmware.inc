@@ -18,7 +18,9 @@ SRC_URI = "\
     file://lb_radio_gateway \
 "
 
-INC_PR = "r1"
+INC_PR = "r2"
+
+PE = "1"
 
 RDEPENDS:${PN} = " \
     python3-io \
