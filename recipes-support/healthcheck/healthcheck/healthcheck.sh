@@ -42,7 +42,7 @@ test_portcheck_https() {
     local result=0
 
     # Check if HTTPS connectivity is working
-    if ! curl --max-time 30 --range 0-1024 -sS "https://${update_url_protocolless}" 2>/dev/null | grep -q "Linux System Firmware for the GARDENA smart Gateway"; then
+    if ! curl --max-time 30 --range 0-1024 -sS "https://${update_url_protocolless}" 2>/dev/null | grep -q "Linux System Firmware (.*) for the GARDENA smart Gateway"; then
         result=2
     fi
 
