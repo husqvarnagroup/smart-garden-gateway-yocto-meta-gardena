@@ -222,8 +222,8 @@ test_meminfo_mem_available() {
         result=1
     fi
 
-    # Ensure we have at least 40 MB memory available
-    if [ "${result}" -eq 0 ] && [ "${mem_available}" -lt "40960" ]; then
+    # Ensure we have at least 30 MB memory available
+    if [ "${result}" -eq 0 ] && [ "${mem_available}" -lt "30720" ]; then
         result=2
     fi
 
