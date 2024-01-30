@@ -40,6 +40,7 @@ class Command:
     GET_APP_VERSION = b"\x0d"
     GET_TX_MAC_COUNTER = b"\x0e"
     GET_LB_RADIO_DRIVER_STATE = b"\x0f"
+    GET_UPTIME = b"\x10"
     SI4467_START_CW = b"\xe0"
     SI4467_STOP_TX = b"\xe1"
 
@@ -109,6 +110,7 @@ class LBRadioGatewayAPIClient:
         "get_app_version": lambda x: bytes(x).decode('ascii'),
         "get_tx_mac_counter": lambda x: int.from_bytes(x, 'little'),
         "get_lb_radio_driver_state": lambda x: bytes(x).decode('ascii'),
+        "get_uptime": lambda x: int.from_bytes(x, 'little'),
     }
 
     # generic set functions with a single argument and no return value
@@ -180,6 +182,10 @@ class LBRadioGatewayAPIClient:
         ),
         "get_lb_radio_driver_state": (
             "Get state of lb_radio driver state machine.",
+            []
+        ),
+        "get_uptime": (
+            "Get current uptime in milliseconds.",
             []
         ),
         "si4467_start_cw": (
@@ -347,7 +353,7 @@ class LBRadioGatewayAPIClient:
         duration_bytes = duration_ms.to_bytes(4, "little")
         with self._connected_socket() as s:
             self._send_command(s, Command.WAKEUP_DEVICE,
-                               duration_bytes + mac_address + lb_channel.to_bytes())
+                               duration_bytes + mac_address + lb_channel.to_bytes("1", "little"))
             self._check_result(s)
 
 
