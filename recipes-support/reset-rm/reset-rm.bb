@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 PV = "1.1"
 
-PR = "r0"
+PR = "r1"
 
 SRC_URI = "\
     file://reset-rm.c \
@@ -31,6 +31,7 @@ do_compile() {
 do_install() {
     install -d ${D}${bindir}
     install -m 755 ${WORKDIR}/reset-rm ${D}${bindir}/
+    ln -s reset-rm ${D}${bindir}/rm-reset
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/reset-rm.service ${D}${systemd_unitdir}/system
