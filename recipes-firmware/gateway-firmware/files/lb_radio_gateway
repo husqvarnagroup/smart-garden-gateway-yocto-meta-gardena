@@ -353,7 +353,7 @@ class LBRadioGatewayAPIClient:
         duration_bytes = duration_ms.to_bytes(4, "little")
         with self._connected_socket() as s:
             self._send_command(s, Command.WAKEUP_DEVICE,
-                               duration_bytes + mac_address + lb_channel.to_bytes("1", "little"))
+                               duration_bytes + mac_address + lb_channel.to_bytes(1, "little"))
             self._check_result(s)
 
 

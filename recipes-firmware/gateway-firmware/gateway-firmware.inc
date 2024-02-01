@@ -18,7 +18,7 @@ SRC_URI = "\
     file://lb_radio_gateway \
 "
 
-INC_PR = "r3"
+INC_PR = "r4"
 
 PE = "1"
 
