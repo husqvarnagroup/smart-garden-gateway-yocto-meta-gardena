@@ -12,7 +12,7 @@ SRC_URI = "\
     file://reset-rm.cfg \
 "
 
-S = "${WORKDIR}/"
+S = "${WORKDIR}"
 
 DEPENDS += " \
     libcyaml \

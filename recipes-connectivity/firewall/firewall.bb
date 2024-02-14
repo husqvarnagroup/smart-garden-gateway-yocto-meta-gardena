@@ -15,7 +15,7 @@ SRC_URI = "\
     file://firewall.service \
 "
 
-S = "${WORKDIR}/"
+S = "${WORKDIR}"
 
 do_install() {
     install -d ${D}${sysconfdir}/nftables

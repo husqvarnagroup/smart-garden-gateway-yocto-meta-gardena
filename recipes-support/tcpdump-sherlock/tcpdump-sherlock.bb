@@ -10,7 +10,7 @@ SRC_URI = "\
     file://99-${BPN}-ppp0.rules \
 "
 
-S = "${WORKDIR}/"
+S = "${WORKDIR}"
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system

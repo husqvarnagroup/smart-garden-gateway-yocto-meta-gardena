@@ -17,7 +17,7 @@ SRC_URI = "\
 
 PACKAGES = "${PN}-upload ${PN}-download"
 
-S = "${WORKDIR}/"
+S = "${WORKDIR}"
 
 inherit allarch
 

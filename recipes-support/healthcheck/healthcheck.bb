@@ -13,7 +13,7 @@ SRC_URI = "\
     file://healthcheck.timer \
 "
 
-S = "${WORKDIR}/"
+S = "${WORKDIR}"
 
 UPDATE_URL_PROTOCOLLESS = "${@DISTRO_UPDATE_URL_BASE.split('://', 1)[1]}/gardena-update-image-bnw-${MACHINE}.swu"
 

@@ -12,7 +12,7 @@ SRC_URI = "\
     file://keep.d/unique-hostname \
 "
 
-S = "${WORKDIR}/"
+S = "${WORKDIR}"
 
 FILES:${PN} += " \
     ${base_libdir}/upgrade/keep.d \
