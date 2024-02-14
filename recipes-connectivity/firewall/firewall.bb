@@ -22,7 +22,7 @@ do_install() {
     install -m 0644 ${WORKDIR}/firewall.nft  ${D}/${sysconfdir}/nftables/gardena-firewall.nft
 
     install -d ${D}${sbindir}
-    install -m 755 ${S}firewall.sh ${D}${sbindir}/firewall
+    install -m 755 ${S}/firewall.sh ${D}${sbindir}/firewall
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/firewall.service ${D}${systemd_unitdir}/system

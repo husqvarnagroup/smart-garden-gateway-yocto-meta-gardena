@@ -20,7 +20,7 @@ FILES:${PN} += " \
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 755 ${S}unique-hostname.sh ${D}${bindir}/unique-hostname
+    install -m 755 ${S}/unique-hostname.sh ${D}${bindir}/unique-hostname
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/unique-hostname.service ${D}${systemd_unitdir}/system
