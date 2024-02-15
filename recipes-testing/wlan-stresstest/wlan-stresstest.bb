@@ -12,7 +12,7 @@ SRC_URI = "\
     file://wlan-stresstest.sh \
 "
 
-S = "${WORKDIR}/"
+S = "${WORKDIR}"
 
 inherit allarch systemd
 
