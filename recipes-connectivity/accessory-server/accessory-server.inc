@@ -26,7 +26,7 @@ RDEPENDS:${PN} += "accessory-server-foss-dependencies"
 EXTRA_OECMAKE += " \
   -DHAVE_MFI_HW_AUTH=${@oe.utils.conditional('HOMEKIT_HWAUTH','1','1','0',d)} \
   -DCMAKE_BUILD_TYPE=${@oe.utils.conditional('DEBUG_BUILD','1','Debug','RelWithDebInfo',d)} \
-  -DHAP_LOG_LEVEL=${@oe.utils.conditional('DEBUG_BUILD','1','3','2',d)} \
+  -DHAP_LOG_LEVEL=${@oe.utils.conditional('DEBUG_BUILD','1','4','2',d)} \
 "
 
 do_install() {
