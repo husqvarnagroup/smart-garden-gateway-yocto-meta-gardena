@@ -11,7 +11,7 @@ WatchdogSec=60
 TimeoutStartSec=300
 NotifyAccess=main
 WorkingDirectory=/var/lib/cloudadapter
-ExecStart=/usr/bin/cloudadapter_native -v
+ExecStart=/usr/bin/cloudadapter -v
 ExecStopPost=-/bin/sh -c "mkdir -p /run/cloudadapter && echo -n 'RED' > /run/cloudadapter/led_status"
 Environment=PYTHONUNBUFFERED=1
 Environment=CLOUDADAPTER_ON_CONNECT_ACTIVITIES_WAIT_TIMEOUT=15

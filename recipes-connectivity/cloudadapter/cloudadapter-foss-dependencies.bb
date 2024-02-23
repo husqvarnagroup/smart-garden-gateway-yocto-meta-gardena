@@ -6,7 +6,6 @@ PR = "r0"
 
 RDEPENDS:${PN} += " \
     python3-core \
-    python3-pkg-resources \
     python3-ubootenv \
     python3-pkgutil \
     python3-pynng \
