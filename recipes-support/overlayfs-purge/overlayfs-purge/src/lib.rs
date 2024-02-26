@@ -43,7 +43,8 @@ impl From<nix::Error> for Error {
 type Result<T> = ::std::result::Result<T, Error>;
 
 pub fn run(keep_file: &Path, keep_dir: &Path, lower_dir: &Path, upper_dir: &Path) {
-    let mut patterns = load_keep_patterns(keep_file, keep_dir).expect("error loading config files");
+    let mut patterns =
+        load_keep_patterns(keep_file, keep_dir, upper_dir).expect("error loading config files");
     let mut builder = GlobSetBuilder::new();
     patterns.drain(..).for_each(|p| {
         builder.add(Glob::new(&p).expect("config parse error"));
@@ -52,7 +53,16 @@ pub fn run(keep_file: &Path, keep_dir: &Path, lower_dir: &Path, upper_dir: &Path
     purge_upper_dir(lower_dir, upper_dir, &glob_patterns, upper_dir).expect("error while purging");
 }
 
-fn load_keep_patterns(config_file: &Path, keep_dir: &Path) -> Result<Vec<String>> {
+fn load_keep_patterns(
+    config_file: &Path,
+    keep_dir: &Path,
+    upper_dir: &Path,
+) -> Result<Vec<String>> {
+    let mut config_file = config_file;
+    let upper_config_file = upper_dir.join(config_file.strip_prefix("/").unwrap_or(config_file));
+    if upper_config_file.exists() {
+        config_file = upper_config_file.as_path();
+    }
     let mut patterns: Vec<_> = read_keep_file(config_file)?.collect();
     for file in keep_dir.read_dir()? {
         for pattern in read_keep_file(&file?.path())? {
@@ -240,6 +250,7 @@ mod tests {
         let mut patterns = load_keep_patterns(
             Path::new("test-fixtures/load_keep_patterns/sysupgrade.conf"),
             Path::new("test-fixtures/load_keep_patterns/keep.d"),
+            Path::new("/media/rfs/rw/upperdir"),
         )
         .unwrap();
         let patterns: HashSet<_> = HashSet::from_iter(patterns.drain(..));
