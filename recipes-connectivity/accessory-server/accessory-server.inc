@@ -2,7 +2,7 @@ SUMMARY = "The Homekit Accessory Server"
 MAINTAINER = "Gardena GmbH"
 LICENSE = "CLOSED"
 
-PV = "0.21.1"
+PV = "0.22.0"
 PR = "r0"
 
 SRC_URI = " \
