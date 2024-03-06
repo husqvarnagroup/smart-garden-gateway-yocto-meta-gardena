@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "758f73610c08a03e9c8f29cfb364bc75ce35e9a62136ba98b82423d3d2
 
 S = "${WORKDIR}/opentelemetry-api-1.8.0"
 
-RDEPENDS:${PN} = "python3-deprecated"
+RDEPENDS:${PN} = "python3-deprecated python3-pkg-resources"
 
 inherit setuptools3
