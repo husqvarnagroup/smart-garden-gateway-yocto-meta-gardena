@@ -265,12 +265,6 @@ test_meminfo_s_unreclaim() {
 test_systemd_running() {
     local result=0
 
-    # Prevent `systemctl is-system-running` from failing due to a failed
-    # systemd-networkd-wait-online.service unit.
-    if systemctl is-failed systemd-networkd-wait-online.service >/dev/null; then
-        systemctl restart systemd-networkd-wait-online.service
-    fi
-
     local status=0
     local failed_units=""
     if ! status="$(systemctl is-system-running)"; then
