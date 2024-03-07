@@ -30,6 +30,7 @@ RDEPENDS:${PN} += " \
 S = "${WORKDIR}/git"
 
 FILES:${PN} += " \
+    ${localstatedir}/lib/${PN} \
     ${base_libdir}/upgrade/keep.d \
 "
 
@@ -39,6 +40,9 @@ do_install:append() {
 
     install -d ${D}${sysconfdir}/ssl/certs
     install -m 0644 ${WORKDIR}/aws-root-ca.crt ${D}${sysconfdir}/ssl/certs
+
+    # Create work directory for cloudadapter
+    install -d ${D}${localstatedir}/lib/${PN}
 
     # Retain persisted data
     install -d ${D}${base_libdir}/upgrade/keep.d
