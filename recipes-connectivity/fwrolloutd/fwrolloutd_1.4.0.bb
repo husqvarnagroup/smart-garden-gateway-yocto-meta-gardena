@@ -15,7 +15,7 @@ LIC_FILES_CHKSUM = " \
     file://../THIRDPARTY.toml;md5=2d2762287b1ad3e5819604af0814847f \
 "
 
-PR = "r1"
+PR = "r0"
 
 DEPENDS += "openssl"
 RDEPENDS:${PN} += " \
