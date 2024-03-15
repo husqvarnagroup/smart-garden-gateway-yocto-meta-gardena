@@ -10,6 +10,7 @@ inherit pkgconfig
 
 CARGO_FEATURES="release_max_level_debug"
 CARGO_BUILD_FLAGS += "--features '${CARGO_FEATURES}'"
+CARGO_LOCK_PATH = "${S}/Cargo.lock"
 
 export CARGO_PROFILE_RELEASE_OPT_LEVEL="z"
 export CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1"
