@@ -6,27 +6,22 @@ LIC_FILES_CHKSUM = " \
     file://../wakaama/wakaama-c/LICENSE.EPL-2;md5=6654f12d7f7ba53cf796b622931e86d4 \
 "
 
-inherit python3native
-inherit setuptools3
+inherit python_poetry_core python3-dir
 
 SRC_URI += " \
     gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-lwm2m-server;protocol=ssh;branch=main;tag=v${PV} \
     file://lwm2mserver.service \
     file://keep.d/lwm2mserver \
-    file://0001-packaging-Exclude-lwm2mserver-IPSO-definitions-from-.patch;patchdir=.. \
 "
 
 PR = "r0"
 
 DEPENDS = " \
     cmake-native \
-    python3 \
+    ninja-native \
+    python3-cmake-native \
     python3-cython-native \
-    python3-distro-native \
-    python3-importlib-resources \
-    python3-native \
-    python3-scikit-build-native \
-    python3-wheel-native \
+    python3-poetry-core-native \
     virtual/crypt \
 "
 
@@ -45,7 +40,8 @@ FILES:${PN} += " \
 
 do_install:append() {
     # Remove IPSO registry Python module only used during development
-    rm -rf ${S}/lwm2mserver_registry
+    rm -r ${D}/${PYTHON_SITEPACKAGES_DIR}/lwm2mserver/wakaama/ipso_definitions
+    rm -r ${D}/${PYTHON_SITEPACKAGES_DIR}/lwm2mserver_registry/ipso_registry
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/lwm2mserver.service ${D}${systemd_unitdir}/system

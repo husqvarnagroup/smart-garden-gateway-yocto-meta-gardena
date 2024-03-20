@@ -11,13 +11,13 @@ RestartSec=10
 WatchdogSec=60
 TimeoutStartSec=2m
 NotifyAccess=main
-ExecStart=/usr/bin/lwm2mserver_native ppp0 --bind-to-device \
-                                           --server-uri "coap://[fc00::6:100:0:0]" \
-                                           --port 20017 \
-                                           --lemonbeat-dongle-connection \
-                                           --state-storage /var/lib/lwm2mserver \
-                                           --lb-key-file /var/lib/lemonbeatd/Network_management/Network_key.json \
-                                           --ipso-directories "${IPSO_REGISTRY_DIR}/base" "${IPSO_REGISTRY_DIR}/fwrolloutd" "${IPSO_REGISTRY_DIR}/dev"
+ExecStart=/usr/bin/lwm2mserver ppp0 --bind-to-device \
+                                    --server-uri "coap://[fc00::6:100:0:0]" \
+                                    --port 20017 \
+                                    --lemonbeat-dongle-connection \
+                                    --state-storage /var/lib/lwm2mserver \
+                                    --lb-key-file /var/lib/lemonbeatd/Network_management/Network_key.json \
+                                    --ipso-directories "${IPSO_REGISTRY_DIR}/base" "${IPSO_REGISTRY_DIR}/fwrolloutd" "${IPSO_REGISTRY_DIR}/dev"
 ExecReload=kill -HUP $MAINPID
 
 # SG-18571 Turn memory bloat into a hard error
