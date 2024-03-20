@@ -14,7 +14,7 @@ SRC_URI += " \
     file://keep.d/lwm2mserver \
 "
 
-PR = "r1"
+PR = "r0"
 
 DEPENDS = " \
     cmake-native \
