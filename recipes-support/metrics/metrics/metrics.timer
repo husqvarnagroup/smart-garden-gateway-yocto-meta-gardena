@@ -1,0 +1,10 @@
+[Unit]
+Description=Run metrics every 23 hours
+After=network-online.target
+
+[Timer]
+# Rotate execution around the clock
+OnUnitActiveSec=23h
+
+[Install]
+WantedBy=timers.target

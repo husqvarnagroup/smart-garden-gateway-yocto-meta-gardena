@@ -1,0 +1,10 @@
+[Unit]
+Description=Metrics
+After=network-online.target environment.service
+Wants=network-online.target environment.service
+
+[Service]
+ExecStart=/usr/bin/metrics
+Type=oneshot
+# Service must not fail when a check found a problem
+SuccessExitStatus=1

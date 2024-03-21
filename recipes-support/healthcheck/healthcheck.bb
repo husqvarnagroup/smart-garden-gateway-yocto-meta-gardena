@@ -2,10 +2,10 @@ DESCRIPTION = "Checking for known and potential problems"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-PV = "0.24.0"
+PV = "0.25.0"
 PR = "r0"
 
-RDEPENDS:${PN} = "curl mdns openssl systemd"
+RDEPENDS:${PN} = "curl openssl systemd"
 
 SRC_URI = "\
     file://healthcheck.service \

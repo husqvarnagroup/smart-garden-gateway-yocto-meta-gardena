@@ -485,27 +485,6 @@ test_lb_radio_driver_state() {
     log_result "lb_radio_driver_state" "${result}" "${state}"
 }
 
-# Check if Thread Border Routers are advertised on the local network.
-find_thread_border_router() {
-    local result=0
-    # Not set local, because of trap. `local -r` is not available. Keep it as it,
-    # happy to learn about a better solution.
-    temp_file="$(mktemp)"
-    trap 'rm -f -- "${temp_file}"' EXIT
-    dns-sd -B _meshcop._udp local. > "${temp_file}" &
-    sleep 2
-    kill %1
-    local thread_br
-    thread_br=$(awk '{$1=$2=$3=$4=$5=$6=""; print $0}' "${temp_file}" | tail -n +5 | tr '\n' ';' | sed -E 's/[[:space:]]{2,}//g')
-    if [ "${thread_br}" ]; then
-        result=1
-        log_result "find_thread_border_router" "${result}" "${thread_br}"
-    fi
-    if [ "${result}" -eq 0 ]; then
-        log_result "find_thread_border_router" "${result}" "omitted"
-    fi
-}
-
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -538,7 +517,6 @@ test_all() {
     test_rm_address
     test_rm_ping
     test_socket_queue_ppp0_sg_20421
-    find_thread_border_router
 
     test_network_key_sgse_1024
 
