@@ -10,7 +10,7 @@ SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-tran
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r1"
+PR = "r0"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/rust-coap-client.git;protocol=https;nobranch=1;name=coap-client;destsuffix=coap-client \
