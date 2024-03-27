@@ -7,7 +7,7 @@
 set -eu -o pipefail
 
 readonly API=https://maintenance-access.iot.sg.dss.husqvarnagroup.net/v1/register
-readonly SSH_KEY=/home/root/.ssh/id_dropbear
+readonly SSH_KEY=/root/.ssh/id_dropbear
 readonly TLS_CERT=/etc/ssl/certs/client-prod.crt
 readonly TLS_KEY=/etc/ssl/private/client-prod.key
 
