@@ -29,7 +29,7 @@ cp -r /var/lib/ipso_definitions/fwrolloutd "${SNAPSHOT_DIR}/ipso_definitions"
 mkdir "${SNAPSHOT_DIR}/etc"
 cp /etc/os-release "${SNAPSHOT_DIR}/etc/"
 cp /etc/os-release.old "${SNAPSHOT_DIR}/etc/"
-cp /etc/build "${SNAPSHOT_DIR}/etc/"
+cp /etc/buildinfo "${SNAPSHOT_DIR}/etc/"
 cp -r /var/lib/sysupgrade "${SNAPSHOT_DIR}/"
 cp /etc/resolv.conf "${SNAPSHOT_DIR}/etc/"
 
