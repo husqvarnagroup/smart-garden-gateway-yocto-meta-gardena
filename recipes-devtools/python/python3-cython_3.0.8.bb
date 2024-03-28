@@ -10,13 +10,6 @@ RDEPENDS:${PN} += "\
 # architecture.
 SETUPTOOLS_INSTALL_ARGS += "--skip-build"
 
-do_install:append() {
-    # rename scripts that would conflict with the Python 2 build of Cython
-    mv ${D}${bindir}/cython ${D}${bindir}/cython3
-    mv ${D}${bindir}/cythonize ${D}${bindir}/cythonize3
-    mv ${D}${bindir}/cygdb ${D}${bindir}/cygdb3
-}
-
 PACKAGESPLITFUNCS =+ "cython_fix_sources"
 
 cython_fix_sources () {
