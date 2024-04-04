@@ -7,5 +7,7 @@ After=network-online.target
 Type=oneshot
 Restart=on-failure
 RestartSec=1m
+RestartSteps=10
+RestartMaxDelaySec=30m
 ExecCondition=/usr/sbin/sshtunnel-check
 ExecStart=systemctl start sshtunnel
