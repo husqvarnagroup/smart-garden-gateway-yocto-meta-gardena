@@ -1,0 +1,29 @@
+From 9f54da3e650b99c2fc6a90e10b0f7082e448a6a5 Mon Sep 17 00:00:00 2001
+From: Marc Lasch <marc.lasch@husqvarnagroup.com>
+Date: Mon, 8 Apr 2024 13:35:01 +0200
+Subject: [PATCH] Add nng_tls_config_hold stub function
+
+---
+ src/supplemental/tls/tls_common.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/supplemental/tls/tls_common.c b/src/supplemental/tls/tls_common.c
+index 9c556fd5..48e5d87f 100644
+--- a/src/supplemental/tls/tls_common.c
++++ b/src/supplemental/tls/tls_common.c
+@@ -1649,6 +1649,12 @@ nng_tls_config_free(nng_tls_config *cfg)
+ 	NNI_ARG_UNUSED(cfg);
+ }
+ 
++void
++nng_tls_config_hold(nng_tls_config *cfg)
++{
++	NNI_ARG_UNUSED(cfg);
++}
++
+ int
+ nng_tls_config_version(
+     nng_tls_config *cfg, nng_tls_version min_ver, nng_tls_version max_ver)
+-- 
+2.34.1
+
