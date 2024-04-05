@@ -17,6 +17,19 @@ LIC_FILES_CHKSUM = " \
 
 PR = "r0"
 
+SRC_URI += " \
+    git://github.com/husqvarnagroup/nng-rs.git;protocol=https;nobranch=1;name=nng;destsuffix=nng-rs \
+    gitsm://github.com/husqvarnagroup/nng-rust.git;protocol=https;branch=nng-v1.7.3;name=nng-sys;destsuffix=nng-sys \
+"
+
+SRCREV_FORMAT = "fwrolloutd"
+
+SRCREV_nng = "13828ad0f3a8044dd9ab1265c3d5c88b5fcfce1f"
+EXTRA_OECARGO_PATHS += "${WORKDIR}/nng-rs"
+
+SRCREV_nng-sys = "96b98092f610c379c60cefd0973427146be0380e"
+EXTRA_OECARGO_PATHS += "${WORKDIR}/nng-sys"
+
 DEPENDS += "openssl"
 RDEPENDS:${PN} += " \
      ipso-registry \
