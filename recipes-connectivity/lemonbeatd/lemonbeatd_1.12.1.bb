@@ -11,11 +11,21 @@ PR = "r0"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nix.git;protocol=https;nobranch=1;name=nix;destsuffix=nix \
+    git://github.com/husqvarnagroup/nng-rs.git;protocol=https;nobranch=1;name=nng;destsuffix=nng-rs \
+    gitsm://github.com/husqvarnagroup/nng-rust.git;protocol=https;branch=nng-v1.7.3;name=nng-sys;destsuffix=nng-sys \
 "
 
-SRCREV_FORMAT .= "_nix"
+SRCREV_FORMAT = "lemonbeatd"
+
 SRCREV_nix = "0ba2f892186e0d97b192e4d7a5e9ca54bf58cc94"
 EXTRA_OECARGO_PATHS += "${WORKDIR}/nix"
+
+SRCREV_nng = "13828ad0f3a8044dd9ab1265c3d5c88b5fcfce1f"
+EXTRA_OECARGO_PATHS += "${WORKDIR}/nng-rs"
+
+SRCREV_nng-sys = "96b98092f610c379c60cefd0973427146be0380e"
+EXTRA_OECARGO_PATHS += "${WORKDIR}/nng-sys"
+
 
 LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
@@ -37,7 +47,7 @@ SRC_URI += " \
 "
 
 LIC_FILES_CHKSUM += " \
-    file://../THIRDPARTY.toml;md5=fa15c74127b1f4e748b4c9fef99f736c \
+    file://../THIRDPARTY.toml;md5=df390fd749a461c589a42364a007e91c \
 "
 
 require lemonbeatd-crates.inc

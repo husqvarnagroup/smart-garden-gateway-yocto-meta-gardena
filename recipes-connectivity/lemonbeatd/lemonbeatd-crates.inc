@@ -95,8 +95,6 @@ SRC_URI += " \
     crate://crates.io/memoffset/0.6.5 \
     crate://crates.io/miniz_oxide/0.7.1 \
     crate://crates.io/mio/0.8.10 \
-    crate://crates.io/nng/1.0.1 \
-    crate://crates.io/nng-sys/1.4.0-rc.0 \
     crate://crates.io/nu-ansi-term/0.46.0 \
     crate://crates.io/num-bigint/0.4.4 \
     crate://crates.io/num-bigint-dig/0.7.1 \
@@ -309,8 +307,6 @@ SRC_URI[memchr-2.6.4.sha256sum] = "f665ee40bc4a3c5590afb1e9677db74a508659dfd71e1
 SRC_URI[memoffset-0.6.5.sha256sum] = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
 SRC_URI[miniz_oxide-0.7.1.sha256sum] = "e7810e0be55b428ada41041c41f32c9f1a42817901b4ccf45fa3d4b6561e74c7"
 SRC_URI[mio-0.8.10.sha256sum] = "8f3d0b296e374a4e6f3c7b0a1f5a51d748a0d34c85e7dc48fc3fa9a87657fe09"
-SRC_URI[nng-1.0.1.sha256sum] = "20a18ed7ec1c8ff1658bcfea2ce76dcedf8be21dd9e8dd2e9762ba9632d16203"
-SRC_URI[nng-sys-1.4.0-rc.0.sha256sum] = "50d0e7f39a8fd1792a710da9351320e864dc799cf439960e332c977b2f876da6"
 SRC_URI[nu-ansi-term-0.46.0.sha256sum] = "77a8165726e8236064dbb45459242600304b42a5ea24ee2948e18e023bf7ba84"
 SRC_URI[num-bigint-0.4.4.sha256sum] = "608e7659b5c3d7cba262d894801b9ec9d00de989e8a82bd4bef91d08da45cdc0"
 SRC_URI[num-bigint-dig-0.7.1.sha256sum] = "f9bc3e36fd683e004fd59c64a425e0e991616f5a8b617c3b9a933a93c168facc"

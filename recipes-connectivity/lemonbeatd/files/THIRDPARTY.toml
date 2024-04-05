@@ -16846,7 +16846,7 @@ IN THE SOFTWARE.
 
 [[third_party_libraries]]
 package_name = "nng-sys"
-package_version = "1.4.0-rc.0"
+package_version = "1.7.3"
 license = "MIT"
 
 [[third_party_libraries.licenses]]
