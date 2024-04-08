@@ -8,6 +8,8 @@ Environment=IPSO_REGISTRY_DIR=/var/lib/ipso_definitions
 Type=notify
 Restart=on-failure
 RestartSec=10
+RestartSteps=5
+RestartMaxDelaySec=20m
 WatchdogSec=60
 TimeoutStartSec=2m
 NotifyAccess=main
