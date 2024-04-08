@@ -20,10 +20,11 @@ log_result() {
 
     if [ "${result}" -ne 0 ];then
         echoerr "ERROR: [${name}] result=${result}, data: ${data}"
-        logger -p user.error -t healthcheck "ERROR: [${name}] result=${result}, data: ${data}"
+        logger -p user.error -t healthcheck "[metric@55029 name=\"${name}\" value=\"false\"] ERROR: [${name}] result=${result}, data: ${data}"
         something_failed=1
     else
         echoerr "OK: [${name}] result=${result}, data: ${data}"
+        logger -p user.info -t healthcheck "[bnw@55029 remote=\"true\"][metric@55029 name=\"${name}\" value=\"true\"] OK: [${name}] result=${result}, data: ${data}"
     fi
 }
 

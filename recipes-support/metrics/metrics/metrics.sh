@@ -16,7 +16,7 @@ log_result() {
 
     if [ "${result}" -eq 0 ];then
         echoerr "OK: [${name}], data: ${data}"
-        logger -p user.info -t metrics "[bnw@55029 remote=\"true\"] [${name}], data: ${data}"
+        logger -p user.info -t metrics "[bnw@55029 remote=\"true\"][metric@55029 name=\"${name}\" value=\"${data}\"] [${name}], data: ${data}"
     else
         echoerr "ERROR: [${name}] result=${result}, data: ${data}"
         logger -p user.error -t metrics "[${name}] result=${result}, data: ${data}"
@@ -36,9 +36,9 @@ thread_border_router() {
     local thread_br
     thread_br=$(awk '{$1=$2=$3=$4=$5=$6=""; print $0}' "${temp_file}" | tail -n +5 | tr '\n' ';' | sed -E 's/[[:space:]]{2,}//g')
     if [ "${thread_br}" ]; then
-        log_result "thread_border_router" "0" "found"
+        log_result "thread_border_router" "0" "true"
     else
-        log_result "thread_border_router" "0" "not found"
+        log_result "thread_border_router" "0" "false"
     fi
 }
 
