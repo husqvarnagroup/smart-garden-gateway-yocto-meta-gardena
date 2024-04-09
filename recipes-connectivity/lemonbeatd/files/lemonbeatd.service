@@ -11,7 +11,9 @@ ExecStart=/usr/bin/lemonbeatd
 StateDirectory=lemonbeatd
 
 Restart=on-failure
-RestartSec=1m
+RestartSec=10
+RestartSteps=5
+RestartMaxDelaySec=20m
 
 # SG-18571 Turn memory bloat into a hard error
 MemoryMax=15M
