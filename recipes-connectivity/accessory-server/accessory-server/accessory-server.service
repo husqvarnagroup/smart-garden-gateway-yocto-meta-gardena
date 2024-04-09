@@ -9,7 +9,9 @@ Type=notify
 ExecStart=/usr/bin/gardena-accessory-server
 ExecReload=/bin/kill -SIGTERM $MAINPID
 Restart=on-failure
-RestartSec=10m
+RestartSec=10
+RestartSteps=5
+RestartMaxDelaySec=20m
 
 [Install]
 WantedBy=multi-user.target

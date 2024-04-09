@@ -3,7 +3,7 @@ MAINTAINER = "Gardena GmbH"
 LICENSE = "CLOSED"
 
 PV = "0.22.0"
-PR = "r0"
+PR = "r1"
 
 SRC_URI = " \
     gitsm://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=main;tag=release/${PV} \
