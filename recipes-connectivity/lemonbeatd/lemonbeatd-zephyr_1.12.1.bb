@@ -8,7 +8,7 @@ SRCREV = "5a3b1ed3c1c41b0388a796631dc721590d8d21d5"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
 
-PR = "r2"
+PR = "r3"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nix.git;protocol=https;nobranch=1;name=nix;destsuffix=nix \

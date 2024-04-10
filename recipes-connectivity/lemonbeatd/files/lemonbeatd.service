@@ -2,6 +2,8 @@
 Description=Lemonbeat service
 After=update-hw-revision.service ppp.service
 Wants=update-hw-revision.service
+StartLimitIntervalSec=24h
+StartLimitBurst=60
 
 [Service]
 Type=notify
