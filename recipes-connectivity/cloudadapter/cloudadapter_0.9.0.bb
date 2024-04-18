@@ -14,7 +14,7 @@ SRC_URI += " \
     file://keep.d/cloudadapter \
 "
 
-PR = "r0"
+PR = "r1"
 
 DEPENDS = " \
     python3 \
