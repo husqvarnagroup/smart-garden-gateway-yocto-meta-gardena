@@ -2,6 +2,8 @@
 Description=Firmware rollout service
 After=lemonbeatd.service lwm2mserver.service time-sync.target network-online.target
 Wants=lemonbeatd.service lwm2mserver.service time-sync.target network-online.target
+StartLimitIntervalSec=24h
+StartLimitBurst=60
 
 [Service]
 Type=simple

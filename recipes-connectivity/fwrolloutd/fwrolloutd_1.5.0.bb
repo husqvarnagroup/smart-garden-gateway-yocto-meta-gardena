@@ -15,7 +15,7 @@ LIC_FILES_CHKSUM = " \
     file://../THIRDPARTY.toml;md5=2d2762287b1ad3e5819604af0814847f \
 "
 
-PR = "r1"
+PR = "r2"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nng-rs.git;protocol=https;nobranch=1;name=nng;destsuffix=nng-rs \
