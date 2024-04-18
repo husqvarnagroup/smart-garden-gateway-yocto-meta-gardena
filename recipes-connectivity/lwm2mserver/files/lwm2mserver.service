@@ -2,6 +2,8 @@
 Description=BNW lwm2mserver
 After=ppp.service lemonbeatd.service
 Wants=ppp.service lemonbeatd.service
+StartLimitIntervalSec=24h
+StartLimitBurst=60
 
 [Service]
 Environment=IPSO_REGISTRY_DIR=/var/lib/ipso_definitions
