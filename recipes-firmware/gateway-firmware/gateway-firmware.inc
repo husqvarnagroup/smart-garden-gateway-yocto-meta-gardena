@@ -10,8 +10,13 @@ inherit systemd allarch
 # one, the client is backwards-compatible and the latest version can
 # always be used. Changes to this file should be done only in the
 # sg-zephyr-firmware repository.
+#
+# While not installed on the gateway, the file zephyr.elf is stored in this
+# repository to ensure we have something to feed GDB with even once CI dropped
+# the corresponding build artifacts.
 SRC_URI = "\
     file://zephyr.bin \
+    file://zephyr.elf \
     file://rm-flashing.service \
     file://rm-flashing.sh \
     file://rm-flashtool.py \
@@ -19,7 +24,7 @@ SRC_URI = "\
     file://lb_radio_gateway.py \
 "
 
-INC_PR = "r5"
+INC_PR = "r6"
 
 PE = "1"
 
@@ -29,6 +34,9 @@ RDEPENDS:${PN} = " \
 "
 
 do_install () {
+    strings ${WORKDIR}/zephyr.bin | grep --quiet ^${PV}\$ || bbfatal 'Version mismatch in zephyr.bin'
+    strings ${WORKDIR}/zephyr.elf | grep --quiet ^${PV}\$ || bbfatal 'Version mismatch in zephyr.elf'
+
     install -d ${D}${datadir}/gardena/firmware/${PV}
     install -m 0644 ${WORKDIR}/zephyr.bin ${D}${datadir}/gardena/firmware/${PV}/gateway.bin
 
