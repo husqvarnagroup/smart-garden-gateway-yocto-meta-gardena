@@ -1,6 +1,6 @@
 #!/bin/sh
+# shellcheck shell=dash
 
-# shellcheck disable=SC2039
 set -eu -o pipefail
 
 # Internet LED daemon for SGGW

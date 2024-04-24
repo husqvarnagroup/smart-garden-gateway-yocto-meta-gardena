@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 
 # This script/daemon handles the power LED during the boot process.
 
