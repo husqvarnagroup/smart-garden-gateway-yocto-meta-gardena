@@ -8,7 +8,7 @@ SRC_URI = " \
   file://wifi-testsuite-install.sh \
 "
 
-PR = "r5"
+PR = "r6"
 PV = "10.10.1+git${SRCPV}"
 SRCREV = "63cd320851e875ee278a4b019b9ad537104cc21b"
 

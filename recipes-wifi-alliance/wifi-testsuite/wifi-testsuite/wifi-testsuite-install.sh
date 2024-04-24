@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 #
 # Configure Gateway so that can be tested by DEKRA Spain against the Wi-Fi
 # Alliance testplan
