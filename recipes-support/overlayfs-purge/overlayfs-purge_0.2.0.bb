@@ -7,7 +7,7 @@ file://LICENSE-MIT;md5=a3e3fd141148f23107ef1b2019ff1ff6 \
 "
 S = "${WORKDIR}"
 
-PR = "r2"
+PR = "r3"
 
 inherit cargo cargo-update-recipe-crates
 

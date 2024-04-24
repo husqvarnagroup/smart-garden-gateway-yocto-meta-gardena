@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 
 set -eux
 
@@ -11,7 +12,7 @@ for x in dir_overlayed_keep dir_overlayed dir_opaque_keep dir_opaque dir_new_kee
 done
 
 for x in dir_overlayed_remove dir_new_remove; do
-    ! test -e $x
+    test -e $x && exit 1
 done
 
 # files
@@ -21,7 +22,7 @@ for x in file_overlayed_keep file_new_keep dir_overlayed/file_keep dir_new/file_
 done
 
 for x in file_overlayed_remove file_new_remove; do
-    ! test -e $x
+    test -e $x && exit 1
 done
 
 # symlinks
@@ -31,13 +32,13 @@ for x in symlink_dir_overlayed_keep symlink_dir_new_keep symlink_file_overlayed_
 done
 
 for x in symlink_dir_overlayed_remove symlink_dir_new_remove symlink_file_overlayed_remove symlink_file_new_remove; do
-    ! test -e $x
+    test -e $x && exit 1
 done
 
 # whiteouts
 
 for x in whiteout_dir whiteout_dir_keep whiteout_file whiteout_file_keep; do
-    ! test -e $x
+    test -e $x && exit 1
 done
 
 # overlayfs attributes
