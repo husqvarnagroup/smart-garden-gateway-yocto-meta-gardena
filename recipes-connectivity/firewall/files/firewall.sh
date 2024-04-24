@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 
 # Author: Adrian Friedli <adrian.friedli@husqvarnagroup.com>
 # Author: Andreas Müller <andreas.mueller@husqvarnagroup.com>
