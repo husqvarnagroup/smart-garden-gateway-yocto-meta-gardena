@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 
 set -eu -o pipefail
 

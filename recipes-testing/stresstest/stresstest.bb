@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 
 PV = "0.1"
 
-PR = "r0"
+PR = "r1"
 
 RDEPENDS:${PN}-upload = "curl systemd-extra-utils"
 RDEPENDS:${PN}-download = "curl systemd-extra-utils"
