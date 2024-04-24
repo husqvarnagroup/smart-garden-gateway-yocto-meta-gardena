@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 
 set -u
 
@@ -25,7 +26,7 @@ mkdir -p $LOG_DIR
 rm -f $LOG_DIR/sysupgrade.log
 
 if [ ! -f $OS_RELEASE_OLD ]; then
-    mkdir -p $(dirname $OS_RELEASE_OLD)
+    mkdir -p "$(dirname "$OS_RELEASE_OLD")"
     cp $OS_RELEASE $OS_RELEASE_OLD.tmp
     sync
     mv $OS_RELEASE_OLD.tmp $OS_RELEASE_OLD
