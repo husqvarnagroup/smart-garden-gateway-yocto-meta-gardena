@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 #
 # 1) Extract manufacturing step indicators from U-Boot and store them in the
 #    file system. This allows systemd depending on the environment.service
