@@ -471,7 +471,7 @@ test_lb_radio_driver_state() {
     local result=1
     local state
 
-    for i in $(seq 1 10); do
+    for _ in $(seq 1 10); do
         if ! state="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_lb_radio_driver_state)"; then
             result=2
             state="undetermined"
