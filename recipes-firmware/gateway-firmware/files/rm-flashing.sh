@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 #
 # Check if RM has latest firmware and flash if needed.
 
