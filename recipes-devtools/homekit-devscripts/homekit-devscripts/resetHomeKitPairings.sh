@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 # Reset all HomeKit pairings
 
 set -eu -o pipefail

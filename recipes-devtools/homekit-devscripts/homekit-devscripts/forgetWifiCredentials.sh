@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 # Forget the Wi-Fi crendetials
 
 set -eu -o pipefail

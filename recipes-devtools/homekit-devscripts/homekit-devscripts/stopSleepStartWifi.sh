@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 # Restart the Wi-Fi interface
 
 set -eu -o pipefail

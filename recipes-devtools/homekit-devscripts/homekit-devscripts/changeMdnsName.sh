@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 # Change the mDNS name as advertised by the accessory server
 
 set -eu -o pipefail
