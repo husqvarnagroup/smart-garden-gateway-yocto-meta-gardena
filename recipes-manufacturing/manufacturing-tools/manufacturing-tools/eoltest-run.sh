@@ -1,5 +1,6 @@
 #!/bin/sh
-#
+# shellcheck shell=dash
+
 # Run the eoltest script if we're in manufacturing (verified by DNS
 # search domain) and FCT is finalized.
 #
