@@ -8,6 +8,7 @@ set -eu -o pipefail
 readonly update_url_protocolless=@UPDATE_URL_PROTOCOLLESS@
 readonly lemonbeatd_rm_api_socket=/runtime/radiomodule_api
 readonly lb_radio_gateway_client=/usr/bin/lb_radio_gateway
+readonly tc=/usr/sbin/tc
 
 something_failed=0
 
@@ -486,6 +487,26 @@ test_lb_radio_driver_state() {
     log_result "lb_radio_driver_state" "${result}" "${state}"
 }
 
+# Check for dropped packets on ppp0. This happens when the application
+# sends too many packets and back-pressure leads to an overflow in the
+# network queue.
+test_ppp0_dropped_packets() {
+    local name="ppp0_dropped_packets"
+    local result=0
+    local dropped_packets
+
+    if ! dropped_packets="$(tc -json -s qdisc show dev ppp0 2>/dev/null | jq --monochrome-output .[0].drops)"; then
+        log_result "${name}" 2 "tc command failed"
+        return
+    fi
+
+    if [ "${dropped_packets}" -gt 0 ]; then
+        result=1
+    fi
+
+    log_result "${name}" "${result}" "${dropped_packets}"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -525,6 +546,10 @@ test_all() {
         # tests for Zephyr-based gateways
         test_lb_radio_gateway_api
         test_lb_radio_driver_state
+    fi
+
+    if [ -x "${tc}" ]; then
+        test_ppp0_dropped_packets
     fi
 
     return "${something_failed}"
