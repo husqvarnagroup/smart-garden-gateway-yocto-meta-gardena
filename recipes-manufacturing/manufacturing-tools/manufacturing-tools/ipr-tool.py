@@ -129,9 +129,11 @@ def initialize_gateway():
     cpms = CPMSClientBootstrapped()
     batch_item = cpms.get_next_free_item(batch_id)
     ipr_id = batch_item['ipr_id']
+    print(f"GW ID: {ipr_id}")
 
     # associate Linux module with gateway ID in IPR
     linuxmodule_id = env['linuxmoduleid']
+    print(f"LM ID: {linuxmodule_id}")
     # make sure ELRAD has the batch deployed; may take a moment for
     # the first item in the batch, but the call is synchronous so OK
     # to proceed immediately when done
@@ -159,8 +161,10 @@ def initialize_gateway():
     rm_test_fw = RMTestFW()
     manufacturer_id = rm_test_fw.get_producer_serial_number()
     rm_test_fw.close()
+    print(f"RM serial#: {manufacturer_id}")
     rm_item = cpms.find_item(str(manufacturer_id))
     rm_id = rm_item['ipr_id']
+    print(f"RM ID: {rm_id}")
     rm_address = [id['value'].replace('-', ':').lower()\
                   for id in rm_item['identifiers']\
                   if id['name'] == 'ipr:mac-address'][0]
