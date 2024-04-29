@@ -5,7 +5,9 @@
 
 OPTIND=1
 
-show_help() { echo "Usage: $0 [-hq] service_name base_port [eventbus_location]"; exit 1; }
+show_help() {
+    echo "Usage: $0 [-hq] service_name base_port [eventbus_location]"
+}
 
 QUIET=false
 
