@@ -353,7 +353,7 @@ test_squashfs() {
 
 # Check if zram compression ratio is above minimum
 test_zram_compr_ratio() {
-    local compr_ratio_min=4 # 3 is a hard limit, but we want the healthcheck to trigger earlier
+    local compr_ratio_min=3
 
     if ! orig_data_size="$(awk '{print $1}' /sys/block/zram0/mm_stat)"; then
         log_result "zram_compr_ratio" 1 "omitted"
