@@ -6,7 +6,7 @@ SRC_URI = "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
 
-PR = "r2"
+PR = "r0"
 
 
 SRC_URI += " \
