@@ -3,12 +3,12 @@ inherit cargo-update-recipe-crates
 
 
 SRC_URI = "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-cargo;protocol=ssh;nobranch=1;branch=gateway3"
-SRCREV = "5a3b1ed3c1c41b0388a796631dc721590d8d21d5"
+SRCREV = "de372f5a5960e6052592b6943139ae3f5f505d67"
 
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
 
-PR = "r3"
+PR = "r0"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nix.git;protocol=https;nobranch=1;name=nix;destsuffix=nix \
