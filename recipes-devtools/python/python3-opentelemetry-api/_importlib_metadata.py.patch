@@ -1,0 +1,13 @@
+Index: opentelemetry_api-1.24.0/src/opentelemetry/util/_importlib_metadata.py
+===================================================================
+--- opentelemetry_api-1.24.0.orig/src/opentelemetry/util/_importlib_metadata.py
++++ opentelemetry_api-1.24.0/src/opentelemetry/util/_importlib_metadata.py
+@@ -14,7 +14,7 @@
+ 
+ # FIXME: Use importlib.metadata when support for 3.11 is dropped if the rest of
+ # the supported versions at that time have the same API.
+-from importlib_metadata import (  # type: ignore
++from importlib.metadata import (  # type: ignore
+     EntryPoint,
+     EntryPoints,
+     entry_points,
