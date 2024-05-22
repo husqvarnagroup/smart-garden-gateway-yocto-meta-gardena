@@ -7,10 +7,9 @@ homepage = "https://www.gardena.com/"
 license = "MIT"
 
 [dependencies]
-failure = "0.1"
-failure_derive = "0.1"
 globset = "0.4"
 nix = "0.13"
+thiserror = "1.0"
 xattr = "0.2"
 
 [profile.release]

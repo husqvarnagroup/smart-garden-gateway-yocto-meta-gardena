@@ -1,9 +1,6 @@
-#[macro_use]
-extern crate failure_derive;
-
-extern crate failure;
 extern crate globset;
 extern crate nix;
+extern crate thiserror;
 extern crate xattr;
 
 use globset::{Glob, GlobSet, GlobSetBuilder};
@@ -16,28 +13,16 @@ use std::io::{BufRead, BufReader};
 use std::os::unix::fs::{FileTypeExt, MetadataExt};
 use std::path::Path;
 
-#[derive(Debug, Fail)]
+#[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[fail(display = "IO Error: {}", _0)]
-    Io(::std::io::Error),
-    #[fail(display = "UNIX Error: {}", _0)]
-    Unix(nix::Error),
-    #[fail(display = "Error: extended attribute vanished while reading")]
+    #[error("IO Error: {0}")]
+    Io(#[from] ::std::io::Error),
+    #[error("UNIX Error: {0}")]
+    Unix(#[from] nix::Error),
+    #[error("Error: extended attribute vanished while reading")]
     XattrVanished,
-    #[fail(display = "Error: {}", _0)]
+    #[error("Error: {0}")]
     Other(String),
-}
-
-impl From<::std::io::Error> for Error {
-    fn from(error: ::std::io::Error) -> Self {
-        Error::Io(error)
-    }
-}
-
-impl From<nix::Error> for Error {
-    fn from(error: nix::Error) -> Self {
-        Error::Unix(error)
-    }
 }
 
 type Result<T> = ::std::result::Result<T, Error>;
