@@ -1,7 +1,3 @@
-extern crate nix;
-extern crate overlayfs_purge;
-extern crate xattr;
-
 use overlayfs_purge::run;
 use std::path::Path;
 
@@ -11,16 +7,16 @@ fn run_purger() {
         Path::new("test-fixtures/integration_test/keep.d"),
         Path::new("tmp/lowerdir"),
         Path::new("tmp/upperdir"),
-    )
+    );
 }
 
 fn setup_fakeroot() {
     if nix::unistd::getuid().as_raw() != 0 {
         println!("Running test with fakeroot.");
-        let args: Vec<_> = ::std::env::args().collect();
+        let args: Vec<_> = std::env::args().collect();
         let mut command_builder = std::process::Command::new("fakeroot");
         let status = command_builder.args(args).status().unwrap();
-        ::std::process::exit(status.code().unwrap());
+        std::process::exit(status.code().unwrap());
     }
 }
 

@@ -1,6 +1,7 @@
 [package]
 name = "overlayfs-purge"
 version = "0.2.0"
+edition = "2021"
 authors = ["Adrian Friedli <adrian.friedli@husqvarnagroup.com>"]
 description = "Filesystem overlay cleaner for system upgrades"
 homepage = "https://www.gardena.com/"

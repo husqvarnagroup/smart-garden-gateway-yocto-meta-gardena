@@ -1,8 +1,3 @@
-extern crate globset;
-extern crate nix;
-extern crate thiserror;
-extern crate xattr;
-
 use globset::{Glob, GlobSet, GlobSetBuilder};
 use nix::sys::stat::{fchmodat, FchmodatFlags, Mode};
 use nix::unistd::{chown, Gid, Uid};
@@ -16,7 +11,7 @@ use std::path::Path;
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("IO Error: {0}")]
-    Io(#[from] ::std::io::Error),
+    Io(#[from] std::io::Error),
     #[error("UNIX Error: {0}")]
     Unix(#[from] nix::Error),
     #[error("Error: extended attribute vanished while reading")]
@@ -25,7 +20,7 @@ pub enum Error {
     Other(String),
 }
 
-type Result<T> = ::std::result::Result<T, Error>;
+type Result<T> = std::result::Result<T, Error>;
 
 pub fn run(keep_file: &Path, keep_dir: &Path, lower_dir: &Path, upper_dir: &Path) {
     let mut patterns =
@@ -66,7 +61,7 @@ fn read_keep_file(path: &Path) -> Result<impl Iterator<Item = String>> {
         }
         let line = x.unwrap();
         {
-            let t = line.trim(); // TODO: use trim_start() instead of trim() here in newer rust
+            let t = line.trim_start();
             if t.is_empty() || t.starts_with('#') {
                 return None;
             }
@@ -82,7 +77,7 @@ fn purge_upper_dir(lower_dir: &Path, upper_dir: &Path, keep: &GlobSet, dir: &Pat
             Ok(true) => (),
             Ok(false) => remove_dir = false,
             Err(e) => {
-                println!("ERROR: {:?}", e);
+                println!("ERROR: {e:?}");
                 remove_dir = false;
             }
         }
@@ -94,7 +89,7 @@ fn handle_entry(
     lower_dir: &Path,
     upper_dir: &Path,
     keep: &GlobSet,
-    entry: ::std::result::Result<::std::fs::DirEntry, ::std::io::Error>,
+    entry: std::result::Result<fs::DirEntry, std::io::Error>,
 ) -> Result<bool> {
     let entry = entry?;
     let path = entry.path();
@@ -105,30 +100,29 @@ fn handle_entry(
         .map_err(|_| Error::Other("Error dissecting path".to_string()))?;
 
     if filetype.is_char_device() && meta.rdev() == 0 {
-        println!("NOTICE: removing whiteout: {:?}", stripped_path);
+        println!("NOTICE: removing whiteout: {stripped_path:?}");
         fs::remove_file(&path)?;
         return Ok(true);
     }
 
-    if !keep.is_match(Path::new("/").join(&stripped_path)) {
+    if keep.is_match(Path::new("/").join(stripped_path)) {
+        println!("NOTICE: keeping explicitly: {stripped_path:?}");
+    } else {
         if !filetype.is_dir() {
-            println!("NOTICE: removing file: {:?}", stripped_path);
+            println!("NOTICE: removing file: {stripped_path:?}");
             fs::remove_file(&path)?;
             return Ok(true);
         } else if purge_upper_dir(lower_dir, upper_dir, keep, &path)? {
-            println!("NOTICE: removing directory: {:?}", stripped_path);
+            println!("NOTICE: removing directory: {stripped_path:?}");
             fs::remove_dir(&path)?;
             return Ok(true);
-        } else {
-            println!("NOTICE: keeping implicitly: {:?}", stripped_path);
-            copy_metadata(lower_dir, upper_dir, &stripped_path)?;
         }
-    } else {
-        println!("NOTICE: keeping explicitly: {:?}", stripped_path);
+        println!("NOTICE: keeping implicitly: {stripped_path:?}");
+        copy_metadata(lower_dir, upper_dir, stripped_path)?;
     }
 
     if filetype.is_file() || filetype.is_dir() {
-        remove_overlayfs_attributes(&path, &stripped_path)?;
+        remove_overlayfs_attributes(&path, stripped_path)?;
     }
 
     Ok(false)
@@ -138,9 +132,9 @@ fn copy_metadata(lower_dir: &Path, upper_dir: &Path, stripped_path: &Path) -> Re
     let lower_path = lower_dir.join(stripped_path);
     let upper_path = upper_dir.join(stripped_path);
 
-    let lower_meta = match lower_path.metadata() {
-        Ok(m) => m,
-        Err(_) => return Ok(()), // lower file not found, nothing to copy
+    let Ok(lower_meta) = lower_path.metadata() else {
+        // lower file not found, nothing to copy
+        return Ok(());
     };
     let upper_meta = upper_path.metadata()?;
 
@@ -177,15 +171,15 @@ fn copy_metadata(lower_dir: &Path, upper_dir: &Path, stripped_path: &Path) -> Re
     let lower_xattrs: HashSet<_> = xattr::list(&lower_path)?.collect();
     let upper_xattrs: HashSet<_> = xattr::list(&upper_path)?.collect();
     for x in upper_xattrs.difference(&lower_xattrs) {
-        println!("INFO: removing xattr {:?}: {:?}", x, stripped_path);
+        println!("INFO: removing xattr {x:?}: {stripped_path:?}");
         xattr::remove(&upper_path, x)?;
     }
     for x in lower_xattrs.difference(&upper_xattrs) {
         if is_overlayfs_attribute(x) {
-            println!("WARNING: ignoring xattr {:?}: {:?}", x, stripped_path);
+            println!("WARNING: ignoring xattr {x:?}: {stripped_path:?}");
             continue;
         }
-        println!("INFO: adding xattr {:?}: {:?}", x, stripped_path);
+        println!("INFO: adding xattr {x:?}: {stripped_path:?}");
         xattr::set(
             &upper_path,
             x,
@@ -196,13 +190,13 @@ fn copy_metadata(lower_dir: &Path, upper_dir: &Path, stripped_path: &Path) -> Re
     }
     for x in lower_xattrs.intersection(&upper_xattrs) {
         if is_overlayfs_attribute(x) {
-            println!("WARNING: ignoring xattr {:?}: {:?}", x, stripped_path);
+            println!("WARNING: ignoring xattr {x:?}: {stripped_path:?}");
             continue;
         }
         let lower_xattr = xattr::get(&lower_path, x)?.ok_or(Error::XattrVanished)?;
         let upper_xattr = xattr::get(&upper_path, x)?.ok_or(Error::XattrVanished)?;
         if lower_xattr != upper_xattr {
-            println!("INFO: updating xattr {:?}: {:?}", x, stripped_path);
+            println!("INFO: updating xattr {x:?}: {stripped_path:?}");
             xattr::set(&upper_path, x, lower_xattr.as_slice())?;
         }
     }
@@ -211,16 +205,16 @@ fn copy_metadata(lower_dir: &Path, upper_dir: &Path, stripped_path: &Path) -> Re
 }
 
 fn remove_overlayfs_attributes(path: &Path, stripped_path: &Path) -> Result<()> {
-    for x in xattr::list(&path)? {
+    for x in xattr::list(path)? {
         if is_overlayfs_attribute(&x) {
-            println!("INFO: removing xattr {:?}: {:?}", x, stripped_path);
+            println!("INFO: removing xattr {x:?}: {stripped_path:?}");
             xattr::remove(path, x)?;
         }
     }
     Ok(())
 }
 
-fn is_overlayfs_attribute(name: &::std::ffi::OsString) -> bool {
+fn is_overlayfs_attribute(name: &std::ffi::OsString) -> bool {
     name.to_string_lossy().starts_with("trusted.overlay.")
 }
 
@@ -228,7 +222,6 @@ fn is_overlayfs_attribute(name: &::std::ffi::OsString) -> bool {
 mod tests {
     use super::*;
     use std::collections::HashSet;
-    use std::iter::FromIterator;
 
     #[test]
     fn test_load_keep_patterns() {
@@ -238,15 +231,18 @@ mod tests {
             Path::new("/media/rfs/rw/upperdir"),
         )
         .unwrap();
-        let patterns: HashSet<_> = HashSet::from_iter(patterns.drain(..));
-        let expected_patterns = vec![
+        let patterns = patterns.drain(..).collect::<HashSet<_>>();
+        let expected_patterns = [
             "/etc/hostname",
             "/foo",
             "/foobar",
             "/bar",
             "/blubber/blubb-*.txt",
         ];
-        let expected_patterns = HashSet::from_iter(expected_patterns.iter().map(|s| s.to_string()));
+        let expected_patterns = expected_patterns
+            .iter()
+            .map(std::string::ToString::to_string)
+            .collect::<HashSet<_>>();
         assert_eq!(expected_patterns, patterns);
     }
 }
