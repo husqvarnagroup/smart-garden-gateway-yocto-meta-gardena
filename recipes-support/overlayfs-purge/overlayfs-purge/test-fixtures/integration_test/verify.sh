@@ -21,8 +21,8 @@ for x in file_overlayed_keep file_new_keep dir_overlayed/file_keep dir_new/file_
     test -f $x
 done
 
-for x in file_overlayed_remove file_new_remove; do
-    test -e $x && exit 1
+for x in file_overlayed_remove file_new_remove "invalid_file_name_$(printf '\242')"; do
+    test -e "$x" && exit 1
 done
 
 # symlinks

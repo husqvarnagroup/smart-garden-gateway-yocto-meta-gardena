@@ -1,4 +1,4 @@
-use globset::{Glob, GlobSet, GlobSetBuilder};
+use glob::Pattern;
 use nix::sys::stat::{fchmodat, FchmodatFlags, Mode};
 use nix::unistd::{chown, Gid, Uid};
 use std::collections::HashSet;
@@ -23,13 +23,13 @@ pub enum Error {
 type Result<T> = std::result::Result<T, Error>;
 
 pub fn run(keep_file: &Path, keep_dir: &Path, lower_dir: &Path, upper_dir: &Path) {
-    let mut patterns =
+    let patterns =
         load_keep_patterns(keep_file, keep_dir, upper_dir).expect("error loading config files");
-    let mut builder = GlobSetBuilder::new();
-    patterns.drain(..).for_each(|p| {
-        builder.add(Glob::new(&p).expect("config parse error"));
-    });
-    let glob_patterns = builder.build().expect("config parse error");
+    let glob_patterns = patterns
+        .iter()
+        .map(|s| Pattern::new(s))
+        .collect::<std::result::Result<Vec<_>, _>>()
+        .expect("parsing pattern failed");
     purge_upper_dir(lower_dir, upper_dir, &glob_patterns, upper_dir).expect("error while purging");
 }
 
@@ -70,7 +70,12 @@ fn read_keep_file(path: &Path) -> Result<impl Iterator<Item = String>> {
     }))
 }
 
-fn purge_upper_dir(lower_dir: &Path, upper_dir: &Path, keep: &GlobSet, dir: &Path) -> Result<bool> {
+fn purge_upper_dir(
+    lower_dir: &Path,
+    upper_dir: &Path,
+    keep: &Vec<Pattern>,
+    dir: &Path,
+) -> Result<bool> {
     let mut remove_dir = true;
     for entry in dir.read_dir()? {
         match handle_entry(lower_dir, upper_dir, keep, entry) {
@@ -88,7 +93,7 @@ fn purge_upper_dir(lower_dir: &Path, upper_dir: &Path, keep: &GlobSet, dir: &Pat
 fn handle_entry(
     lower_dir: &Path,
     upper_dir: &Path,
-    keep: &GlobSet,
+    keep: &Vec<Pattern>,
     entry: std::result::Result<fs::DirEntry, std::io::Error>,
 ) -> Result<bool> {
     let entry = entry?;
@@ -105,7 +110,15 @@ fn handle_entry(
         return Ok(true);
     }
 
-    if keep.is_match(Path::new("/").join(stripped_path)) {
+    let match_path = Path::new("/").join(stripped_path);
+    let match_found = match_path
+        .to_str()
+        .or_else(|| {
+            println!("WARNING: non-utf8 path: {stripped_path:?}");
+            None
+        })
+        .is_some_and(|match_path| keep.iter().any(|p| p.matches(match_path)));
+    if match_found {
         println!("NOTICE: keeping explicitly: {stripped_path:?}");
     } else {
         if !filetype.is_dir() {

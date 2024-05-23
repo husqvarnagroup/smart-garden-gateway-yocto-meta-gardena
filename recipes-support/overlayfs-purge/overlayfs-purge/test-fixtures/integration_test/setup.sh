@@ -26,8 +26,8 @@ for x in file_overlayed_keep file_overlayed_remove; do
     touch lowerdir/$x upperdir/$x
 done
 
-for x in file_new_keep file_new_remove dir_overlayed/file_keep dir_new/file_keep dir_opaque/file_keep; do
-    touch upperdir/$x
+for x in file_new_keep file_new_remove dir_overlayed/file_keep dir_new/file_keep dir_opaque/file_keep "invalid_file_name_$(printf '\242')"; do
+    touch upperdir/"$x"
 done
 
 for x in whiteout_file whiteout_file_keep; do
