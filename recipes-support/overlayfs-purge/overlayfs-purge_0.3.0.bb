@@ -7,7 +7,7 @@ file://LICENSE-MIT;md5=a3e3fd141148f23107ef1b2019ff1ff6 \
 "
 S = "${WORKDIR}"
 
-PR = "r3"
+PR = "r0"
 
 inherit cargo cargo-update-recipe-crates
 
@@ -19,6 +19,6 @@ SRC_URI += " \
     file://THIRDPARTY.toml \
 "
 
-LIC_FILES_CHKSUM += "file://THIRDPARTY.toml;md5=efbc23c39423e45c580e92b5cd9be6e3"
+LIC_FILES_CHKSUM += "file://THIRDPARTY.toml;md5=d12fe9be33cc7aa1d1841d364920ac5a"
 
 require overlayfs-purge-crates.inc
