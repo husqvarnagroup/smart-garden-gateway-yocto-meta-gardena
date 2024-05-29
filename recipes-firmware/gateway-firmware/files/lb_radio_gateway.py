@@ -41,8 +41,11 @@ class Command:
     GET_TX_MAC_COUNTER = b"\x0e"
     GET_LB_RADIO_DRIVER_STATE = b"\x0f"
     GET_UPTIME = b"\x10"
+    GET_STACK_USAGE = b"\x11"
     SI4467_START_CW = b"\xe0"
     SI4467_STOP_TX = b"\xe1"
+    GET_SI4467_GPIO = b"\xe2"
+    LOG_STACK_USAGE = b"\xe3"
 
 
 class Result:
@@ -67,6 +70,8 @@ class Result:
     INVALID_ARGUMENT = 0x10
     NO_HW_SUPPORT = 0x11
     CANT_GET_TX_MAC_COUNTER = 0x12
+    MISSING_ARGUMENT = 0x13
+    INTERNAL_ERROR = 0xFF
 
     @classmethod
     def get_name(cls, code):
@@ -98,7 +103,10 @@ class LBRadioGatewayAPIClient:
     # match the command definition (except that the command is lower case).
 
     # generic commands without arguments or return value
-    GENERIC_COMMANDS = {"si4467_stop_tx"}
+    GENERIC_COMMANDS = {
+        "log_stack_usage",
+        "si4467_stop_tx",
+    }
 
     # generic get functions without arguments and a single return value
     GENERIC_GET_FUNCTIONS = {
@@ -108,6 +116,7 @@ class LBRadioGatewayAPIClient:
         "get_antenna_diversity": lambda x: int(x[0]),
         "get_antenna_int_ext": lambda x: int(x[0]),
         "get_app_version": lambda x: bytes(x).decode('ascii'),
+        "get_stack_usage": lambda x: bytes(x).decode('ascii'),
         "get_tx_mac_counter": lambda x: int.from_bytes(x, 'little'),
         "get_lb_radio_driver_state": lambda x: bytes(x).decode('ascii'),
         "get_uptime": lambda x: int.from_bytes(x, 'little'),
@@ -128,6 +137,10 @@ class LBRadioGatewayAPIClient:
     }
 
     DOCSTRINGS = {
+        "log_stack_usage": (
+            "Print current stack usage to the console.",
+            []
+        ),
         "get_antenna_diversity": (
             "Get antenna diversity state (only relevant if mode is 0).",
             []
@@ -160,7 +173,7 @@ class LBRadioGatewayAPIClient:
             "Set antenna diversity state (only relevant if mode is 0).",
             [("state", "0 (first antenna) or 1 (second antenna)")]
         ),
-        "set_antenna_diversity_mode":  (
+        "set_antenna_diversity_mode": (
             "Set antenna diversity mode.",
             [("mode", "0 (MCU) or 1 (TRX)")]
         ),
@@ -184,9 +197,17 @@ class LBRadioGatewayAPIClient:
             "Get state of lb_radio driver state machine.",
             []
         ),
+        "get_stack_usage": (
+            "Get thread with the (relatively) biggest stack usage.",
+            []
+        ),
         "get_uptime": (
             "Get current uptime in milliseconds.",
             []
+        ),
+        "get_si4467_gpio": (
+            "Get state of Si4467 GPIO pin.",
+            [("index", "Si4467 GPIO pin index.")]
         ),
         "si4467_start_cw": (
             "Start continuous wave TX on specified channel.",
@@ -356,6 +377,14 @@ class LBRadioGatewayAPIClient:
                                duration_bytes + mac_address + lb_channel.to_bytes(1, "little"))
             self._check_result(s)
 
+    def get_si4467_gpio(self, gpio_idx) -> int:
+        with self._connected_socket() as s:
+            self._send_command(s, Command.GET_SI4467_GPIO, gpio_idx.to_bytes(length=1))
+            length = self._check_result(s)
+            data = self._get_data(s, length)
+            assert len(data) == 1
+            return int.from_bytes(data)
+
 
 def main():
     # parse & execute command
@@ -425,6 +454,9 @@ def main():
         # function expects an integer, so we parse it here.
         function = getattr(client, cmd)
         function(int(cmd_args[0], 10))
+    elif cmd == "get_si4467_gpio":
+        gpio_idx = int(cmd_args[0], 10)
+        print(client.get_si4467_gpio(gpio_idx))
     elif cmd in client.GENERIC_COMMANDS:
         function = getattr(client, cmd)
         function()
