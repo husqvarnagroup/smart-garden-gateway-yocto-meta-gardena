@@ -3,6 +3,9 @@ Description=Run metrics every 23 hours
 After=network-online.target
 
 [Timer]
+# The metrics unit must be started once, in order to be executed periodically.
+# Start some time after boot, not too early.
+OnBootSec=1200s
 # Rotate execution around the clock
 OnUnitActiveSec=23h
 
