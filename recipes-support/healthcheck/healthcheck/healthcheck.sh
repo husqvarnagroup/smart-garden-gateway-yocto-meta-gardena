@@ -364,12 +364,15 @@ test_zram_compr_ratio() {
         return
     fi
 
+    local compr_ratio
+    compr_ratio=$(awk "BEGIN { printf \"%.1f\", ${orig_data_size} / ${compr_data_size} }")
+
     local result=0
-    if [ "${orig_data_size}" -lt $((compr_ratio_min * compr_data_size)) ]; then
+    if [ "$(awk "BEGIN { print (${compr_ratio} < ${compr_ratio_min}) ? 1 : 0 }")" -eq 1 ]; then
         result=3
     fi
 
-    log_result "zram_compr_ratio" "${result}" "ratio=${orig_data_size}/${compr_data_size}"
+    log_result "zram_compr_ratio" "${result}" "ratio=${compr_ratio}"
 }
 
 # Check if zram has not more than a limited amount of uncompressed pages
