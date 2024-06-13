@@ -507,6 +507,26 @@ test_ppp0_dropped_packets() {
     log_result "${name}" "${result}" "${dropped_packets}"
 }
 
+# Check for an fc00:: network on any interface other than ppp0
+#
+# Note: this test likely underreports the issue, as if there is
+# acutally another interface with an fc00::/64 network and it breaks
+# the smart system, a customer would probably either fix it or
+# disconnect the gateway.
+test_fc00_networks() {
+    local name="fc00_networks"
+    local result=0
+    local data="omitted"
+    local route
+
+    if route="$(ip -6 route show | grep -v 'dev ppp0' | grep '^fc00::' | head -n1)"; then
+        result=2
+        data="${route}"
+    fi
+
+    log_result "${name}" "${result}" "${data}"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -551,6 +571,8 @@ test_all() {
     if [ -x "${tc}" ]; then
         test_ppp0_dropped_packets
     fi
+
+    test_fc00_networks
 
     return "${something_failed}"
 }
