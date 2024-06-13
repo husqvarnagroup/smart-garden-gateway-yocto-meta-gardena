@@ -457,7 +457,7 @@ test_lb_radio_gateway_api() {
 
     if ! version="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_app_version)"; then
         version="undetermined"
-        result=1
+        result=2
     fi
 
     log_result "lb_radio_gateway_api" "${result}" "${version}"
@@ -469,12 +469,12 @@ test_lb_radio_gateway_api() {
 # this reason, we run the check multiple times and accept it as passed
 # if the state is `listen` at least once.
 test_lb_radio_driver_state() {
-    local result=1
+    local result=2
     local state
 
     for _ in $(seq 1 10); do
         if ! state="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_lb_radio_driver_state)"; then
-            result=2
+            result=1
             state="undetermined"
             break
         fi
@@ -496,12 +496,12 @@ test_ppp0_dropped_packets() {
     local dropped_packets
 
     if ! dropped_packets="$(tc -json -s qdisc show dev ppp0 2>/dev/null | jq --monochrome-output .[0].drops)"; then
-        log_result "${name}" 2 "tc command failed"
+        log_result "${name}" 1 "tc command failed"
         return
     fi
 
     if [ "${dropped_packets}" -gt 0 ]; then
-        result=1
+        result=2
     fi
 
     log_result "${name}" "${result}" "${dropped_packets}"
