@@ -530,6 +530,20 @@ test_fc00_networks() {
     log_result "${name}" "${result}" "${data}"
 }
 
+# Observed on dev gateways that session.tc sometimes is not 28. Remove test end of 2024 if it never fails.
+test_lwm2mserver_traffic_class() {
+    local result=0
+    local wakaama_file=/var/lib/lwm2mserver/wakaama.json
+
+    if [ -f ${wakaama_file} ]; then
+        if ! jq -e '(.clients|map(select(.session.tc != 28)) | length) == 0' ${wakaama_file} >/dev/null; then
+            result=2
+        fi
+    fi
+
+    log_result "lwm2mserver_traffic_class" "${result}" "omitted"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -576,6 +590,7 @@ test_all() {
     fi
 
     test_fc00_networks
+    test_lwm2mserver_traffic_class
 
     return "${something_failed}"
 }
