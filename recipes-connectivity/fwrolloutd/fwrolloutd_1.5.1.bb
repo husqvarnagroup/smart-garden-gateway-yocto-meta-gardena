@@ -12,10 +12,10 @@ CARGO_SRC_DIR = "fwrolloutd"
 
 LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://../THIRDPARTY.toml;md5=2d2762287b1ad3e5819604af0814847f \
+    file://../THIRDPARTY.toml;md5=81382bf6875f990c072a94f3ebe8517c \
 "
 
-PR = "r2"
+PR = "r0"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nng-rs.git;protocol=https;nobranch=1;name=nng;destsuffix=nng-rs \
