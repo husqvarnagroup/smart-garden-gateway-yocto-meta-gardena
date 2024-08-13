@@ -458,7 +458,7 @@ test_lb_radio_gateway_api() {
     local result=0
     local version
 
-    if ! version="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_app_version)"; then
+    if ! version="$(timeout 30 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_app_version)"; then
         version="undetermined"
         result=2
     fi
@@ -476,7 +476,7 @@ test_lb_radio_driver_state() {
     local state
 
     for _ in $(seq 1 10); do
-        if ! state="$(timeout 15 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_lb_radio_driver_state)"; then
+        if ! state="$(timeout 30 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_lb_radio_driver_state)"; then
             result=1
             state="undetermined"
             break
