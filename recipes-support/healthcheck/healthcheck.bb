@@ -3,7 +3,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 PV = "0.30.1"
-PR = "r0"
+PR = "r1"
 
 RDEPENDS:${PN} = "curl openssl systemd"
 
@@ -15,7 +15,7 @@ SRC_URI = "\
 
 S = "${WORKDIR}"
 
-UPDATE_URL_PROTOCOLLESS = "${@DISTRO_UPDATE_URL_BASE.split('://', 1)[1]}/gardena-update-image-bnw-${MACHINE}.swu"
+UPDATE_URL_PROTOCOLLESS = "${@DISTRO_UPDATE_URL_BASE.split('://', 1)[1]}/gardena-update-image-bnw-zephyr-${MACHINE}.swu"
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system
