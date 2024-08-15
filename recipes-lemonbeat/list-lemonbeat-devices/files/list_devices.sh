@@ -37,6 +37,10 @@ for device in "$LEMONBEATD_DIR"/Device_* ; do
     INCLUDED="$(echo "$DEVICE_FILE" | awk '/included/ {print $3}' | tr -d ,)"
     WAKEUP_CHANNEL="$(echo "$DEVICE_FILE" | awk '/wakeup_channel/ {print $3}' | tr -d ,)"
 
+    if [ "$NAME" = "DONGLE" ]; then
+        continue
+    fi
+
     if [ "$1" = "-i" ]; then
         if [ "$INCLUDED" = "true" ]; then
             print_info
