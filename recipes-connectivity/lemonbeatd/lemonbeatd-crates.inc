@@ -90,6 +90,7 @@ SRC_URI += " \
     crate://crates.io/linux-raw-sys/0.4.12 \
     crate://crates.io/lock_api/0.4.11 \
     crate://crates.io/log/0.4.20 \
+    crate://crates.io/macaddr/1.0.1 \
     crate://crates.io/matchers/0.1.0 \
     crate://crates.io/memchr/2.6.4 \
     crate://crates.io/memoffset/0.6.5 \
@@ -151,6 +152,7 @@ SRC_URI += " \
     crate://crates.io/serial_test_derive/1.0.0 \
     crate://crates.io/sha2/0.10.8 \
     crate://crates.io/sharded-slab/0.1.7 \
+    crate://crates.io/signal-hook-registry/1.4.1 \
     crate://crates.io/single-trait-impl/0.1.0 \
     crate://crates.io/slab/0.4.9 \
     crate://crates.io/smallvec/1.11.2 \
@@ -302,6 +304,7 @@ SRC_URI[linux-raw-sys-0.3.8.sha256sum] = "ef53942eb7bf7ff43a617b3e2c1c4a5ecf5944
 SRC_URI[linux-raw-sys-0.4.12.sha256sum] = "c4cd1a83af159aa67994778be9070f0ae1bd732942279cabb14f86f986a21456"
 SRC_URI[lock_api-0.4.11.sha256sum] = "3c168f8615b12bc01f9c17e2eb0cc07dcae1940121185446edc3744920e8ef45"
 SRC_URI[log-0.4.20.sha256sum] = "b5e6163cb8c49088c2c36f57875e58ccd8c87c7427f7fbd50ea6710b2f3f2e8f"
+SRC_URI[macaddr-1.0.1.sha256sum] = "baee0bbc17ce759db233beb01648088061bf678383130602a298e6998eedb2d8"
 SRC_URI[matchers-0.1.0.sha256sum] = "8263075bb86c5a1b1427b5ae862e8889656f126e9f77c484496e8b47cf5c5558"
 SRC_URI[memchr-2.6.4.sha256sum] = "f665ee40bc4a3c5590afb1e9677db74a508659dfd71e126420da8274909a0167"
 SRC_URI[memoffset-0.6.5.sha256sum] = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
@@ -363,6 +366,7 @@ SRC_URI[serial_test-1.0.0.sha256sum] = "538c30747ae860d6fb88330addbbd3e0ddbe46d6
 SRC_URI[serial_test_derive-1.0.0.sha256sum] = "079a83df15f85d89a68d64ae1238f142f172b1fa915d0d76b26a7cba1b659a69"
 SRC_URI[sha2-0.10.8.sha256sum] = "793db75ad2bcafc3ffa7c68b215fee268f537982cd901d132f89c6343f3a3dc8"
 SRC_URI[sharded-slab-0.1.7.sha256sum] = "f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6"
+SRC_URI[signal-hook-registry-1.4.1.sha256sum] = "d8229b473baa5980ac72ef434c4415e70c4b5e71b423043adb4ba059f89c99a1"
 SRC_URI[single-trait-impl-0.1.0.sha256sum] = "d1165868fd532058bcf8c8cedd3036d8059f6d27e3de4c460e85094ef69028f6"
 SRC_URI[slab-0.4.9.sha256sum] = "8f92a496fb766b417c996b9c5e57daf2f7ad3b0bebe1ccfca4856390e3d3bb67"
 SRC_URI[smallvec-1.11.2.sha256sum] = "4dccd0940a2dcdf68d092b8cbab7dc0ad8fa938bf95787e1b916b0e3d0e8e970"
