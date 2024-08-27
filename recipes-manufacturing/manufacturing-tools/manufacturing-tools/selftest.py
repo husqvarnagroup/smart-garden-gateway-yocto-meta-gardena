@@ -16,21 +16,21 @@ These tests are meant to run as root directly on the gateway during manufacturin
 """
 
 import argparse
-import hashlib
-import unittest
-import sys
 import datetime
-import time
-import subprocess
-import uuid
+import hashlib
 import json
 import re
+import subprocess
+import sys
+import time
+import unittest
+import uuid
 import zlib
 
 from bootstrap import bootstrap_get_batch
+from radio_module_test import RMTestFW, RMTestFWMessage
 from testing import ResultHandler
 from util import fw_getenv, manufacturing_event_timestamp
-from radio_module_test import RMTestFW, RMTestFWMessage
 
 bootstrap_server_present = True  # pylint: disable=invalid-name
 
