@@ -50,6 +50,27 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
+class ChronyTacking:
+    """
+    chronyc CSV output:
+    chronyc -c tacking
+    Example for synced state:
+    D8EF2300,216.239.35.0,2,1724225367.720284720,-0.000036268,-0.000005936,0.000214715,-0.946,0.001,0.081,0.013953905,0.000123833,261.0,Normal
+    Example for not synced:
+    7F7F0101,,10,1724743035.534557617,0.000000000,0.000000000,0.000000000,-0.818,0.000,0.000,0.000000000,0.000000000,0.0,Normal
+    """
+    def __init__(self, reference_id: str, address: str, stratum: str, ref_time: str, *args):
+        self.reference_id = reference_id
+        self.address = address
+        self.stratum = stratum
+        self.ref_time = ref_time
+        self.args = args
+
+    @classmethod
+    def parse(cls, csv_string: str) -> 'ChronyTacking':
+        return cls(*csv_string.split(','))
+
+
 class SelfTest(unittest.TestCase):
     """Collection of self tests."""
 
@@ -400,16 +421,22 @@ class SelfTest(unittest.TestCase):
                 for line
                 in subprocess.check_output(["timedatectl", "status"]).decode('ascii').split("\n")
                 if len(line) > 0]}
-        timesync_status = {
-            items[0].strip(): ": ".join(items[1:]).strip()
-            for items
-            in [line.split(": ")
-                for line
-                in subprocess.check_output(["timedatectl", "timesync-status"]).decode('ascii').split("\n")
-                if len(line) > 0]}
-        self.assertTrue(status['NTP service'] == "active")
         self.assertTrue(status['System clock synchronized'] == "yes")
-        self.assertTrue(int(timesync_status['Stratum']) <= 5)
+        # Ensure systemd-timesyncd is not responsible for NTP
+        self.assertTrue(status['NTP service'] == "n/a")
+        # Check NTP sync via chrony
+        # chronyc CSV output: chronyc -c tacking
+        # Example for synced state:
+        # D8EF2300,216.239.35.0,2,1724225367.720284720,-0.000036268,-0.000005936,0.000214715,-0.946,0.001,0.081,0.013953905,0.000123833,261.0,Normal
+        # Example for not synced state:
+        # 7F7F0101,,10,1724743035.534557617,0.000000000,0.000000000,0.000000000,-0.818,0.000,0.000,0.000000000,0.000000000,0.0,Normal
+        chrony_tracking = subprocess.check_output(["chronyc", "-c", "tracking"]).decode(
+            "ascii"
+        )
+        reference_id, address, stratum, *_ = chrony_tracking.split(",")
+        self.assertNotEqual(reference_id, "7F7F0101")
+        self.assertNotEqual(address, "")
+        self.assertTrue(int(stratum) <= 5)
 
     def test_017_radio_module(self):
         """Test radio module using production test firmware."""
