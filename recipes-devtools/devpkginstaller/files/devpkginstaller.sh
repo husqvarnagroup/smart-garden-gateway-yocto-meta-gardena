@@ -1,18 +1,14 @@
 #!/bin/ash
 #
-# Copyright (c) 2023 GARDENA GmbH
+# Copyright (c) 2024 GARDENA GmbH
 #
 # SPDX-License-Identifier: MIT
 # shellcheck shell=dash
 set -eu -o pipefail
 
-if ! pkgs="$(fw_printenv -n dev_extra_pkgs 2>/dev/null)"; then
-    exit 0
-fi
-
 opkg update
 
-for pkg in $pkgs; do
+grep -v "^ *#" < /etc/devpkgs.conf | while read -r pkg; do
     if [ -z "$(opkg list-installed "$pkg" 2>/dev/null)" ]; then
         opkg install "$pkg" || (echo "Failed to install: $pkg" >&2)
     fi

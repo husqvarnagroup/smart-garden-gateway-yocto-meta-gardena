@@ -2,6 +2,7 @@
 Description=Automatic Development Package Installer
 Wants=network-online.target
 After=network-online.target
+ConditionPathExists=/etc/devpkgs.conf
 
 [Service]
 Type=simple

@@ -9,9 +9,11 @@ inherit allarch systemd
 SRC_URI = " \
     file://devpkginstaller.service \
     file://devpkginstaller.sh \
+    file://keep.d/${BPN} \
 "
 
 FILES:${PN} = " \
+    ${base_libdir}/upgrade/keep.d \
     ${bindir}/devpkginstaller \
     ${systemd_unitdir}/system/devpkginstaller.service \
 "
@@ -27,6 +29,9 @@ do_install() {
 
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/devpkginstaller.sh ${D}${bindir}/devpkginstaller
+
+    install -d ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${WORKDIR}/keep.d/${PN} ${D}${base_libdir}/upgrade/keep.d
 }
 
 SYSTEMD_PACKAGES = "${PN}"
