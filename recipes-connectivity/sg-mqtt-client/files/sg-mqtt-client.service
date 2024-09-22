@@ -1,0 +1,15 @@
+[Unit]
+Description=Generic MQTT client
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=60
+MemoryMax=15M
+Environment=RUST_LOG=sg_mqtt_client=debug
+ExecStart=/usr/bin/sg-mqtt-client
+
+[Install]
+WantedBy=multi-user.target
