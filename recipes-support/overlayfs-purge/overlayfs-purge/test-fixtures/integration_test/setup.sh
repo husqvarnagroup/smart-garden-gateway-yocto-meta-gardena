@@ -2,6 +2,8 @@
 
 set -eu
 
+umask 0022
+
 rm -rf tmp
 mkdir -p tmp
 cd tmp
