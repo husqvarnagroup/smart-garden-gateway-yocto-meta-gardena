@@ -43,13 +43,23 @@ fn load_keep_patterns(
     if upper_config_file.exists() {
         config_file = upper_config_file.as_path();
     }
-    let mut patterns: Vec<_> = read_keep_file(config_file)?.collect();
-    for file in keep_dir.read_dir()? {
-        for pattern in read_keep_file(&file?.path())? {
-            patterns.push(pattern);
+    let mut keep_files: Vec<_> = match keep_dir.read_dir() {
+        Ok(itr) => itr.collect(),
+        Err(_) => Vec::new(),
+    };
+    if let Ok(keep_dir_rel) = keep_dir.strip_prefix("/") {
+        if let Ok(itr) = upper_dir.join(keep_dir_rel).read_dir() {
+            let mut files_upper = itr.collect();
+            keep_files.append(&mut files_upper);
         }
     }
-    Ok(patterns)
+    let mut patterns: HashSet<_> = read_keep_file(config_file)?.collect();
+    for file in keep_files {
+        for pattern in read_keep_file(&file?.path())? {
+            patterns.insert(pattern);
+        }
+    }
+    Ok(patterns.into_iter().collect())
 }
 
 fn read_keep_file(path: &Path) -> Result<impl Iterator<Item = String>> {
