@@ -104,8 +104,8 @@ cp /etc/sysupgrade.conf "${SNAPSHOT_DIR}/runtime/user/"
 ##################################
 # tcpdump files                  #
 ##################################
-if [ -d /tmp/tcpdump-sherlock ]; then
-    cp -r /tmp/tcpdump-sherlock "${SNAPSHOT_DIR}/runtime/"
+if [ -d /run/tcpdump-sherlock ]; then
+    cp -r /run/tcpdump-sherlock "${SNAPSHOT_DIR}/runtime/"
 fi
 
 ##################################
