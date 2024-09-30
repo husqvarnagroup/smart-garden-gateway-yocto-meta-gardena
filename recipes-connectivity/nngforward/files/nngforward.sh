@@ -42,7 +42,7 @@ EVENT_TCP_PORT=$2
 COMMAND_TCP_PORT=$((EVENT_TCP_PORT+1))
 
 if [ -z "$3" ]; then
-  EVENTBUS_LOCATION="/tmp"
+  EVENTBUS_LOCATION="/run"
 else
   EVENTBUS_LOCATION="$3"
 fi
