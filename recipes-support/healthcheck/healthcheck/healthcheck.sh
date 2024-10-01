@@ -11,7 +11,6 @@ set -eu -o pipefail
 readonly update_url_protocolless=@UPDATE_URL_PROTOCOLLESS@
 readonly lemonbeatd_rm_api_socket=/runtime/radiomodule_api
 readonly lb_radio_gateway_client=/usr/bin/lb_radio_gateway
-readonly tc=/usr/sbin/tc
 
 something_failed=0
 
@@ -298,10 +297,7 @@ test_ppp0_sg_16012() {
     fi
 
     # SG-16012: Check for multiple IP addresses on ppp0.
-    if [ "$(/sbin/ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:0:0:1/64 scope global" ]; then
-        # The only global address must be fc00::6:0:0:1 when using legacy RM firmwares
-        result=0
-    elif [ "$(/sbin/ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:100:0:0/64 scope global" ]; then
+    if [ "$(/sbin/ip address show ppp0 | grep global | sed 's/ *$//g' | sed 's/^ *//g')" = "inet6 fc00::6:100:0:0/64 scope global" ]; then
         # The only global address must be fc00::6:100:0:0 when using Zephyr based RM firmwares
         result=0
     else
@@ -599,15 +595,9 @@ test_all() {
 
     test_network_key_sgse_1024
 
-    if [ -x "${lb_radio_gateway_client}" ]; then
-        # tests for Zephyr-based gateways
-        test_lb_radio_gateway_api
-        test_lb_radio_driver_state
-    fi
-
-    if [ -x "${tc}" ]; then
-        test_ppp0_dropped_packets
-    fi
+    test_lb_radio_gateway_api
+    test_lb_radio_driver_state
+    test_ppp0_dropped_packets
 
     test_fc00_networks
     test_lwm2mserver_traffic_class
