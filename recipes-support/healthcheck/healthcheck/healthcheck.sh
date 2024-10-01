@@ -96,52 +96,57 @@ test_x509_crt_ca() {
 }
 
 test_x509_crt_subject() {
-    # gatewayid and cert subject must match
+    local name="x509_crt_subject"
 
+    # gatewayid and cert subject must match
     local gatewayid
     if ! gatewayid="$(/sbin/fw_printenv -n gatewayid)"; then
-        log_result "x509_crt_subject" "1" "Failed to extract gatewayid"
+        log_result "${name}" "1" "Failed to extract gatewayid"
         return
     fi
 
     local subject
     if ! subject="$(openssl x509 -in /etc/ssl/certs/client-prod.crt -subject -noout | awk '{print $3}')"; then
-        log_result "x509_crt_subject" "1" "Failed to extract certificate subject"
+        log_result "${name}" "1" "Failed to extract certificate subject"
         return
     fi
 
     if [ "${gatewayid}" != "${subject}" ]; then
-        log_result "x509_crt_subject" "2" "subject=${subject}"
+        log_result "${name}" "2" "subject=${subject}"
         return
     fi
 
-    log_result "x509_crt_subject" "0" "omitted"
+    log_result "${name}" "0" "omitted"
 }
 
 test_x509_crt_key_match() {
+    local name="x509_crt_key_match"
+
     # Ensure the client certificate and key belong to each other
 
     local key_pubkey
     if ! key_pubkey="$(openssl pkey -pubout -in /etc/ssl/private/client-prod.key)"; then
-        log_result "x509_crt_key_match" "1" "Failed to extract public part from key"
+        log_result "${name}" "1" "Failed to extract public part from key"
         return
     fi
 
     local crt_pubkey
     if ! crt_pubkey="$(openssl x509 -noout -pubkey -in /etc/ssl/certs/client-prod.crt)"; then
-        log_result "x509_crt_key_match" "2" "Failed to extract public key from from cert"
+        log_result "${name}" "2" "Failed to extract public key from from cert"
         return
     fi
 
     if [ "${key_pubkey}" != "${crt_pubkey}" ]; then
-        log_result "x509_crt_key_match" "3" "key_pubkey=${key_pubkey}, crt_pubkey=${crt_pubkey}"
+        log_result "${name}" "3" "key_pubkey=${key_pubkey}, crt_pubkey=${crt_pubkey}"
         return
     fi
 
-    log_result "x509_crt_key_match" "0" "omitted"
+    log_result "${name}" "0" "omitted"
 }
 
 test_x509_key_rsa() {
+    local name="x509_key_rsa"
+
     # Check RSA-specific properties
 
     # Certificates and keys provided by x509_{crt,key} take precedence over the old conf_openvpn_{crt,key} U-Boot
@@ -153,36 +158,38 @@ test_x509_key_rsa() {
     # compare modulus
     local mod_key
     if ! mod_key=$(openssl rsa -modulus -noout -in /etc/ssl/private/client-prod.key); then
-        log_result "x509_key_rsa" "2" "omitted"
+        log_result "${name}" "2" "omitted"
         return
     fi
 
     local mod_crt
     if ! mod_crt=$(openssl x509 -modulus -noout -in /etc/ssl/certs/client-prod.crt); then
-        log_result "x509_key_rsa" "3" "omitted"
+        log_result "${name}" "3" "omitted"
         return
     fi
 
     if [ "${mod_key}" != "${mod_crt}" ];then
-        log_result "x509_key_rsa" "4" "omitted"
+        log_result "${name}" "4" "omitted"
         return
     fi
 
     # Check the consistency of the RSA private key
     if ! result="$(openssl rsa -check -noout -in /etc/ssl/private/client-prod.key 2>&1)"; then
-        log_result "x509_key_rsa" "5" "${result}"
+        log_result "${name}" "5" "${result}"
         return
     fi
 
     if [ "${result}" != "RSA key ok" ]; then
-        log_result "x509_key_rsa" "6" "${result}"
+        log_result "${name}" "6" "${result}"
         return
     fi
 
-    log_result "x509_key_rsa" "0" "omitted"
+    log_result "${name}" "0" "omitted"
 }
 
 test_x509_key_ec() {
+    local name="x509_key_ec"
+
     # Check EC-specific properties
 
     # Certificates and keys provided by x509_{crt,key} take precedence over the old conf_openvpn_{crt,key} U-Boot
@@ -193,17 +200,17 @@ test_x509_key_ec() {
 
     # Check the consistency of the EC private key
     if ! result="$(openssl ec -check -noout -in /etc/ssl/private/client-prod.key 2>&1)"; then
-        log_result "x509_key_ec" "1" "${result}"
+        log_result "${name}" "1" "${result}"
         return
     fi
 
     # shellcheck disable=SC3003
     if [ "${result}" != "read EC key"$'\n'"EC Key valid." ]; then
-        log_result "x509_key_ec" "2" "${result}"
+        log_result "${name}" "2" "${result}"
         return
     fi
 
-    log_result "x509_key_ec" "0" "omitted"
+    log_result "${name}" "0" "omitted"
 }
 
 test_client_crt_longevity() {
@@ -305,12 +312,14 @@ test_ppp0_sg_16012() {
 }
 
 test_rm_address() {
+    local name="rm_address"
+
     if ! /sbin/fw_printenv -n rmaddr > /dev/null; then
-        log_result "rm_address" "1" "missing rmaddr"
+        log_result "${name}" "1" "missing rmaddr"
         return
     fi
 
-    log_result "rm_address" 0 "omitted"
+    log_result "${name}" 0 "omitted"
 
 }
 
@@ -344,28 +353,31 @@ test_rm_ping() {
 
 # Find squashfs errors, which are potential side-effects of SG-14950
 test_squashfs() {
+    local name="squashfs"
+
     # dmesg exists with an error code when it can not write all its content.
     # Using -c instead of -q forces grep to read the complete dmesg output,
     # even when the first occurrence has been found.
     local count
     if count=$(dmesg | grep -c "SQUASHFS error"); then
-        log_result "squashfs" 2 "count=${count}"
+        log_result "${name}" 2 "count=${count}"
         return
     fi
 
-    log_result "squashfs" 0 "omitted"
+    log_result "${name}" 0 "omitted"
 }
 
 # Check if zram compression ratio is above minimum
 test_zram_compr_ratio() {
+    local name="zram_compr_ratio"
     local compr_ratio_min=2.5
 
     if ! orig_data_size="$(awk '{print $1}' /sys/block/zram0/mm_stat)"; then
-        log_result "zram_compr_ratio" 1 "omitted"
+        log_result "${name}" 1 "omitted"
         return
     fi
     if ! compr_data_size="$(awk '{print $2}' /sys/block/zram0/mm_stat)"; then
-        log_result "zram_compr_ratio" 2 "omitted"
+        log_result "${name}" 2 "omitted"
         return
     fi
 
@@ -377,15 +389,16 @@ test_zram_compr_ratio() {
         result=3
     fi
 
-    log_result "zram_compr_ratio" "${result}" "ratio=${compr_ratio}"
+    log_result "${name}" "${result}" "ratio=${compr_ratio}"
 }
 
 # Check if zram has not more than a limited amount of uncompressed pages
 test_zram_huge_pages() {
+    local name="zram_huge_pages"
     local huge_pages_max=10 # maximum allowed uncompressed pages, none are expected, 10 is an arbitrary number
 
     if ! huge_pages="$(awk '{print $8}' /sys/block/zram0/mm_stat)"; then
-        log_result "zram_huge_pages" 1 "omitted"
+        log_result "${name}" 1 "omitted"
         return
     fi
 
@@ -394,7 +407,7 @@ test_zram_huge_pages() {
         result=2
     fi
 
-    log_result "zram_huge_pages" "${result}" "huge_pages=${huge_pages}"
+    log_result "${name}" "${result}" "huge_pages=${huge_pages}"
 }
 
 test_wifi_device() {
