@@ -2,6 +2,9 @@
 # shellcheck shell=dash
 #
 # Checking for known problems, reporting failing checks to syslog and stderr.
+#
+# Note: The used log name must be the name of the test withouth the
+# prefix "test_".
 
 set -eu -o pipefail
 
@@ -278,11 +281,12 @@ test_systemd_running() {
 }
 
 test_ppp0_sg_16012() {
+    local name="ppp0_sg_16012"
     local result=0
 
     # SG-16012: Having a DNS server configured on ppp0 makes no sense at all
     if dns_address="$(networkctl status ppp0 | grep "DNS:" | awk '{print $2}')"; then
-        log_result "ppp0" "4" "dns_address=${dns_address}"
+        log_result "${name}" "4" "dns_address=${dns_address}"
         return
     fi
 
@@ -297,7 +301,7 @@ test_ppp0_sg_16012() {
         result=3
     fi
 
-    log_result "ppp0" "${result}" "omitted"
+    log_result "${name}" "${result}" "omitted"
 }
 
 test_rm_address() {
@@ -311,20 +315,21 @@ test_rm_address() {
 }
 
 test_rm_ping() {
+    local name="rm_ping"
     local result=0
     local rm_ip_address
 
     if ! rm_ip_address="$(/sbin/ip -6 route list | grep -e "^fe80::.*dev ppp0" | head -n1 | awk '{print $1}')"; then
-        log_result "ppp0" "2" "ppp0 interface has no IP address"
+        log_result "${name}" "2" "ppp0 interface has no IP address"
         return
     fi
 
     local rx_bytes
     if ! rx_bytes="$(cat /sys/class/net/ppp0/statistics/rx_bytes 2>/dev/null)"; then
-        log_result "rm_ping" "1" "ppp0 interface missing"
+        log_result "${name}" "1" "ppp0 interface missing"
         return
     elif [ "${rx_bytes}" -eq 0 ]; then
-        log_result "rm_ping" "3" "ppp0 interface inactive"
+        log_result "${name}" "3" "ppp0 interface inactive"
         return
     fi
 
@@ -334,7 +339,7 @@ test_rm_ping() {
         ping -I ppp0 -c1 "${rm_ip_address}" >/dev/null || result=2
     fi
 
-    log_result "rm_ping" "${result}" "rm_ip_address=${rm_ip_address}"
+    log_result "${name}" "${result}" "rm_ip_address=${rm_ip_address}"
 }
 
 # Find squashfs errors, which are potential side-effects of SG-14950
@@ -424,7 +429,9 @@ test_network_key_sgse_1024() {
 # a certain amount of bytes in the send queue. This may indicate that the radio
 # module has a problem accepting packets from ppp reported in SG-20421.
 test_socket_queue_ppp0_sg_20421() {
+    local name="socket_queue_ppp0_sg_20421"
     local result=0
+
     # Set check limit in bytes. Use a few bytes more than current MTU of 1500
     # bytes to allow one large packet in queue before warning.
     readonly RECVQ_LIMIT=1600
@@ -437,17 +444,17 @@ test_socket_queue_ppp0_sg_20421() {
         recvq_bytes=$(echo "${line}" | cut -d , -f2)
         if [ "${recvq_bytes}" -gt ${RECVQ_LIMIT} ]; then
             result=2
-            log_result "test_socket_queue_ppp0_sg_20421" "${result}" "${line}"
+            log_result "${name}" "${result}" "${line}"
         fi
         local sendq_bytes
         sendq_bytes=$(echo "$line" | cut -d , -f3)
         if [ "${sendq_bytes}" -gt ${SENDQ_LIMIT} ]; then
             result=3
-            log_result "test_socket_queue_ppp0_sg_20421" "${result}" "${line}"
+            log_result "${name}" "${result}" "${line}"
         fi
     done
     if [ "${result}" -eq 0 ]; then
-        log_result "test_socket_queue_ppp0_sg_20421" "${result}" "omitted"
+        log_result "${name}" "${result}" "omitted"
     fi
 }
 
