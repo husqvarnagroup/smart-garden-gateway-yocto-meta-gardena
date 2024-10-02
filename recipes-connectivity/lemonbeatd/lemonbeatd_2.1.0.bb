@@ -47,7 +47,7 @@ SRC_URI += " \
 "
 
 LIC_FILES_CHKSUM += " \
-    file://../THIRDPARTY.toml;md5=e7b25bf8663d08a6b3aaf655363a1281 \
+    file://../THIRDPARTY.toml;md5=c0e62d228b2b4637511af1623fc6f44f \
 "
 
 require lemonbeatd-crates.inc
