@@ -11,6 +11,7 @@ set -eu -o pipefail
 readonly update_url_protocolless=@UPDATE_URL_PROTOCOLLESS@
 readonly lemonbeatd_rm_api_socket=/runtime/radiomodule_api
 readonly lb_radio_gateway_client=/usr/bin/lb_radio_gateway
+readonly ppp0_state_file="/sys/class/net/ppp0/operstate"
 
 something_failed=0
 
@@ -29,6 +30,19 @@ log_result() {
         echoerr "OK: [${name}] result=${result}, data: ${data}"
         logger -p user.info -t healthcheck "[bnw@55029 remote=\"true\"][metric@55029 name=\"${name}\" value=\"true\"] OK: [${name}] result=${result}, data: ${data}"
     fi
+}
+
+ppp0_interface_up() {
+    local result=1
+    # Note: the state should acutally be "up" when the interface is
+    # up, but we currently get "unknown" in that case; the check is
+    # intentionally only for "unknown" so that we will notice when it
+    # is fixed. When the interface is down, operstate contains "down"
+    # and when pppd is not running, the file does not exist.
+    if [ -f "${ppp0_state_file}" ] && [ "$(cat ${ppp0_state_file})" = "unknown" ]; then
+        result=0
+    fi
+    return $result
 }
 
 test_portcheck_http() {
@@ -284,6 +298,22 @@ test_systemd_running() {
     fi
 
     log_result "systemd_running" "${result}" "status=${status}${failed_units}"
+}
+
+test_ppp0_interface_up() {
+    local name="ppp0_interface_up"
+    local result=2
+
+    # Note: this is the same check we use to conditionally enable all
+    # other tests depending on the ppp0 interface being up. Please do
+    # not modify or extend this test as we want an error in this test
+    # to be the indication that all other ppp0-related tests were not
+    # executed.
+    if ppp0_interface_up; then
+        result=0
+    fi
+
+    log_result "${name}" "${result}" "omitted"
 }
 
 test_ppp0_sg_16012() {
@@ -572,7 +602,7 @@ test_all() {
         test_systemd_running
     fi
 
-    # No dependencies on internet connectivity
+    # No dependencies on Internet connectivity
     test_squashfs
     test_x509_crt_ca
     test_x509_crt_subject
@@ -587,20 +617,25 @@ test_all() {
     test_zram_huge_pages
     test_wifi_device \
       && test_wifi_connection_stability
-
-    test_ppp0_sg_16012
     test_rm_address
-    test_rm_ping
-    test_socket_queue_ppp0_sg_20421
-
     test_network_key_sgse_1024
-
-    test_lb_radio_gateway_api
-    test_lb_radio_driver_state
-    test_ppp0_dropped_packets
-
-    test_fc00_networks
     test_lwm2mserver_traffic_class
+
+    # Dependency on ppp0 interface
+    test_ppp0_interface_up
+    # The following tests are all guaranteed to fail if the ppp0
+    # interface is not available; in order to get an indication for
+    # the prevalence of the individual issues, we only execute the
+    # tests if the ppp0 interface is up.
+    if ppp0_interface_up; then
+        test_ppp0_sg_16012
+        test_rm_ping
+        test_socket_queue_ppp0_sg_20421
+        test_lb_radio_gateway_api
+        test_lb_radio_driver_state
+        test_ppp0_dropped_packets
+        test_fc00_networks
+    fi
 
     return "${something_failed}"
 }
