@@ -3,7 +3,7 @@ Description=Run healthcheck after startup and again every 23 hours
 After=network-online.target
 
 [Timer]
-OnBootSec=900s
+OnBootSec=1800s
 # Rotate execution around the clock
 OnUnitActiveSec=23h
 
