@@ -5,7 +5,7 @@
 
 u_boot_version="unknown"
 
-if ! u_boot_version="$(strings /dev/mtd0 | grep "U-Boot 20" | awk '{print $2}')"; then
+if ! u_boot_version="$(strings /dev/mtd0 | grep -m 1 "U-Boot 20" | awk '{print $2}')"; then
     echo "Failed to extract the U-Boot version from /dev/mtd0!" >&2
 fi
 
