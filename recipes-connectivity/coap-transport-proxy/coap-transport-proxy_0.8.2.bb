@@ -26,10 +26,10 @@ SYSTEMD_SERVICE:${PN} = " \
     coap-transport-proxy.service \
 "
 
-LIC_FILES_CHKSUM += "file://../THIRDPARTY.toml;md5=041b93a136f7aff40102d91ec56402e0"
+LIC_FILES_CHKSUM += "file://../THIRDPARTY.toml;md5=3d821b412230a84eef2cb336893d9bd8"
 
 SRCREV_FORMAT .= "_coap-client"
-SRCREV_coap-client = "8803d017fba4f1fe61b518448b02b6e474a6a6a1"
+SRCREV_coap-client = "eb8dc5bb6012cf91e38d87efe033267e01f9d47d"
 EXTRA_OECARGO_PATHS += "${WORKDIR}/coap-client"
 
 do_install:append() {
