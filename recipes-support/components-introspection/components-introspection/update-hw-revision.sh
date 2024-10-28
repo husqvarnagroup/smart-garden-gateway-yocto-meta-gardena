@@ -18,8 +18,8 @@ echo "${board_name} ${board_revision}" > /tmp/hw-revision
 
 # Quit if /etc/hw-revision is already up-to-date
 if cmp /tmp/hw-revision /etc/hw-revision; then
-  rm /tmp/hw-revision
-  exit
+    rm /tmp/hw-revision
+    exit
 fi
 
 # Note: This code does not need to be power cuts save as it runs during on

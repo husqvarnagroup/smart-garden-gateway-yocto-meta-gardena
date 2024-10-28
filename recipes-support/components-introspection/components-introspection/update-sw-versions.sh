@@ -13,8 +13,8 @@ echo "u-boot ${u_boot_version}" > /tmp/sw-versions
 
 # Quit if /etc/sw-versions is already up-to-date
 if cmp /tmp/sw-versions /etc/sw-versions; then
-  rm /tmp/sw-versions
-  exit
+    rm /tmp/sw-versions
+    exit
 fi
 
 # Note: This code does not need to be power cuts save as it runs during on
