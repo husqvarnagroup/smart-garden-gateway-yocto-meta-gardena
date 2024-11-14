@@ -119,7 +119,7 @@ test_x509_crt_subject() {
     fi
 
     local subject
-    if ! subject="$(openssl x509 -in /etc/ssl/certs/client-prod.crt -subject -noout | awk '{print $3}')"; then
+    if ! subject="$(openssl x509 -in /etc/ssl/certs/client-prod.crt -subject -noout | awk -F ' ?= ?' '{print $3}')"; then
         log_result "${name}" "1" "Failed to extract certificate subject"
         return
     fi
