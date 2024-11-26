@@ -6,7 +6,7 @@ SRC_URI = "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
 
-PR = "r1"
+PR = "r0"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nix.git;protocol=https;nobranch=1;name=nix;destsuffix=nix \
@@ -46,7 +46,7 @@ SRC_URI += " \
 "
 
 LIC_FILES_CHKSUM += " \
-    file://../THIRDPARTY.toml;md5=c0e62d228b2b4637511af1623fc6f44f \
+    file://../THIRDPARTY.toml;md5=e7b25bf8663d08a6b3aaf655363a1281 \
 "
 
 require lemonbeatd-crates.inc
