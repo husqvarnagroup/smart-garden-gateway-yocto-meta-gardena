@@ -6,7 +6,7 @@ PV = "0.22.2"
 PR = "r1"
 
 SRC_URI = " \
-    gitsm://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=main;tag=release/${PV} \
+    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=main;tag=release/${PV} \
     file://accessory-server.service \
     file://keep.d/accessory-server \
 "

@@ -12,7 +12,7 @@ RDEPENDS:${PN} = "\
 SRCBRANCH ?= "main"
 
 SRC_URI += " \
-    git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-migration;protocol=ssh;branch=${SRCBRANCH} \
+    git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-migration;protocol=ssh;branch=${SRCBRANCH} \
     file://migration.service \
 "
 
