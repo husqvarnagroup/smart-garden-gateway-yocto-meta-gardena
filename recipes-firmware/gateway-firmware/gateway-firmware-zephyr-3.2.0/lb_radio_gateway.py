@@ -12,8 +12,7 @@ import socket
 import subprocess
 import sys
 from contextlib import contextmanager
-from json import JSONEncoder
-from typing import Any, Iterable, Dict
+from typing import Any
 
 API_VERSION = 1
 DEFAULT_INTERFACE = "ppp0"
@@ -23,6 +22,10 @@ SOCKET_TIMEOUT_S = 5
 
 class LBRadioGatewayAPIException(Exception):
     """Exception class for error when using TCP API."""
+
+
+class InvalidStatsModeException(Exception):
+    """Exception class for invalid stats mode."""
 
 
 class Command:
@@ -99,6 +102,8 @@ class StatisticsTLV:
         """Describe a statistics entry."""
         tag: int
         text: str
+
+        # RSSI values are special - they are signed instead of unsigned and can be uninitialized
         is_rssi: bool
 
     # Content below has to be kept in sync with process_get_mac_stats() in api.c
@@ -147,7 +152,7 @@ class StatisticsTLV:
         assert len(value) == 4, "Values for all (known) tags are 4 bytes long"
 
         self.description = StatisticsTLV.Description(tag, "unknown statistics tag", False)
-        self.tag_name: str = "unknown statistics tag"
+        self.tag_name = "unknown statistics tag"
         for key, member_value in self.__class__.__dict__.items():
             if not isinstance(member_value, StatisticsTLV.Description):
                 continue
@@ -165,10 +170,6 @@ class StatisticsTLV:
     def __str__(self) -> str:
         """Human-readable representation of the statistics entry."""
         return f"{self.description.text}: {self.value}"
-
-    class JsonEncoder(JSONEncoder):
-        def default(self, stats: Iterable['StatisticsTLV']) -> dict[str, str | int]:
-            return {s.tag_name: s.value for s in stats}
 
 
 class LBRadioGatewayAPIClient:
@@ -329,7 +330,8 @@ class LBRadioGatewayAPIClient:
             [
                 ("mac_address", "MAC address as hex string."),
                 ("duration_ms", "Duration in milliseconds."),
-                ("channel", "Lemonbeat channel")
+                ("channel", "Lemonbeat channel."),
+                ("req_mac_ack", "Whether to request a MAC ACK."),
             ]
         ),
     }
@@ -480,12 +482,15 @@ class LBRadioGatewayAPIClient:
         for name in self.GENERIC_SET_FUNCTIONS.keys():
             self.__setattr__(name, self._make_generic_setter(name))
 
-    def wakeup(self, mac_address: str, duration_ms: int, lb_channel: int) -> None:
+    def wakeup(self, mac_address: str, duration_ms: int, lb_channel: int,
+               req_mac_ack: bool | None = None) -> None:
         mac_address = self._parse_mac(mac_address)
         duration_bytes = duration_ms.to_bytes(4, "little")
+        lb_channel_bytes = lb_channel.to_bytes(1, "little")
+        ack_req_bytes = int(req_mac_ack).to_bytes(1, "little") if type(req_mac_ack) is bool else b""
         with self._connected_socket() as s:
             self._send_command(s, Command.WAKEUP_DEVICE,
-                               duration_bytes + mac_address + lb_channel.to_bytes(1, "little"))
+                               duration_bytes + mac_address + lb_channel_bytes + ack_req_bytes)
             self._check_result(s)
 
     def get_si4467_gpio(self, gpio_idx) -> int:
@@ -572,7 +577,11 @@ def main():
         address = cmd_args[0]
         duration_ms = int(cmd_args[1], 10)
         lb_channel = int(cmd_args[2], 10)
-        client.wakeup(address, duration_ms, lb_channel)
+        if len(cmd_args) > 3:
+            req_mac_ack = cmd_args[3].lower() in ('1', 'y', 'yes', 't', 'true')
+        else:
+            req_mac_ack = None
+        client.wakeup(address, duration_ms, lb_channel, req_mac_ack)
     elif cmd == "set_network_key":
         # Note: this is a generic command, but on the command line we expect a hex string, whereas
         # the function expects a byte string, so we parse it here.
@@ -595,7 +604,7 @@ def main():
             # Convert from list of stat entries to a (flat) map with easy to parse keys
             print(json.dumps({s.tag_name: s.value for s in client.get_stats()}, indent=2))
         else:
-            raise Exception(f"Invalid stats mode: {mode}")
+            raise InvalidStatsModeException(mode)
     elif cmd in client.GENERIC_COMMANDS:
         function = getattr(client, cmd)
         function()
