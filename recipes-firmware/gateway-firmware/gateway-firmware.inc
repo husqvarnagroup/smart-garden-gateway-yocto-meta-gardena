@@ -24,7 +24,7 @@ SRC_URI = "\
     file://lb_radio_gateway.py \
 "
 
-INC_PR = "r7"
+INC_PR = "r8"
 
 PE = "1"
 

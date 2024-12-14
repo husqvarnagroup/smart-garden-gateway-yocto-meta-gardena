@@ -6,16 +6,19 @@
 """Functionality to interface with LB radio gateway via TCP API."""
 
 import argparse
+import dataclasses
 import json
 import socket
 import subprocess
 import sys
 from contextlib import contextmanager
-from typing import Any
+from json import JSONEncoder
+from typing import Any, Iterable, Dict
 
 API_VERSION = 1
 DEFAULT_INTERFACE = "ppp0"
 DEFAULT_PORT = 8888
+SOCKET_TIMEOUT_S = 5
 
 
 class LBRadioGatewayAPIException(Exception):
@@ -42,10 +45,14 @@ class Command:
     GET_LB_RADIO_DRIVER_STATE = b"\x0f"
     GET_UPTIME = b"\x10"
     GET_STACK_USAGE = b"\x11"
+    GET_NETWORK_KEY = b"\x12"
     SI4467_START_CW = b"\xe0"
     SI4467_STOP_TX = b"\xe1"
     GET_SI4467_GPIO = b"\xe2"
     LOG_STACK_USAGE = b"\xe3"
+    RESET_DEVICE_NONCES = b"\xe4"
+    REBOOT = b"\xe5"
+    GET_STATS = b"\xe6"
 
 
 class Result:
@@ -60,7 +67,7 @@ class Result:
     WAKEUP_FAILED = 0x06
     CANT_SAVE = 0x07
     CANT_SET_TX_MAC_COUNTER = 0x08
-    CANT_RESET_TX_MAC_COUNTER = 0x09
+    CANT_RESET_RX_MAC_COUNTER = 0x09
     TX_MAC_COUNTER_WOULD_DECREASE = 0x0A
     CANT_GET_KEY = 0x0B
     CANT_RESET_TXMACCTR = 0x0C
@@ -71,6 +78,7 @@ class Result:
     NO_HW_SUPPORT = 0x11
     CANT_GET_TX_MAC_COUNTER = 0x12
     MISSING_ARGUMENT = 0x13
+    NO_NW_KEY_AVAILABLE = 0x14
     INTERNAL_ERROR = 0xFF
 
     @classmethod
@@ -81,6 +89,86 @@ class Result:
             return codes[code]
         else:
             return "<unknown code>"
+
+
+class StatisticsTLV:
+    """Mapping from statistics tag values to names."""
+
+    @dataclasses.dataclass(frozen=True)
+    class Description:
+        """Describe a statistics entry."""
+        tag: int
+        text: str
+        is_rssi: bool
+
+    # Content below has to be kept in sync with process_get_mac_stats() in api.c
+    TAG_RSSI_ACK_AVERAGE = Description(0, "MAC ACK RSSI (average) [dBm]", True)
+    TAG_RSSI_ACK_LATEST = Description(1, "MAC ACK RSSI (latest) [dBm]", True)
+    TAG_RSSI_MEASURED_AVERAGE = Description(2, "Measured RSSI (average) [dBm]", True)
+    TAG_RSSI_MEASURED_LATEST = Description(3, "Measured RSSI (latest) [dBm]", True)
+
+    TAG_RX_COUNT = Description(50, "RX total", False)
+    TAG_RX_SUCCESS_COUNT = Description(51, "RX success", False)
+    TAG_RX_FAIL_COUNT = Description(52, "RX fail", False)
+    TAG_RX_FAIL_UNKNOWN_CONTENT_TYPE_COUNT = Description(53, "RX unknown content type", False)
+    TAG_RX_FAIL_OVERWRITE_NOT_SET_COUNT = Description(54, "RX overwrite not set", False)
+    TAG_RX_FAIL_PHY_DECODING_FAILS_COUNT = Description(55, "RX PHY decoding", False)
+    TAG_RX_FAIL_AES_DECRYPTION_FAILS_COUNT = Description(56, "RX AES decryption", False)
+    TAG_RX_FAIL_MAC_DECODING_FAILS_COUNT = Description(57, "RX MAC decoding", False)
+    TAG_RX_FAIL_WRONG_ADDRESSEE_COUNT = Description(58, "RX other device", False)
+    TAG_RX_FAIL_INVALID_NONCE_COUNT = Description(59, "RX invalid nonce", False)
+    TAG_RX_FAIL_IPV6_PARSING_ERROR_COUNT = Description(60, "RX IPv6 parsing", False)
+    TAG_RX_FAIL_NOENT_COUNT = Description(61, "RX no entity", False)
+    TAG_RX_FAIL_UNKNOWN_COUNT = Description(62, "RX unknown", False)
+
+    TAG_TX_COUNT = Description(100, "TX total", False)
+    TAG_TX_UNCONFIRMED_SUCCESS_COUNT = Description(101, "TX success (unconfirmed)", False)
+    TAG_TX_UNCONFIRMED_FAIL_COUNT = Description(102, "TX fail (unconfirmed)", False)
+    TAG_TX_ACKED_SUCCESS_COUNT = Description(150, "TX success (ACKed)", False)
+    TAG_TX_ACKED_SUCCESS_RETRY_COUNT_0 = Description(151, "TX ACKed without retries", False)
+    TAG_TX_ACKED_SUCCESS_RETRY_COUNT_1 = Description(152, "TX ACKed after 1 retries", False)
+    TAG_TX_ACKED_SUCCESS_RETRY_COUNT_2 = Description(153, "TX ACKed after 2 retries", False)
+    TAG_TX_ACKED_SUCCESS_RETRY_COUNT_3 = Description(154, "TX ACKed after 3 retries", False)
+    TAG_TX_ACKED_SUCCESS_RETRY_COUNT_4 = Description(155, "TX ACKed after 4 retries", False)
+    TAG_TX_ACKED_SUCCESS_RETRY_COUNT_5 = Description(156, "TX ACKed after 5 retries", False)
+    TAG_TX_ACKED_FAIL_COUNT = Description(170, "TX fail (missing ACK)", False)
+
+    @classmethod
+    def from_bytes(cls, stats_tlv: bytes) -> list['StatisticsTLV']:
+        results: list[StatisticsTLV] = []
+        while len(stats_tlv) > 0:
+            tag, value_len = stats_tlv[0], stats_tlv[1]
+            value = stats_tlv[2:2 + value_len]
+            stats_tlv = stats_tlv[2 + value_len:]
+            results.append(StatisticsTLV(tag, value))
+        return results
+
+    def __init__(self, tag: int, value: bytes):
+        assert len(value) == 4, "Values for all (known) tags are 4 bytes long"
+
+        self.description = StatisticsTLV.Description(tag, "unknown statistics tag", False)
+        self.tag_name: str = "unknown statistics tag"
+        for key, member_value in self.__class__.__dict__.items():
+            if not isinstance(member_value, StatisticsTLV.Description):
+                continue
+            if member_value.tag == tag:
+                self.description = member_value
+                self.tag_name = str(key)
+                break
+
+        # RSSI values are signed, all other values are unsigned integers. 32-bit in both cases.
+        value = int.from_bytes(value, byteorder='little', signed=self.description.is_rssi)
+        # A value of UCHAR_MAX (255) conveys the information that no communication has yet happened,
+        # thus no RSSI value could be determined yet.
+        self.value = "unset" if self.description.is_rssi and value == 255 else value
+
+    def __str__(self) -> str:
+        """Human-readable representation of the statistics entry."""
+        return f"{self.description.text}: {self.value}"
+
+    class JsonEncoder(JSONEncoder):
+        def default(self, stats: Iterable['StatisticsTLV']) -> dict[str, str | int]:
+            return {s.tag_name: s.value for s in stats}
 
 
 class LBRadioGatewayAPIClient:
@@ -102,45 +190,44 @@ class LBRadioGatewayAPIClient:
     # Note: the following set and dicts contain generic commands. For these, the key must always
     # match the command definition (except that the command is lower case).
 
-    # generic commands without arguments or return value
+    # generic commands with neither arguments, nor return values
     GENERIC_COMMANDS = {
         "log_stack_usage",
+        "reboot",
+        "reset_device_nonces",
         "si4467_stop_tx",
     }
 
     # generic get functions without arguments and a single return value
     GENERIC_GET_FUNCTIONS = {
         # value is the result parsing function
-        "get_mac_address": lambda x: ':'.join([a + b for a, b in zip(*[iter(x.hex())]*2)]),
-        "get_antenna_diversity_mode": lambda x: int(x[0]),
         "get_antenna_diversity": lambda x: int(x[0]),
+        "get_antenna_diversity_mode": lambda x: int(x[0]),
         "get_antenna_int_ext": lambda x: int(x[0]),
         "get_app_version": lambda x: bytes(x).decode('ascii'),
+        "get_lb_radio_driver_state": lambda x: bytes(x).decode('ascii'),
+        "get_mac_address": lambda x: ':'.join([a + b for a, b in zip(*[iter(x.hex())]*2)]),
+        "get_network_key": lambda x: x.hex(),
         "get_stack_usage": lambda x: bytes(x).decode('ascii'),
         "get_tx_mac_counter": lambda x: int.from_bytes(x, 'little'),
-        "get_lb_radio_driver_state": lambda x: bytes(x).decode('ascii'),
         "get_uptime": lambda x: int.from_bytes(x, 'little'),
     }
 
     # generic set functions with a single argument and no return value
     GENERIC_SET_FUNCTIONS = {
         # the value is the argument parser (checks & transformation)
-        "set_network_key": _check_network_key,
-        "set_mac_address": _parse_mac,
-        "set_tx_mac_counter": lambda x: x.to_bytes(8, 'little'),
-        "set_antenna_diversity_mode": lambda x: bytes([x]),
         "set_antenna_diversity": lambda x: bytes([x]),
+        "set_antenna_diversity_mode": lambda x: bytes([x]),
         "set_antenna_int_ext": lambda x: bytes([x]),
+        "set_mac_address": _parse_mac,
+        "set_network_key": _check_network_key,
+        "set_tx_mac_counter": lambda x: x.to_bytes(8, 'little'),
         # note: it is explicitly OK that the following commands do not start with set_
         "reset_device_nonce": _parse_mac,
         "si4467_start_cw": lambda channel: bytes([channel]),
     }
 
     DOCSTRINGS = {
-        "log_stack_usage": (
-            "Print current stack usage to the console.",
-            []
-        ),
         "get_antenna_diversity": (
             "Get antenna diversity state (only relevant if mode is 0).",
             []
@@ -153,21 +240,57 @@ class LBRadioGatewayAPIClient:
             "Get antenna configuration (0: external, 1: internal; only relevant for HCGW).",
             []
         ),
+        "get_app_version": (
+            "Get lb_radio_gateway application version.",
+            []
+        ),
+        "get_lb_radio_driver_state": (
+            "Get state of lb_radio driver state machine.",
+            []
+        ),
         "get_mac_address": (
             "Get Lemonbeat radio MAC address of gateway.",
             []
         ),
-        "get_app_version": (
-            "Get lb_radio_gateway application version.",
+        "get_network_key": (
+            "Get current network key.",
             []
+        ),
+        "get_si4467_gpio": (
+            "Get state of Si4467 GPIO pin.",
+            [("index", "Si4467 GPIO pin index.")]
+        ),
+        "get_stack_usage": (
+            "Get thread with the (relatively) biggest stack usage.",
+            []
+        ),
+        "get_stats": (
+            "Get statistics for packets received and sent on RF interface.",
+            [("format", "'H' for human-readable (default), 'M' for machine readable.")]
         ),
         "get_tx_mac_counter": (
             "Get TX MAC counter value.",
             []
         ),
+        "get_uptime": (
+            "Get current uptime in milliseconds.",
+            []
+        ),
+        "log_stack_usage": (
+            "Print current stack usage to the console.",
+            []
+        ),
+        "reboot": (
+            "Reboot the device.",
+            []
+        ),
         "reset_device_nonce": (
             "Reset device nonce.",
             [("mac_address", "MAC address as hex string.")]
+        ),
+        "reset_device_nonces": (
+            "Reset all device nonces.",
+            []
         ),
         "set_antenna_diversity": (
             "Set antenna diversity state (only relevant if mode is 0).",
@@ -192,22 +315,6 @@ class LBRadioGatewayAPIClient:
         "set_tx_mac_counter": (
             "Set the TX MAC counter.",
             [("counter_value", "Counter value.")]
-        ),
-        "get_lb_radio_driver_state": (
-            "Get state of lb_radio driver state machine.",
-            []
-        ),
-        "get_stack_usage": (
-            "Get thread with the (relatively) biggest stack usage.",
-            []
-        ),
-        "get_uptime": (
-            "Get current uptime in milliseconds.",
-            []
-        ),
-        "get_si4467_gpio": (
-            "Get state of Si4467 GPIO pin.",
-            [("index", "Si4467 GPIO pin index.")]
         ),
         "si4467_start_cw": (
             "Start continuous wave TX on specified channel.",
@@ -248,9 +355,11 @@ class LBRadioGatewayAPIClient:
                 docstr += f"\n- {param}: {description}"
         return docstr
 
-    def __init__(self, unix_socket=None):
+    def __init__(self, unix_socket=None, interface=DEFAULT_INTERFACE, verbose=False):
         self._socket = None
         self._unix_socket = unix_socket
+        self._interface = interface
+        self._verbose = verbose
 
     def __getattr__(self, name: str):
         if name in self.GENERIC_COMMANDS:
@@ -303,13 +412,15 @@ class LBRadioGatewayAPIClient:
 
     def open_connection(self):
         if self._unix_socket is None:  # use TCP API
-            cmd = f"ip -6 -json address show dev {DEFAULT_INTERFACE} scope link".split(" ")
+            cmd = f"ip -6 -json address show dev {self._interface} scope link".split(" ")
             iface = json.loads(subprocess.check_output(cmd))[0]
             addrs = [addr['address'] for addr in iface['addr_info'] if 'address' in addr.keys()]
             assert len(addrs) == 1, "failed to find exactly one suitable RM address"
             rm_address = (addrs[0], DEFAULT_PORT, 0, iface['ifindex'])
-
+            if self._verbose:
+                sys.stderr.write(f"Connecting to address {rm_address[0]} on interface {self._interface}\n")
             self._socket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+            self._socket.settimeout(SOCKET_TIMEOUT_S)
             self._socket.connect(rm_address)
         else:  # use Unix socket
             self._socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -385,10 +496,29 @@ class LBRadioGatewayAPIClient:
             assert len(data) == 1
             return int.from_bytes(data)
 
+    def reboot(self):
+        with self._connected_socket() as s:
+            self._send_command(s, Command.REBOOT)
+            # no reply, as device reboots
+        self.close_connection()
+
+    def get_stats(self) -> list[StatisticsTLV]:
+        with self._connected_socket() as s:
+            self._send_command(s, Command.GET_STATS)
+            length = self._check_result(s)
+            data = self._get_data(s, length)
+            return StatisticsTLV.from_bytes(data)
+
 
 def main():
     # parse & execute command
     parser = argparse.ArgumentParser(allow_abbrev=False)
+    parser.add_argument("-I", "--interface", type=str, default=DEFAULT_INTERFACE,
+                        help=f"Specify PPP interface (default: {DEFAULT_INTERFACE}). "
+                        "Note: Using multiple PPP interfaces will cause various issues, in "
+                        "particular when using the default key or the same network key.")
+    parser.add_argument("-v", "--verbose", action="store_true",
+                        help="Enable verbose output.")
     parser.add_argument("-i", "--interactive", action="store_true",
                         help="Start interactive shell.")
     parser.add_argument("-c", "--help-commands", action="store_true",
@@ -405,7 +535,7 @@ def main():
                         help="API call command arguments.")
     args = parser.parse_args()
 
-    client = LBRadioGatewayAPIClient(args.unix_socket)
+    client = LBRadioGatewayAPIClient(args.unix_socket, args.interface, args.verbose)
 
     if args.help_commands:
         print("Commands:")
@@ -457,6 +587,15 @@ def main():
     elif cmd == "get_si4467_gpio":
         gpio_idx = int(cmd_args[0], 10)
         print(client.get_si4467_gpio(gpio_idx))
+    elif cmd == "get_stats":
+        mode = cmd_args[0] if len(cmd_args) > 0 else 'H'
+        if mode == 'H':
+            print("\n".join(str(n) for n in client.get_stats()))
+        elif mode == 'M':
+            # Convert from list of stat entries to a (flat) map with easy to parse keys
+            print(json.dumps({s.tag_name: s.value for s in client.get_stats()}, indent=2))
+        else:
+            raise Exception(f"Invalid stats mode: {mode}")
     elif cmd in client.GENERIC_COMMANDS:
         function = getattr(client, cmd)
         function()
