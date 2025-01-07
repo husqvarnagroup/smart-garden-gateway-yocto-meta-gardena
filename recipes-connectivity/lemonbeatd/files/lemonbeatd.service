@@ -10,6 +10,7 @@ Type=notify
 Environment=RUST_LOG=info
 ExecStart=/usr/bin/lemonbeatd
 
+RuntimeDirectory=lemonbeatd
 StateDirectory=lemonbeatd
 
 Restart=on-failure
