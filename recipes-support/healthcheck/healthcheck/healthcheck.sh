@@ -9,7 +9,7 @@
 set -eu -o pipefail
 
 readonly update_url_protocolless=@UPDATE_URL_PROTOCOLLESS@
-readonly lemonbeatd_rm_api_socket=/runtime/radiomodule_api
+readonly lemonbeatd_rm_api_socket=/run/lemonbeatd/radiomodule_api
 readonly lb_radio_gateway_client=/usr/bin/lb_radio_gateway
 readonly ppp0_state_file="/sys/class/net/ppp0/operstate"
 
