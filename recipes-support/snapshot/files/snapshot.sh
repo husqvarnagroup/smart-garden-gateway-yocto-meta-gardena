@@ -67,6 +67,7 @@ fi
 /bin/networkctl status ppp0 > "${SNAPSHOT_DIR}/runtime/networkctl-ppp0"
 /usr/bin/systemd-cgtop --batch --iterations=1 --order=memory --cpu=time > "${SNAPSHOT_DIR}/runtime/systemd-cgtop-cpu-time"
 /usr/bin/systemd-cgtop --batch --iterations=2 --order=cpu --cpu=percentage --delay=5s > "${SNAPSHOT_DIR}/runtime/systemd-cgtop-cpu-percentage"
+/usr/bin/lb_radio_gateway -u /run/lemonbeatd/radiomodule_api get_stats > "${SNAPSHOT_DIR}/runtime/lb_radio_gateway-get_stats"
 
 ##################################
 # Systemd units                  #
