@@ -5,9 +5,9 @@ SRC_URI = " \
   git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Embedded/sg-lemonbeat-serializer;protocol=ssh;branch=main \
 "
 
-SRCREV = "v${PV}"
+SRCREV = "ec56850a47eb539a677f35b428a1db4880be7452"
 
-INC_PR = "r2"
+INC_PR = "r3"
 
 S = "${WORKDIR}/git"
 
