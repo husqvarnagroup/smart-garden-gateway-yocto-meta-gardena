@@ -6,11 +6,12 @@ inherit cargo cargo-update-recipe-crates
 inherit pkgconfig
 inherit systemd
 
-SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;nobranch=1;branch=main;tag=v${PV}"
+SRCREV = "6063a1439af24dab3cc33649a0492f71964b0511"
+SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;branch=main"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r0"
+PR = "r1"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/rust-coap-client.git;protocol=https;nobranch=1;name=coap-client;destsuffix=coap-client \
