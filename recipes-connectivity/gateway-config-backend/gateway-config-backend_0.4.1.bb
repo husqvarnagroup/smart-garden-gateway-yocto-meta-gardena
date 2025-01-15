@@ -6,12 +6,12 @@ SUMMARY = "Backend component for the GARDENA smart Gateway config interface"
 HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
 
-SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;branch=main;tag=v${PV}"
+SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;branch=main"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r7"
-
+PR = "r8"
+SRCREV = "d0680e13cd343c16bb7aa8eeb56ffb98165a0028"
 SRC_URI += "\
     file://gateway-config-backend-sslkey.service \
     file://gateway-config-backend.service \
