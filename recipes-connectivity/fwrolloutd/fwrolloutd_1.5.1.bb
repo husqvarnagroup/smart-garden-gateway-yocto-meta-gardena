@@ -6,7 +6,8 @@ SUMMARY = "fwrolloutd"
 HOMEPAGE = "git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout"
 LICENSE = "Proprietary"
 
-SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;branch=main;tag=v${PV}"
+SRCREV = "cdd3a47f07e0a5c454ea464c0f8a4362f88cbba1"
+SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;branch=main"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "fwrolloutd"
 
@@ -15,7 +16,7 @@ LIC_FILES_CHKSUM = " \
     file://../THIRDPARTY.toml;md5=81382bf6875f990c072a94f3ebe8517c \
 "
 
-PR = "r1"
+PR = "r2"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nng-rs.git;protocol=https;nobranch=1;name=nng;destsuffix=nng-rs \
