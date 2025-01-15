@@ -10,9 +10,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=52a1707594d3c6694292db3dd1a7f960"
 DEPENDS = "libyaml"
 RDEPENDS:${PN} = "libyaml"
 
-PR = "r1"
-
-SRC_URI = "git://github.com/tlsa/libcyaml.git;protocol=https;nobranch=1;tag=v${PV}"
+PR = "r0"
+SRCREV = "5707c6422be1fe1b4f18c778de44a2392453026b"
+SRC_URI = "git://github.com/tlsa/libcyaml.git;protocol=https;nobranch=1"
 
 S = "${WORKDIR}/git"
 
