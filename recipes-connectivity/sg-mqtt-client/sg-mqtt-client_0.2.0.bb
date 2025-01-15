@@ -5,10 +5,10 @@ LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=1ebbd3e34237af26da5dc08a4e440464 \
 "
 
-PR = "r0"
-
+PR = "r1"
+SRCREV = "17eff60bbd2a5bfac9dd5549a8e0805368c906c8"
 SRC_URI = " \
-    git://github.com/easybe/smart-garden-gateway-mqtt-client.git;protocol=https;branch=main;tag=v${PV} \
+    git://github.com/easybe/smart-garden-gateway-mqtt-client.git;protocol=https;branch=main \
     file://keep.d/sg-mqtt-client \
     file://sg-mqtt-client.service \
 "
