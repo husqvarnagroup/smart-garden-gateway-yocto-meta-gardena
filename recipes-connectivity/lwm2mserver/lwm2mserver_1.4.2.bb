@@ -8,13 +8,14 @@ LIC_FILES_CHKSUM = " \
 
 inherit python_poetry_core python3-dir
 
+SRCREV = "5cf023c42053aa019f9a1c4425cd7c98aba18485"
 SRC_URI += " \
-    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-lwm2m-server;protocol=ssh;branch=main;tag=v${PV} \
+    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-lwm2m-server;protocol=ssh;branch=main \
     file://lwm2mserver.service \
     file://keep.d/lwm2mserver \
 "
 
-PR = "r0"
+PR = "r1"
 
 DEPENDS = " \
     cmake-native \
