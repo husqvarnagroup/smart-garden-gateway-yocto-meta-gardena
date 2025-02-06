@@ -10,8 +10,8 @@ SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-con
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r8"
-SRCREV = "d0680e13cd343c16bb7aa8eeb56ffb98165a0028"
+PR = "r0"
+SRCREV = "54f44e71083b11a4ee8ffc1f85ce1e0bc32e3506"
 SRC_URI += "\
     file://gateway-config-backend-sslkey.service \
     file://gateway-config-backend.service \
@@ -22,7 +22,7 @@ SRC_URI += "\
 
 LIC_FILES_CHKSUM = " \
     file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://../THIRDPARTY.toml;md5=7d98e0e4ff40b65ef7ceaf804572beca \
+    file://../THIRDPARTY.toml;md5=86f099f48b5ea1ac0d5179b02c4735fe \
 "
 
 DEPENDS += "openssl accessory-server"
