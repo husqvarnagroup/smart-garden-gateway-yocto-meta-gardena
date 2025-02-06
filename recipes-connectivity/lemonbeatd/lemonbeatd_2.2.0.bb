@@ -1,13 +1,13 @@
 inherit cargo
 inherit cargo-update-recipe-crates
 
-SRCREV = "5ea19c81f0f132949aeb04d16f9dc2488c5ab309"
+SRCREV = "a989f7fc178e65edc258e6cb8bbd0e580cf8c0a7"
 SRC_URI = "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-cargo;protocol=ssh;branch=main"
 
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
 
-PR = "r2"
+PR = "r0"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nix.git;protocol=https;nobranch=1;name=nix;destsuffix=nix \
@@ -47,7 +47,7 @@ SRC_URI += " \
 "
 
 LIC_FILES_CHKSUM += " \
-    file://../THIRDPARTY.toml;md5=e7b25bf8663d08a6b3aaf655363a1281 \
+    file://../THIRDPARTY.toml;md5=50a20e39b48a2c56463a697a17085872 \
 "
 
 require lemonbeatd-crates.inc
