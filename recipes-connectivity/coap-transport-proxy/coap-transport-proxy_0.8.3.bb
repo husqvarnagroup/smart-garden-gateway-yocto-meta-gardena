@@ -6,12 +6,12 @@ inherit cargo cargo-update-recipe-crates
 inherit pkgconfig
 inherit systemd
 
-SRCREV = "6063a1439af24dab3cc33649a0492f71964b0511"
+SRCREV = "5fc8ad74b56561ef40527ecdf8a4620521b9dd34"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;branch=main"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r1"
+PR = "r0"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/rust-coap-client.git;protocol=https;nobranch=1;name=coap-client;destsuffix=coap-client \
@@ -27,7 +27,7 @@ SYSTEMD_SERVICE:${PN} = " \
     coap-transport-proxy.service \
 "
 
-LIC_FILES_CHKSUM += "file://../THIRDPARTY.toml;md5=3d821b412230a84eef2cb336893d9bd8"
+LIC_FILES_CHKSUM += "file://../THIRDPARTY.toml;md5=7b3a5e03405b6c7039a7e9c2acae2b5f"
 
 SRCREV_FORMAT .= "_coap-client"
 SRCREV_coap-client = "eb8dc5bb6012cf91e38d87efe033267e01f9d47d"
