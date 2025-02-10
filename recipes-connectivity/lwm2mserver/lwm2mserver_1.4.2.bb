@@ -15,7 +15,7 @@ SRC_URI += " \
     file://keep.d/lwm2mserver \
 "
 
-PR = "r2"
+PR = "r3"
 
 DEPENDS = " \
     cmake-native \
@@ -67,3 +67,8 @@ SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE:${PN} = " \
     lwm2mserver.service \
 "
+
+# Cython puts paths of input source files into the generated C code
+INSANE_SKIP:${PN} = "buildpaths"
+INSANE_SKIP:${PN}-src = "buildpaths"
+
