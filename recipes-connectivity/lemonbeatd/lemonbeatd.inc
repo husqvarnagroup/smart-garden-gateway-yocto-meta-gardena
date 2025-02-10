@@ -32,6 +32,6 @@ do_install:append() {
 inherit systemd
 SYSTEMD_SERVICE:${PN} = "lemonbeatd.service"
 
-RPROVIDES:${PN} += "virtual/gardena-lemonbeatd"
+RPROVIDES:${PN} += "gardena-lemonbeatd"
 
 RUSTFLAGS += "-latomic"
