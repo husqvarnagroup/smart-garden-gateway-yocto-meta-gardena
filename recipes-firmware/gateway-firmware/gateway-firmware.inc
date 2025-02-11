@@ -24,7 +24,7 @@ SRC_URI = "\
     file://lb_radio_gateway.py \
 "
 
-INC_PR = "r8"
+INC_PR = "r9"
 
 PE = "1"
 
@@ -69,5 +69,3 @@ FILES:${PN} += "\
 "
 
 SYSTEMD_SERVICE:${PN} += "rm-flashing.service"
-
-RPROVIDES:${PN} += "virtual/gardena-gateway-firmware"
