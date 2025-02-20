@@ -16,6 +16,5 @@ RDEPENDS:${PN} += " \
     python3-opentelemetry-api \
     python3-opentelemetry-semantic-conventions \
     python3-cryptography \
-    python3-crcmod \
     tzdata \
 "
