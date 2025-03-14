@@ -3,7 +3,7 @@
 
 gwid=$(/sbin/fw_printenv -n gatewayid)
 readonly SNAPSHOT_DIR="/tmp/${gwid}_snapshot"
-readonly SNAPSHOT_TAR="${SNAPSHOT_DIR}.tar.gz"
+readonly SNAPSHOT_TAR="${1:-${SNAPSHOT_DIR}.tar.gz}"
 
 rm -rf "${SNAPSHOT_DIR}"
 rm -f "${SNAPSHOT_TAR}"
