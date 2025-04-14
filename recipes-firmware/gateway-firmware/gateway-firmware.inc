@@ -24,12 +24,13 @@ SRC_URI = "\
     file://lb_radio_gateway.py \
 "
 
-INC_PR = "r9"
+INC_PR = "r10"
 
 PE = "1"
 
 RDEPENDS:${PN} = " \
     python3-io \
+    python3-json \
     reset-rm \
 "
 
