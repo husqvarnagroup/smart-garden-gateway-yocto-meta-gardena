@@ -31,7 +31,7 @@ SRC_URI = "file://bootstrap.py \
            file://util.py \
 "
 
-PR = "r0"
+PR = "r1"
 
 PV = "2024-08-28"
 PE = "1"
@@ -91,7 +91,7 @@ do_install () {
 }
 
 pkg_postinst:${PN} () {
-    cd $D${PYTHON_SITEPACKAGES_DIR} && python3 -m compileall .
+    cd $D${PYTHON_SITEPACKAGES_DIR} && python3 -m compileall -o 2 .
 }
 
 SYSTEMD_SERVICE:${PN} += "ipr.service"
