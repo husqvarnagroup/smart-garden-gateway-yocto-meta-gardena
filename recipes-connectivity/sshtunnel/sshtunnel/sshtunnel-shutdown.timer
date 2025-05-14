@@ -1,0 +1,6 @@
+[Unit]
+Description=SSH Tunnel Shutdown Timer
+
+[Timer]
+# One hour time for troubleshooting over SSH should be sensible in most cases.
+OnActiveSec=1h

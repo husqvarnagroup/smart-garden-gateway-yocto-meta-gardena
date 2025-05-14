@@ -1,15 +1,16 @@
 [Unit]
-Description=SSH Tunnel
+Description=SSH Tunnel Button Observer
 Requires=environment.service
 Wants=network-online.target
 After=environment.service network-online.target
 ConditionPathExists=/etc/eol_test_passed
-Conflicts=sshtunnel-shutdown.service
 
 [Service]
-Type=notify
-NotifyAccess=main
+Type=exec
 Restart=on-failure
 RestartSec=60
 TimeoutSec=10m
-ExecStart=/usr/sbin/sshtunnel
+ExecStart=/usr/sbin/sshtunnel-button
+
+[Install]
+WantedBy=multi-user.target

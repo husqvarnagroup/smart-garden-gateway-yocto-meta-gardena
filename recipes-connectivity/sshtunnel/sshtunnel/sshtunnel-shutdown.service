@@ -1,0 +1,9 @@
+# inspired by: https://unix.stackexchange.com/a/395231
+
+[Unit]
+Description=SSH Tunnel Shutdown Dummy
+Conflicts=sshtunnel.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/true
