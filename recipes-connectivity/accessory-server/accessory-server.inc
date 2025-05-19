@@ -2,9 +2,9 @@ SUMMARY = "The Homekit Accessory Server"
 MAINTAINER = "Gardena GmbH"
 LICENSE = "CLOSED"
 
-PV = "0.22.2"
-PR = "r2"
-SRCREV = "fb2731401470a59e59241b893d692fdbdd563263"
+PV = "0.23.0"
+PR = "r0"
+SRCREV = "8bfb38bf80710d5dc92fed800f1c14fdc5367134"
 SRC_URI = " \
     gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=main \
     file://accessory-server.service \
