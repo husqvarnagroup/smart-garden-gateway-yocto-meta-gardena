@@ -1,9 +1,25 @@
 #!/bin/ash
 # shellcheck shell=dash
 
+clean_up_dir() {
+    rm -rf "${SNAPSHOT_DIR}"
+}
+
+clean_up_tar() {
+    rm -f "${SNAPSHOT_TAR}"
+}
+
+trap clean_up_dir EXIT INT TERM
+
 gwid=$(/sbin/fw_printenv -n gatewayid)
 readonly SNAPSHOT_DIR="/tmp/${gwid}_snapshot"
-readonly SNAPSHOT_TAR="${1:-${SNAPSHOT_DIR}.tar.gz}"
+if echo "$1" | grep -qE "^https?://"; then
+    readonly SNAPSHOT_URL="$1"
+    readonly SNAPSHOT_TAR="${SNAPSHOT_DIR}.tar.gz"
+    trap clean_up_tar EXIT INT TERM
+else
+    readonly SNAPSHOT_TAR="${1:-${SNAPSHOT_DIR}.tar.gz}"
+fi
 
 rm -rf "${SNAPSHOT_DIR}"
 rm -f "${SNAPSHOT_TAR}"
@@ -135,4 +151,9 @@ fi
 # Create tarball & delete files  #
 ##################################
 tar cfz "${SNAPSHOT_TAR}" "./$(basename "${SNAPSHOT_DIR}")"
-rm -rf "${SNAPSHOT_DIR}"
+if [ "${SNAPSHOT_URL}" ]; then
+    if ! curl -X PUT -T "${SNAPSHOT_TAR}" "${SNAPSHOT_URL}"; then
+        echo "Failed to upload to ${SNAPSHOT_URL}" >&2
+        exit 1
+    fi
+fi
