@@ -7,9 +7,9 @@ LIC_FILES_CHKSUM = " \
 
 inherit python_poetry_core
 
-SRCREV = "7e60f0ab4337dfe17e9812c2207f396056145850"
+SRCREV = "${AUTOREV}"
 SRC_URI += " \
-    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-cloud-adapter;protocol=ssh;branch=main \
+    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-cloud-adapter;protocol=ssh;branch=eb/wrynose \
     file://cloudadapter.service \
     file://aws-root-ca.crt \
     file://keep.d/cloudadapter \
