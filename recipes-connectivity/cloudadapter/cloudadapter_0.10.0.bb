@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = " \
 
 inherit python_poetry_core
 
-SRCREV = "c378754ed6db0fa387c4603d5f228ab87bbc21bc"
+SRCREV = "3897f9fbe13741794ea82ef2c4815f544e7a41c8"
 SRC_URI += " \
     gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-cloud-adapter;protocol=ssh;branch=main \
     file://cloudadapter.service \
@@ -15,7 +15,7 @@ SRC_URI += " \
     file://keep.d/cloudadapter \
 "
 
-PR = "r1"
+PR = "r0"
 
 DEPENDS = " \
     python3 \
