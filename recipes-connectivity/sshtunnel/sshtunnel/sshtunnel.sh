@@ -36,5 +36,15 @@ remote_host=$(echo "$ssh_params" | jq -r .remote_host)
 
 systemd-notify --ready
 
+if ! fw_printenv bnw_cloud_tenant >/dev/null 2>&1; then
+    # Don't flash the internet LED blue on dev gateways where maintenance access is always enabled.
+    /usr/bin/led-indicatorc smartgw:internet:green off
+    /usr/bin/led-indicatorc smartgw:internet:blue flash
+
+    # Restore green internet LED on exit (assuming internet is still available).
+    trap '/usr/bin/led-indicatorc smartgw:internet:blue off && \
+        /usr/bin/led-indicatorc smartgw:internet:green on' EXIT INT HUP TERM
+fi
+
 ssh -NTy -K 60 -o "ExitOnForwardFailure=yes" -R "$tunnel_port:localhost:22" \
     -p "$remote_port" "$remote_user@$remote_host"
