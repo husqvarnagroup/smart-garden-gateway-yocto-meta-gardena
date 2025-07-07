@@ -13,7 +13,8 @@ RestartSteps=5
 RestartMaxDelaySec=20m
 WatchdogSec=60
 TimeoutStartSec=300
-NotifyAccess=main
+# We need `all` here because `cloudadapter` starts/stops `rsyslog`, which notifies systemd.
+NotifyAccess=all
 WorkingDirectory=/var/lib/cloudadapter
 ExecStart=/usr/bin/cloudadapter -v
 ExecStopPost=-/bin/sh -c "mkdir -p /run/cloudadapter && echo -n 'RED' > /run/cloudadapter/led_status"
