@@ -15,8 +15,6 @@ RDEPENDS:${PN} += " \
     python3-plistlib \
     python3-pynng \
     python3-transitions \
-    python3-opentelemetry-api \
-    python3-opentelemetry-semantic-conventions \
     python3-cryptography \
     tzdata \
 "
