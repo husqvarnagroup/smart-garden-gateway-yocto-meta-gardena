@@ -14,7 +14,5 @@ RDEPENDS:${PN} += " \
     python3-dbus-next \
     python3-json \
     python3-dictdiffer \
-    python3-opentelemetry-api \
-    python3-opentelemetry-semantic-conventions \
     aws-iot-device-sdk-python-v2 \
 "
