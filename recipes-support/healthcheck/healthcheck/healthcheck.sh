@@ -590,6 +590,29 @@ test_lwm2mserver_traffic_class() {
     log_result "lwm2mserver_traffic_class" "${result}" "omitted"
 }
 
+
+test_cloudadapter_rate_limiting() {
+    # show health check error as soon as messages are dropped. Could help detect problems, but is nothing
+    # to immediately act upon
+    local max_drops=0
+
+    local result=0
+    local result_string="omitted"
+
+    local drops
+    if drops="$(journalctl -S-24h -u cloudadapter | grep -c "Dropped")"; then
+        result_string="dropped_messages=${drops}"
+        if [ "${drops}" -gt "${max_drops}" ]; then
+            result=1
+        fi
+    else
+      result=1
+    fi
+
+    log_result "cloudadapter_rate_limiting" "${result}" "${result_string}"
+}
+
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -620,6 +643,7 @@ test_all() {
     test_rm_address
     test_network_key_sgse_1024
     test_lwm2mserver_traffic_class
+    test_cloudadapter_rate_limiting
 
     # Dependency on ppp0 interface
     test_ppp0_interface_up
