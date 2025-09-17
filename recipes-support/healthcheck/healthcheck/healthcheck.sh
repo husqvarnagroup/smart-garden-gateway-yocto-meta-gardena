@@ -600,7 +600,7 @@ test_cloudadapter_rate_limiting() {
     local result_string="omitted"
 
     local drops
-    if drops="$(journalctl -S-24h -u cloudadapter | grep -c "Dropped")"; then
+    if drops="$(journalctl -S-24h -u cloudadapter | grep "Dropped" | wc -l)"; then
         result_string="dropped_messages=${drops}"
         if [ "${drops}" -gt "${max_drops}" ]; then
             result=2
