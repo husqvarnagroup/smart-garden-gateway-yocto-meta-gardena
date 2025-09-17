@@ -3,7 +3,7 @@
 #
 # Checking for known problems, reporting failing checks to syslog and stderr.
 #
-# Note: The used log name must be the name of the test withouth the
+# Note: The used log name must be the name of the test without the
 # prefix "test_".
 
 set -eu -o pipefail
@@ -33,7 +33,7 @@ log_result() {
 }
 
 ppp0_interface_up() {
-    local result=1
+    local result=2
     # Note: the state should acutally be "up" when the interface is
     # up, but we currently get "unknown" in that case; the check is
     # intentionally only for "unknown" so that we will notice when it
@@ -77,7 +77,7 @@ test_wifi_connection_stability() {
     if unique_disconnects="$(journalctl -S-24h -u wpa_supplicant@wlan0 | grep CTRL-EVENT-DISCONNECTED | awk '{print $8}' | sort | uniq -c | sort -n | tail -1 | awk '{print $1}')"; then
         result_string="unique_disconnects=${unique_disconnects}"
         if [ "${unique_disconnects}" -gt "${max_bssid_unique_disconnects}" ]; then
-            result=1
+            result=2
         fi
     fi
 
@@ -233,7 +233,7 @@ test_client_crt_longevity() {
 
     local result=0
     if ! openssl x509 -checkend $(( 3600 * 24 * 365 * 30 )) -noout -in /etc/ssl/certs/client-prod.crt > /dev/null; then
-        result=1
+        result=2
     fi
 
     log_result "client_crt_longevity" "${result}" "omitted"
@@ -442,7 +442,7 @@ test_wifi_device() {
     # Test not executed on MT7688 because it is not affected
     if [ "$(uname -m)" = "armv5tejl" ] \
        && [ ! -d "/sys/bus/usb/devices/1-2:1.0" ]; then
-        result=1
+        result=2
     fi
 
     log_result "wifi_device" "${result}" "omitted"
@@ -456,7 +456,7 @@ test_network_key_sgse_1024() {
 
     if [ -f ${key_file} ]; then
       if jq .encrypted_key ${key_file} | grep -q "[A-Z]"; then
-        result=1
+        result=2
       fi
     fi
 
@@ -603,7 +603,7 @@ test_cloudadapter_rate_limiting() {
     if drops="$(journalctl -S-24h -u cloudadapter | grep -c "Dropped")"; then
         result_string="dropped_messages=${drops}"
         if [ "${drops}" -gt "${max_drops}" ]; then
-            result=1
+            result=2
         fi
     else
       result=1
