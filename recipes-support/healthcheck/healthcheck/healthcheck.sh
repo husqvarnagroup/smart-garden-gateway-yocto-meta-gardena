@@ -610,6 +610,26 @@ test_cloudadapter_rate_limiting() {
 }
 
 
+test_fwrolloutd_alive() {
+    local result=0
+
+    uptime_secs=$(awk '{print int($1)}' /proc/uptime)
+    if [ "$uptime_secs" -lt 87000 ]; then
+        # system up and running for less than a day - no alive log yet expected
+        log_result "fwrolloutd_alive" "${result}" "omitted"
+        return
+    fi
+
+    local alive_logs
+    alive_logs="$(journalctl -S-25h -u fwrolloutd | grep -c "Service alive" || true)"
+    if [ "${alive_logs}" -lt "1" ]; then
+        result=2
+    fi
+
+    log_result "fwrolloutd_alive" "${result}" "omitted"
+}
+
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -641,6 +661,7 @@ test_all() {
     test_network_key_sgse_1024
     test_lwm2mserver_traffic_class
     test_cloudadapter_rate_limiting
+    test_fwrolloutd_alive
 
     # Dependency on ppp0 interface
     test_ppp0_interface_up
