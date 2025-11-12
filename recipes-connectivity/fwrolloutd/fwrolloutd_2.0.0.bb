@@ -6,30 +6,20 @@ SUMMARY = "fwrolloutd"
 HOMEPAGE = "git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout"
 LICENSE = "Proprietary"
 
-SRCREV = "d5addc63217bba7d33d2f7309be4e678a8ea208d"
+SRCREV = "9927f4d7131af71470eb75cb3b8d755ec7955cde"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;branch=main"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "fwrolloutd"
 
 LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://../THIRDPARTY.toml;md5=5da4096424a71fc45f6b5885208f0b03 \
+    file://../THIRDPARTY.toml;md5=16cc163838abfb77c28ec2eaf3921f8d \
 "
 
-PR = "r0"
-
-SRC_URI += " \
-    git://github.com/husqvarnagroup/nng-rs.git;protocol=https;nobranch=1;name=nng;destsuffix=nng-rs \
-    gitsm://github.com/husqvarnagroup/nng-rust.git;protocol=https;branch=nng-v1.7.3;name=nng-sys;destsuffix=nng-sys \
-"
+PR = "r3"
 
 SRCREV_FORMAT = "fwrolloutd"
 
-SRCREV_nng = "13828ad0f3a8044dd9ab1265c3d5c88b5fcfce1f"
-EXTRA_OECARGO_PATHS += "${WORKDIR}/nng-rs"
-
-SRCREV_nng-sys = "96b98092f610c379c60cefd0973427146be0380e"
-EXTRA_OECARGO_PATHS += "${WORKDIR}/nng-sys"
 
 DEPENDS += "openssl"
 RDEPENDS:${PN} += " \
