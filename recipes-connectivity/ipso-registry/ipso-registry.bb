@@ -8,14 +8,14 @@ SRC_URI += " \
 "
 
 # Referenced commits must be in the `main` branch.
-SRCREV = "558475be23be24729050f087177d51c55e62a349"
+SRCREV = "c6ddc27d74cf44e30e4fc2f440f14b794dde58d6"
 
 FILES:${PN} += " \
     ${localstatedir}/lib/${PN} \
 "
 
 # The IPSO registry is not versioned. Use non-semantic versioning for this Yocto recipe.
-PV = "2025-07-08"
+PV = "2025-11-12"
 PR = "r0"
 
 S = "${WORKDIR}/git"
