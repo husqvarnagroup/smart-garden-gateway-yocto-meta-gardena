@@ -1825,16 +1825,6 @@ DEALINGS IN THE SOFTWARE.
 """
 
 [[third_party_libraries]]
-package_name = "async-nng"
-package_version = "0.1.0"
-repository = ""
-license = "No license specified"
-
-[[third_party_libraries.licenses]]
-license = "No license specified"
-text = "NOT FOUND"
-
-[[third_party_libraries]]
 package_name = "async-trait"
 package_version = "0.1.85"
 repository = "https://github.com/dtolnay/async-trait"
@@ -13887,7 +13877,7 @@ limitations under the License.
 
 [[third_party_libraries]]
 package_name = "libc"
-package_version = "0.2.169"
+package_version = "0.2.174"
 repository = "https://github.com/rust-lang/libc"
 license = "MIT OR Apache-2.0"
 
@@ -16693,71 +16683,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-"""
-
-[[third_party_libraries]]
-package_name = "nng"
-package_version = "1.0.1"
-repository = "https://gitlab.com/neachdainn/nng-rs"
-license = "MIT"
-
-[[third_party_libraries.licenses]]
-license = "MIT"
-text = """
-The MIT License
-
-Copyright 2018 Nathan Kent <nate@nkent.net>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the \"Software\"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom
-the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
-"""
-
-[[third_party_libraries]]
-package_name = "nng-sys"
-package_version = "1.7.3"
-repository = "https://github.com/jeikabu/nng-rust"
-license = "MIT"
-
-[[third_party_libraries.licenses]]
-license = "MIT"
-text = """
-The MIT License
-
-Copyright 2018 Staysail Systems, Inc. <info@staysail.tech>
-Copyright 2018 Capitar IT Group BV <info@capitar.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the \"Software\"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom
-the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
 """
 
 [[third_party_libraries]]
@@ -26164,7 +26089,7 @@ END OF TERMS AND CONDITIONS
 
 [[third_party_libraries]]
 package_name = "serde_json"
-package_version = "1.0.135"
+package_version = "1.0.142"
 repository = "https://github.com/serde-rs/json"
 license = "MIT OR Apache-2.0"
 
@@ -26591,6 +26516,16 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
 END OF TERMS AND CONDITIONS
 """
+
+[[third_party_libraries]]
+package_name = "sg-ipc"
+package_version = "0.1.0"
+repository = ""
+license = "No license specified"
+
+[[third_party_libraries.licenses]]
+license = "No license specified"
+text = "NOT FOUND"
 
 [[third_party_libraries]]
 package_name = "sha2"

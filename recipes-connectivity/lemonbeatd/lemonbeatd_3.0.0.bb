@@ -1,7 +1,7 @@
 inherit cargo
 inherit cargo-update-recipe-crates
 
-SRCREV = "305f82d74f7b3df9e4703f642841035a10df4a4b"
+SRCREV = "f2fedcc887100ea915c2dac1be44faf34e80b211"
 SRC_URI = "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-cargo;protocol=ssh;branch=main"
 
 S = "${WORKDIR}/git"
@@ -11,20 +11,12 @@ PR = "r0"
 
 SRC_URI += " \
     git://github.com/husqvarnagroup/nix.git;protocol=https;nobranch=1;name=nix;destsuffix=nix \
-    git://github.com/husqvarnagroup/nng-rs.git;protocol=https;nobranch=1;name=nng;destsuffix=nng-rs \
-    gitsm://github.com/husqvarnagroup/nng-rust.git;protocol=https;branch=nng-v1.7.3;name=nng-sys;destsuffix=nng-sys \
 "
 
 SRCREV_FORMAT = "lemonbeatd"
 
 SRCREV_nix = "0ba2f892186e0d97b192e4d7a5e9ca54bf58cc94"
 EXTRA_OECARGO_PATHS += "${WORKDIR}/nix"
-
-SRCREV_nng = "327a7e8c4b0b6d09e6f797a3f1164c9b9719948f"
-EXTRA_OECARGO_PATHS += "${WORKDIR}/nng-rs"
-
-SRCREV_nng-sys = "96b98092f610c379c60cefd0973427146be0380e"
-EXTRA_OECARGO_PATHS += "${WORKDIR}/nng-sys"
 
 
 LIC_FILES_CHKSUM = " \
@@ -47,7 +39,7 @@ SRC_URI += " \
 "
 
 LIC_FILES_CHKSUM += " \
-    file://../THIRDPARTY.toml;md5=50a20e39b48a2c56463a697a17085872 \
+    file://../THIRDPARTY.toml;md5=8b7039b09e8b2bd231d4666c04db2f5d \
 "
 
 require lemonbeatd-crates.inc
