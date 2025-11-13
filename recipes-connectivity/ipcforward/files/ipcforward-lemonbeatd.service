@@ -1,0 +1,12 @@
+[Unit]
+Description=IPC Domain Socket Forwarder for Lemonbeat Server
+After=ppp.service lemonbeatd.service
+Wants=ppp.service lemonbeatd.service
+
+[Service]
+Type=simple
+ExecCondition=sh -c '[ "$(fw_printenv -n dev_debug_enable_ipcforward 2>/dev/null)" = "1" ] || exit 1'
+ExecStart=/usr/bin/ipcforward -q lemonbeatd 28152
+
+[Install]
+WantedBy=multi-user.target
