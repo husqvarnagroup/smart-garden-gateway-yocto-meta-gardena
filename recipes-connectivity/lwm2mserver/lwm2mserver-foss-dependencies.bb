@@ -2,7 +2,7 @@ SUMMARY = "Brave New World LWM2M Server FOSS dependencies"
 
 inherit packagegroup
 
-PR = "r1"
+PR = "r2"
 
 RDEPENDS:${PN} += " \
     python3-aiorun \
@@ -13,7 +13,6 @@ RDEPENDS:${PN} += " \
     python3-netifaces \
     python3-pkgutil \
     python3-plistlib \
-    python3-pynng \
     python3-transitions \
     python3-cryptography \
     tzdata \
