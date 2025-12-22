@@ -11,7 +11,6 @@ import json
 import socket
 import subprocess
 import sys
-import time
 from contextlib import contextmanager
 from typing import Any
 
@@ -414,10 +413,6 @@ class LBRadioGatewayAPIClient:
         return generic_setter
 
     def open_connection(self):
-        if self._socket is not None:
-            # There is already an open connection, we do not support multiple connections on this TCP endpoint.
-            return
-
         if self._unix_socket is None:  # use TCP API
             cmd = f"ip -6 -json address show dev {self._interface} scope link".split(" ")
             iface = json.loads(subprocess.check_output(cmd))[0]
@@ -433,14 +428,9 @@ class LBRadioGatewayAPIClient:
             self._socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             self._socket.connect(self._unix_socket)
 
-    def close_connection(self, delay=True):
+    def close_connection(self):
         if self._socket is not None:
             self._socket.close()
-            # The socket close needs some time to complete, otherwise tests which quickly reconnect to the TCP API may
-            # fail (e.g. test_tcp_api.py::test_multiple_commands_multiple_connections).
-            # This is required since update to Zephyr 4.2.
-            if delay:
-                time.sleep(0.5)
             self._socket = None
 
     @contextmanager
@@ -515,7 +505,7 @@ class LBRadioGatewayAPIClient:
         with self._connected_socket() as s:
             self._send_command(s, Command.REBOOT)
             # no reply, as device reboots
-        self.close_connection(delay=False)
+        self.close_connection()
 
     def get_stats(self) -> list[StatisticsTLV]:
         with self._connected_socket() as s:
@@ -574,7 +564,7 @@ def main():
         from IPython import embed
         embed()
         # done
-        client.close_connection(delay=False)
+        client.close_connection()
         sys.exit(0)
 
     if args.command is None:
@@ -627,7 +617,7 @@ def main():
     else:
         raise Exception("unsupported command")
 
-    client.close_connection(delay=False)
+    client.close_connection()
 
 
 if __name__ == "__main__":
