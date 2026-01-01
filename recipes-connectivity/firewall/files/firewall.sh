@@ -10,8 +10,13 @@
 set -eu -o pipefail
 
 hap_port="8001"
+ws_port="8443"
 allowed_tcp_ports="http https $hap_port"
 allowed_udp_ports="mdns"
+
+if [ -f "/etc/enable-websocketd" ]; then
+    allowed_tcp_ports="$ws_port $allowed_tcp_ports"
+fi
 
 # always allow SSH during development and manufacturing
 if [ "$(fw_printenv -n dev_debug_allow_local_ssh 2>/dev/null || true)" = "1" ] \
