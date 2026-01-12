@@ -11,7 +11,7 @@ S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
 PR = "r0"
-SRCREV = "54f44e71083b11a4ee8ffc1f85ce1e0bc32e3506"
+SRCREV = "a7fca9d6f063a250c942834997e94384b5525f98"
 SRC_URI += "\
     file://gateway-config-backend-sslkey.service \
     file://gateway-config-backend.service \
@@ -64,4 +64,3 @@ SYSTEMD_SERVICE:${PN} = " \
 "
 
 require gateway-config-backend-crates.inc
-
