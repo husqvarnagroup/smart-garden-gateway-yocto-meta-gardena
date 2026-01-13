@@ -15,7 +15,8 @@ allowed_udp_ports="mdns"
 
 # always allow SSH during development and manufacturing
 if [ "$(fw_printenv -n dev_debug_allow_local_ssh 2>/dev/null || true)" = "1" ] \
-    || [ "$(fw_printenv -n eol_test_passed 2>/dev/null || true)" != "1" ]; then
+    || [ "$(fw_printenv -n eol_test_passed 2>/dev/null || true)" != "1" ] \
+    || [ -f "/etc/allow-local-ssh" ]; then
     allowed_tcp_ports="ssh $allowed_tcp_ports"
 fi
 
