@@ -6,7 +6,7 @@ SUMMARY = "fwrolloutd"
 HOMEPAGE = "git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout"
 LICENSE = "Proprietary"
 
-SRCREV = "9927f4d7131af71470eb75cb3b8d755ec7955cde"
+SRCREV = "fe334d16a55a0aa048a63acd49e4264f717ecba3"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;branch=main"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "fwrolloutd"
@@ -16,7 +16,7 @@ LIC_FILES_CHKSUM = " \
     file://../THIRDPARTY.toml;md5=16cc163838abfb77c28ec2eaf3921f8d \
 "
 
-PR = "r3"
+PR = "r0"
 
 SRCREV_FORMAT = "fwrolloutd"
 
