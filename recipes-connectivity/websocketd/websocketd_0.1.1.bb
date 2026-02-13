@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = " \
 DEPENDS += "openssl pkgconfig-native"
 
 PR = "r0"
-SRCREV = "6424cbcced8dbf07c37f0034e5ec0f5487e14d2a"
+SRCREV = "d21842cce095150b21b3f6fd14b178c6edc48c5a"
 SRCREV_gardenalog = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
 SRCREV_sg-ipc = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
 SRCREV_tokioutil = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
