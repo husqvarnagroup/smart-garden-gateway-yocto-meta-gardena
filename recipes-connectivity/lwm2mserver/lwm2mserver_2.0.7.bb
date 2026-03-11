@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = " \
 
 inherit python_poetry_core python3-dir
 
-SRCREV = "de2087bf50f643cbc2200805c3bd12bb93b74faa"
+SRCREV = "e83fbd157c16a79bbacf415bec2695eae3aa8d03"
 SRC_URI += " \
     gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-lwm2m-server;protocol=ssh;branch=main \
     file://lwm2mserver.service \
