@@ -7,7 +7,15 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 PV = "1.4.0"
 PR = "r1"
 
-RDEPENDS:${PN} = "iptables iptables-modules kernel-module-xt-dscp"
+RDEPENDS:${PN} = "\
+    iptables \
+    iptables-modules \
+    kernel-module-nft-reject \
+    kernel-module-nft-reject-inet \
+    kernel-module-nft-reject-ipv4 \
+    kernel-module-nft-reject-ipv6 \
+    kernel-module-xt-dscp \
+"
 
 SRC_URI = "\
     file://firewall.sh \
