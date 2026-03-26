@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = " \
 DEPENDS += "openssl pkgconfig-native"
 
 PR = "r0"
-SRCREV = "a2ccca9977a1d9e02b20fa8ca74f4459adbdb0e9"
+SRCREV = "52bc992c1b3c8f04bd3a674faf32b7ffddfcaee6"
 SRCREV_gardenalog = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
 SRCREV_sg-ipc = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
 SRCREV_tokioutil = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
@@ -53,7 +53,7 @@ SRC_URI += " \
 "
 
 LIC_FILES_CHKSUM += " \
-    file://../THIRDPARTY.toml;md5=9f397d5dd9892b8ff3a310924a045cf2 \
+    file://../THIRDPARTY.toml;md5=6a0cdba1bcafb493cbee0bb179cdad97 \
 "
 
 include websocketd-crates.inc
