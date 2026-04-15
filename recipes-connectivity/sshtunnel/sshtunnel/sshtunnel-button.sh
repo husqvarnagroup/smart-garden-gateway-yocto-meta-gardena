@@ -11,6 +11,8 @@ readonly BUTTON_RELEASED=0
 
 readonly EXPECTED_BUTTON_PRESS_TIME=10
 
+readonly DENYLIST=https://gateway.iot.sg.dss.husqvarnagroup.net/maintenance-denylist
+
 extract_time() {
     # Extract the timestamp from the line (without fractions of seconds)
     echo "$1" | awk '{ printf "%d", $3 }'
@@ -27,6 +29,25 @@ is_online() {
     echo q | telnet maintenance-access.iot.sg.dss.husqvarnagroup.net 443 2> /dev/null | grep -q Connected
 }
 
+# Check if the gateway is on the denylist. Some gateways have a problem with the button and start the
+# SSH tunnel without user interaction. To avoid that, we check if the gateway is on the denylist before
+# starting the service.
+# The mechanism is the same as for the allowlist used in `sshtnnel-check`.
+is_on_denylist() {
+    if ! gw_id_hash="$(fw_printenv -n gatewayid | tr -d '\n' | openssl sha1 | awk '{print $2}')"; then
+        echo "Failed to generate a hash of the gateway ID." >&2
+        true
+    fi
+
+    if curl -sfI --max-time 30 "$DENYLIST/$gw_id_hash" >/dev/null; then
+        echo "The gateway is on the denylist. Not starting the SSH tunnel service." >&2
+        true
+    else
+        echo "The gateway is not on the denylist." >&2
+        false
+    fi
+}
+
 evtest /dev/input/event0 | while read -r line; do
     if is_button_event "$line" "$BUTTON_PRESSED"; then
         start_time=$(extract_time "$line")
@@ -35,7 +56,7 @@ evtest /dev/input/event0 | while read -r line; do
         end_time=$(extract_time "$line")
         echo "Button released at ${end_time}." >&2
         time=$(( end_time - start_time ))
-        if [ "$time" -gt "$EXPECTED_BUTTON_PRESS_TIME" ] && is_online; then
+        if [ "$time" -gt "$EXPECTED_BUTTON_PRESS_TIME" ] && is_online && ! is_on_denylist; then
             echo "Starting SSH tunnel service" >&2
             systemctl --no-block start sshtunnel.service
             systemctl --no-block restart sshtunnel-shutdown.timer || true
