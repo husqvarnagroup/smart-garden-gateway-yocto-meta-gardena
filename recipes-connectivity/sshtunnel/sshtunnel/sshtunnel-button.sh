@@ -30,10 +30,13 @@ is_online() {
 evtest /dev/input/event0 | while read -r line; do
     if is_button_event "$line" "$BUTTON_PRESSED"; then
         start_time=$(extract_time "$line")
+        echo "Button pressed at ${start_time}." >&2
     elif is_button_event "$line" "$BUTTON_RELEASED"; then
         end_time=$(extract_time "$line")
+        echo "Button released at ${end_time}." >&2
         time=$(( end_time - start_time ))
         if [ "$time" -gt "$EXPECTED_BUTTON_PRESS_TIME" ] && is_online; then
+            echo "Starting SSH tunnel service" >&2
             systemctl --no-block start sshtunnel.service
             systemctl --no-block restart sshtunnel-shutdown.timer || true
         fi
