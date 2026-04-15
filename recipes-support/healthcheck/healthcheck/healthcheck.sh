@@ -629,6 +629,19 @@ test_fwrolloutd_alive() {
     log_result "fwrolloutd_alive" "${result}" "omitted"
 }
 
+# This check needs to be adapted for Linux 6.14+ as CONFIG_INPUT_EVBUG has been removed
+test_excessive_button_presses() {
+    local result=0
+    local button_presses
+
+    local pattern="Event. Dev: input0, Type: 1, Code: 148, Value: 1"
+    button_presses="$(journalctl -S-24h -k | grep -c "${pattern}" || true)"
+    if [ "${button_presses}" -gt 10 ]; then
+        result=2
+    fi
+
+    log_result "excessive_button_presses" "${result}" "count=${button_presses}"
+}
 
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
@@ -662,6 +675,7 @@ test_all() {
     test_lwm2mserver_traffic_class
     test_cloudadapter_rate_limiting
     test_fwrolloutd_alive
+    test_excessive_button_presses
 
     # Dependency on ppp0 interface
     test_ppp0_interface_up
