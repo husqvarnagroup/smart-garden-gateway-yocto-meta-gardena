@@ -22,7 +22,7 @@ is_button_event() {
     echo "$line" | grep -q "EV_KEY.*KEY_PROG1.*value $val"
 }
 
-online() {
+is_online() {
     # Check if we can connect to the maintenance access server and quit immediately.
     echo q | telnet maintenance-access.iot.sg.dss.husqvarnagroup.net 443 2> /dev/null | grep -q Connected
 }
@@ -33,7 +33,7 @@ evtest /dev/input/event0 | while read -r line; do
     elif is_button_event "$line" "$BUTTON_RELEASED"; then
         end_time=$(extract_time "$line")
         time=$(( end_time - start_time ))
-        if [ "$time" -gt "$EXPECTED_BUTTON_PRESS_TIME" ] && online; then
+        if [ "$time" -gt "$EXPECTED_BUTTON_PRESS_TIME" ] && is_online; then
             systemctl --no-block start sshtunnel.service
             systemctl --no-block restart sshtunnel-shutdown.timer || true
         fi
