@@ -11,7 +11,7 @@ S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
 PR = "r0"
-SRCREV = "a7fca9d6f063a250c942834997e94384b5525f98"
+SRCREV = "49f025ffbdbc5fbde781655b0f09a29b186ef4a8"
 SRC_URI += "\
     file://gateway-config-backend-sslkey.service \
     file://gateway-config-backend.service \
