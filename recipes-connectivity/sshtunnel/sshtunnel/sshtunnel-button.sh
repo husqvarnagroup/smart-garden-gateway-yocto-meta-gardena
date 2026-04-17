@@ -36,7 +36,7 @@ is_online() {
 is_on_denylist() {
     if ! gw_id_hash="$(fw_printenv -n gatewayid | tr -d '\n' | openssl sha1 | awk '{print $2}')"; then
         echo "Failed to generate a hash of the gateway ID." >&2
-        true
+        return 1 # false, do not prevent start of service
     fi
 
     if curl -sfI --max-time 30 "$DENYLIST/$gw_id_hash" >/dev/null; then
