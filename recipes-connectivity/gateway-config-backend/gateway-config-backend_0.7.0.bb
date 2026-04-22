@@ -10,13 +10,11 @@ SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-con
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r0"
+PR = "r1"
 SRCREV = "49f025ffbdbc5fbde781655b0f09a29b186ef4a8"
 SRC_URI += "\
-    file://gateway-config-backend-sslkey.service \
     file://gateway-config-backend.service \
     file://gateway-config-backend.socket \
-    file://keep.d/gateway-config-backend \
     file://THIRDPARTY.toml \
 "
 
@@ -26,7 +24,7 @@ LIC_FILES_CHKSUM = " \
 "
 
 DEPENDS += "openssl accessory-server"
-RDEPENDS:${PN} += "gateway-config-frontend gateway-config-backend-foss-dependencies"
+RDEPENDS:${PN} += "gateway-config-frontend gateway-config-backend-cert"
 
 
 # BUG: meta-rust doesn't add the include directories to bindgen runs
@@ -44,18 +42,12 @@ do_install () {
     ln -s ${sysconfdir}/gateway-config-interface/key.pem ${sysconfdir}/gateway-config-interface/cert.pem ${D}${datadir}/gateway-config-interface
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/gateway-config-backend-sslkey.service ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/gateway-config-backend.service ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/gateway-config-backend.socket ${D}${systemd_unitdir}/system
-
-    install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/gateway-config-backend ${D}${base_libdir}/upgrade/keep.d
 }
 
 FILES:${PN} += "\
     ${datadir}/gateway-config-interface \
-    ${systemd_unitdir}/system/gateway-config-backend-sslkey.service \
-    ${base_libdir}/upgrade/keep.d/gateway-config-backend \
 "
 
 SYSTEMD_SERVICE:${PN} = " \
