@@ -10,17 +10,21 @@ SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-con
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r1"
-SRCREV = "49f025ffbdbc5fbde781655b0f09a29b186ef4a8"
+PR = "r0"
+SRCREV = "57a815f3f1106d50c827ddfe72462d34d748024a"
+SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRC_URI += "\
+    git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=gardenalog;subpath=gardenalog;destsuffix=gardenalog \
     file://gateway-config-backend.service \
     file://gateway-config-backend.socket \
     file://THIRDPARTY.toml \
 "
 
+SRCREV_FORMAT = "gateway-config-backend"
+
 LIC_FILES_CHKSUM = " \
     file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://../THIRDPARTY.toml;md5=86f099f48b5ea1ac0d5179b02c4735fe \
+    file://../THIRDPARTY.toml;md5=4a75ade2984289bb97022571aa4aab51 \
 "
 
 DEPENDS += "openssl accessory-server"
