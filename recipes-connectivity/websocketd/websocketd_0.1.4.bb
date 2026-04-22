@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = " \
 
 DEPENDS += "openssl pkgconfig-native"
 
-PR = "r0"
+PR = "r1"
 SRCREV = "52bc992c1b3c8f04bd3a674faf32b7ffddfcaee6"
 SRCREV_gardenalog = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
 SRCREV_sg-ipc = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
@@ -40,7 +40,7 @@ FILES:${PN} += " \
     ${base_libdir}/upgrade/keep.d \
 "
 
-RDEPENDS:${PN} += "gateway-config-backend"
+RDEPENDS:${PN} += "gateway-config-backend-cert"
 
 inherit systemd
 SYSTEMD_PACKAGES = "${PN}"
