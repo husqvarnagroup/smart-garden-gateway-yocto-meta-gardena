@@ -9,6 +9,7 @@ SRC_URI = " \
 "
 
 PV = "1.0.3"
+PR = "r1"
 
 RDEPENDS:${PN} = "busybox"
 
@@ -18,5 +19,5 @@ FILES:${PN} += " \
 
 do_install () {
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/list_devices.sh ${D}${bindir}/list-lemonbeat-devices
+    install -m 0755 ${UNPACKDIR}/list_devices.sh ${D}${bindir}/list-lemonbeat-devices
 }

@@ -22,17 +22,17 @@ SRC_URI = "\
     file://healthcheck.timer \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 UPDATE_URL_PROTOCOLLESS = "${@DISTRO_UPDATE_URL_BASE.split('://', 1)[1]}/gardena-update-image-bnw-zephyr-${MACHINE}.swu"
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/healthcheck.service ${D}${systemd_unitdir}/system/
-    install -m 0644 ${WORKDIR}/healthcheck.timer ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/healthcheck.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/healthcheck.timer ${D}${systemd_unitdir}/system/
 
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/healthcheck.sh ${D}${bindir}/healthcheck
+    install -m 0755 ${UNPACKDIR}/healthcheck.sh ${D}${bindir}/healthcheck
     sed -i 's#@UPDATE_URL_PROTOCOLLESS@#${UPDATE_URL_PROTOCOLLESS}#' ${D}${bindir}/healthcheck
 }
 
