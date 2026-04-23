@@ -18,9 +18,8 @@ FILES:${PN} += " \
 
 # The IPSO registry is not versioned. Use non-semantic versioning for this Yocto recipe.
 PV = "2026-07-01"
-PR = "r0"
+PR = "r1"
 
-S = "${WORKDIR}/git"
 
 do_install:append() {
     # Ensure registry directories exist

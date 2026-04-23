@@ -3,7 +3,7 @@ MAINTAINER = "Gardena GmbH"
 LICENSE = "CLOSED"
 
 PV = "1.2.0"
-PR = "r0"
+PR = "r1"
 SRCREV = "a21229adb9306500440b79bf09aaf452d01e60ab"
 SRC_URI = " \
     gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=main \
@@ -11,7 +11,6 @@ SRC_URI = " \
     file://keep.d/accessory-server \
 "
 
-S = "${WORKDIR}/git"
 
 inherit cmake systemd pkgconfig
 
