@@ -5,8 +5,6 @@ inherit cargo-update-recipe-crates
 SRCREV_lemonbeatd = "a4fa97a9b04ec5d517d093a9f28128f0ae0e9320"
 SRC_URI = "gitsm://github.com/husqvarnagroup/smart-garden-gateway-lemonbeatd;protocol=https;branch=main;name=lemonbeatd"
 
-S = "${WORKDIR}/git"
-
 # The crate is at the repository root.
 CARGO_SRC_DIR = ""
 
@@ -54,7 +52,7 @@ SRCREV_tokio-task-rpc = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_tokio-task-rpc-util = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_tokioutil = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_xsd2rust = "15298a2b49cc1f905d064ea931255026984407c5"
-EXTRA_OECARGO_PATHS += "${WORKDIR}/nix"
+EXTRA_OECARGO_PATHS += "${UNPACKDIR}/nix"
 
 SUMMARY = "lemonbeatd"
 HOMEPAGE = "https://dev.azure.com/HQV-Gardena/SG-Gateway/_git/sg-lemonbeat-cargo"
