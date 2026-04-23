@@ -4,7 +4,7 @@ SECTION = "devel/python"
 
 PR = "r2"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit setuptools3
 

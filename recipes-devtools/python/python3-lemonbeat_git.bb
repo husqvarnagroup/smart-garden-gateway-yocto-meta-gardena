@@ -13,7 +13,7 @@ PV = "2023-05-17+git${SRCPV}"
 
 SRCREV = "c2ae99ac1fd8bb6e0c1c6777f4ed7e5efe390e80"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 RDEPENDS:${PN} += " \
     lsdl-serializer-lib \

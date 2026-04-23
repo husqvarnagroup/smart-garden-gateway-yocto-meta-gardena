@@ -9,7 +9,7 @@ SRC_URI = "\
     file://keep.d/gateway-config-backend \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit systemd
 

@@ -4,7 +4,7 @@ inherit cargo-update-recipe-crates
 SRCREV = "99a011813b84d7ee4afc34948298afc4e2757708"
 SRC_URI = "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-lemonbeat-cargo;protocol=ssh;branch=main"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 CARGO_SRC_DIR = "lemonbeatd"
 
 PR = "r1"

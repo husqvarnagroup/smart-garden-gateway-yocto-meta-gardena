@@ -11,7 +11,7 @@ SRC_URI = " \
     file://keep.d/accessory-server \
 "
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 inherit cmake systemd pkgconfig
 

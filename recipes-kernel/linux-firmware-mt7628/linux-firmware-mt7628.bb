@@ -16,7 +16,7 @@ PR = "r2"
 
 inherit allarch
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 CLEANBROKEN = "1"
 

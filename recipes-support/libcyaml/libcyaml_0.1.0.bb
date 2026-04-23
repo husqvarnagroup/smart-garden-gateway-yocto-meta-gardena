@@ -14,7 +14,7 @@ PR = "r0"
 SRCREV = "5707c6422be1fe1b4f18c778de44a2392453026b"
 SRC_URI = "git://github.com/tlsa/libcyaml.git;protocol=https;nobranch=1"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 do_compile() {
         oe_runmake

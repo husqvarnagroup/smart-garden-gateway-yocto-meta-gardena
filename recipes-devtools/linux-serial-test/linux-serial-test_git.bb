@@ -10,6 +10,6 @@ PV = "1.0+git${SRCPV}"
 PR = "r1"
 SRCREV = "aed2a6e78160b63295368d70dbdbc19fe3a38225"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 inherit cmake
