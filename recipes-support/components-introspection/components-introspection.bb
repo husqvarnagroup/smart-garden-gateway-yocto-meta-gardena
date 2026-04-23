@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 inherit systemd
 
 PV = "0.1.2"
-PR = "r0"
+PR = "r1"
 
 SRC_URI = " \
     file://update-hw-revision.sh \
@@ -24,13 +24,13 @@ do_install:append () {
     install -d ${D}${bindir}
     install -d ${D}${systemd_unitdir}/system
 
-    install -m 644 ${WORKDIR}/update-hw-revision.service ${D}${systemd_unitdir}/system
-    install -m 755 ${WORKDIR}/update-hw-revision.sh ${D}${bindir}/update-hw-revision
+    install -m 644 ${UNPACKDIR}/update-hw-revision.service ${D}${systemd_unitdir}/system
+    install -m 755 ${UNPACKDIR}/update-hw-revision.sh ${D}${bindir}/update-hw-revision
     sed -i -e 's,@DEFAULT_BOARD_NAME@,${DEFAULT_BOARD_NAME},g' \
                ${D}${bindir}/update-hw-revision
 
-    install -m 644 ${WORKDIR}/update-sw-versions.service ${D}${systemd_unitdir}/system
-    install -m 755 ${WORKDIR}/update-sw-versions.sh ${D}${bindir}/update-sw-versions
+    install -m 644 ${UNPACKDIR}/update-sw-versions.service ${D}${systemd_unitdir}/system
+    install -m 755 ${UNPACKDIR}/update-sw-versions.sh ${D}${bindir}/update-sw-versions
 }
 
 SYSTEMD_SERVICE:${PN} = "update-hw-revision.service update-sw-versions.service"

@@ -88,8 +88,7 @@ RDEPENDS:${PN}-tools += "${PN}-client ${PN}-progress ${PN}-tools-hawkbit \
     ${@bb.utils.contains('DISTRO_FEATURES','systemd','${PN}-usb','',d)} \
 "
 
-S = "${WORKDIR}/git"
-B = "${WORKDIR}/build"
+B = "${UNPACKDIR}/build"
 
 EXTRA_OEMAKE += " O=${B} HOSTCC="${BUILD_CC}" HOSTCXX="${BUILD_CXX}" LD="${CC}" DESTDIR="${D}" LIBDIR="${libdir}" V=1 ARCH=${TARGET_ARCH} CROSS_COMPILE=${TARGET_PREFIX} SKIP_STRIP=y"
 
@@ -245,13 +244,13 @@ python () {
 }
 
 do_configure () {
-    cat > ${WORKDIR}/.config <<HEREDOC
+    cat > ${UNPACKDIR}/.config <<HEREDOC
 CONFIG_EXTRA_CFLAGS="${CFLAGS}"
 CONFIG_EXTRA_LDFLAGS="${LDFLAGS}"
 HEREDOC
-    cat ${WORKDIR}/defconfig >> ${WORKDIR}/.config
+    cat ${UNPACKDIR}/defconfig >> ${UNPACKDIR}/.config
 
-    merge_config.sh -O ${B} -m ${WORKDIR}/.config ${@" ".join(find_cfgs(d))}
+    merge_config.sh -O ${B} -m ${UNPACKDIR}/.config ${@" ".join(find_cfgs(d))}
     (cd ${S} && cml1_do_configure)
 }
 
@@ -271,34 +270,34 @@ do_install () {
     fi
 
     install -d ${D}${sysconfdir}/init.d
-    install -m 755 ${WORKDIR}/swupdate ${D}${sysconfdir}/init.d
+    install -m 755 ${UNPACKDIR}/swupdate ${D}${sysconfdir}/init.d
     sed -i -e "s|/usr/lib/|${libdir}/|" ${D}${sysconfdir}/init.d/swupdate
 
     # shell based configuration loader allows to place code snippets into this folder
     install -d ${D}${libdir}/swupdate/conf.d
-    install -m 755 ${WORKDIR}/swupdate.sh ${D}${libdir}/swupdate
+    install -m 755 ${UNPACKDIR}/swupdate.sh ${D}${libdir}/swupdate
     sed -i 's#@LIBDIR@#${libdir}#g' ${D}${libdir}/swupdate/swupdate.sh
     if ${SWUPDATE_MONGOOSE}; then
-        install -m 644 ${WORKDIR}/10-mongoose-args ${D}${libdir}/swupdate/conf.d/
+        install -m 644 ${UNPACKDIR}/10-mongoose-args ${D}${libdir}/swupdate/conf.d/
     fi
     install -d ${D}${systemd_unitdir}/system
-    install -m 644 ${WORKDIR}/swupdate.service ${D}${systemd_system_unitdir}
+    install -m 644 ${UNPACKDIR}/swupdate.service ${D}${systemd_system_unitdir}
     sed -i 's#@LIBDIR@#${libdir}#' ${D}${systemd_system_unitdir}/swupdate.service
-    install -m 644 ${WORKDIR}/swupdate.socket.tmpl ${D}${systemd_system_unitdir}/swupdate.socket
+    install -m 644 ${UNPACKDIR}/swupdate.socket.tmpl ${D}${systemd_system_unitdir}/swupdate.socket
     sed -e "s,@@SWUPDATE_SOCKET_CTRL_PATH@@,${SWUPDATE_SOCKET_CTRL_PATH},g" \
         -e "s,@@SWUPDATE_SOCKET_PROGRESS_PATH@@,${SWUPDATE_SOCKET_PROGRESS_PATH},g" \
         -i ${D}${systemd_system_unitdir}/swupdate.socket
-    install -m 644 ${WORKDIR}/swupdate-usb@.service ${D}${systemd_system_unitdir}
-    install -m 644 ${WORKDIR}/swupdate-progress.service ${D}${systemd_system_unitdir}
+    install -m 644 ${UNPACKDIR}/swupdate-usb@.service ${D}${systemd_system_unitdir}
+    install -m 644 ${UNPACKDIR}/swupdate-progress.service ${D}${systemd_system_unitdir}
 
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -d ${D}${nonarch_libdir}/tmpfiles.d
-        install -m 0644 ${WORKDIR}/tmpfiles-swupdate.conf ${D}${nonarch_libdir}/tmpfiles.d/swupdate.conf
+        install -m 0644 ${UNPACKDIR}/tmpfiles-swupdate.conf ${D}${nonarch_libdir}/tmpfiles.d/swupdate.conf
         install -d ${D}${sysconfdir}/udev/rules.d
-        install -m 0644 ${WORKDIR}/swupdate-usb.rules ${D}${sysconfdir}/udev/rules.d/
+        install -m 0644 ${UNPACKDIR}/swupdate-usb.rules ${D}${sysconfdir}/udev/rules.d/
     else
         # in case of systemd there is a service file, for sysv init we need to start it as well
-        install -m 0644 ${WORKDIR}/90-start-progress ${D}${libdir}/swupdate/conf.d/
+        install -m 0644 ${UNPACKDIR}/90-start-progress ${D}${libdir}/swupdate/conf.d/
     fi
 }
 

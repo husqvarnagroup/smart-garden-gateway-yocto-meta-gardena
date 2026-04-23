@@ -10,7 +10,7 @@ SRC_URI = " \
     file://sysupgrade.sh \
 "
 
-PR = "r0"
+PR = "r1"
 PV = "2.1"
 
 RDEPENDS:${PN} = "initscripts-readonly-rootfs-overlay overlayfs-purge"
@@ -21,13 +21,13 @@ FILES:${PN} += " \
 
 do_install () {
     install -d ${D}${sbindir}
-    install -m 0755 ${WORKDIR}/sysupgrade.sh ${D}${sbindir}/sysupgrade
+    install -m 0755 ${UNPACKDIR}/sysupgrade.sh ${D}${sbindir}/sysupgrade
 
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/sysupgrade ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/sysupgrade ${D}${base_libdir}/upgrade/keep.d
 
     install -d ${D}${sysconfdir}
-    install -m 0644 ${WORKDIR}/sysupgrade.conf ${D}${sysconfdir}
+    install -m 0644 ${UNPACKDIR}/sysupgrade.conf ${D}${sysconfdir}
 
     # Create persistent log dir
     install -d ${D}${localstatedir}/lib/sysupgrade

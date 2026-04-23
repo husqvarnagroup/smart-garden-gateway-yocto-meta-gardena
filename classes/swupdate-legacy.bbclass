@@ -36,7 +36,7 @@
 inherit swupdate-common-legacy
 inherit image-artifact-names
 
-S = "${WORKDIR}/${PN}"
+S = "${UNPACKDIR}/${PN}"
 
 IMAGE_DEPENDS ?= ""
 
