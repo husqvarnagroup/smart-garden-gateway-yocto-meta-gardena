@@ -12,7 +12,7 @@ RDEPENDS:${PN} = " \
 SRC_URI = "git://github.com/vaeth/zram-init.git;protocol=https;branch=main"
 SRCREV = "ca2f79101c56f123d2d23f3f62f14569ad30000b"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 PR = "r0"
 

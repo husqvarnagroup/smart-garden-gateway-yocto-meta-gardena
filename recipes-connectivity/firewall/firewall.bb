@@ -15,7 +15,7 @@ SRC_URI = "\
     file://keep.d/firewall \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 FILES:${PN} += " \
     ${base_libdir}/upgrade/keep.d \

@@ -22,7 +22,7 @@ SRC_URI:append:mt7688 = " \
     file://ethernet-led-setup.sh \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_compile() {
     ${CC} ${CFLAGS} ${LDFLAGS} ${WORKDIR}/led-indicator.c -o led-indicator -Wall -Wextra -Wpedantic -Werror

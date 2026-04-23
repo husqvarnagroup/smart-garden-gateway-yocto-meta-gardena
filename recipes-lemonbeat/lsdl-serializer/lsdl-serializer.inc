@@ -9,7 +9,7 @@ SRCREV = "ec56850a47eb539a677f35b428a1db4880be7452"
 
 INC_PR = "r4"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 EXTRA_OECMAKE = " -DBUILD_SHARED_LIBS=y"
 

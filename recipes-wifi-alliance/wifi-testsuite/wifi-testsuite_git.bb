@@ -20,7 +20,7 @@ RDEPENDS:${PN} = "\
   wpa-supplicant-cli \
 "
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 FILES:${PN} += "\
     /usr/local/sbin/ \
     ${systemd_unitdir}/network \
