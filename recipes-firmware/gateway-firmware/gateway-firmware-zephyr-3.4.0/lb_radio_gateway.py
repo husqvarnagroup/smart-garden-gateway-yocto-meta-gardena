@@ -11,6 +11,7 @@ import json
 import socket
 import subprocess
 import sys
+import time
 from contextlib import contextmanager
 from typing import Any
 
@@ -56,6 +57,9 @@ class Command:
     RESET_DEVICE_NONCES = b"\xe4"
     REBOOT = b"\xe5"
     GET_STATS = b"\xe6"
+    RESTART_TRANSCEIVER = b"\xe7"
+    SET_SI4467_SDN_PIN = b"\xe8"
+    LOG = b"\xe9"
 
 
 class Result:
@@ -196,6 +200,7 @@ class LBRadioGatewayAPIClient:
         "log_stack_usage",
         "reboot",
         "reset_device_nonces",
+        "restart_transceiver",
         "si4467_stop_tx",
     }
 
@@ -226,6 +231,8 @@ class LBRadioGatewayAPIClient:
         # note: it is explicitly OK that the following commands do not start with set_
         "reset_device_nonce": _parse_mac,
         "si4467_start_cw": lambda channel: bytes([channel]),
+        "set_si4467_sdn_pin": lambda x: bytes([x]),
+        "log": lambda x: x.encode('utf-8'),
     }
 
     DOCSTRINGS = {
@@ -269,6 +276,10 @@ class LBRadioGatewayAPIClient:
             "Get statistics for packets received and sent on RF interface.",
             [("format", "'H' for human-readable (default), 'M' for machine readable.")]
         ),
+        "restart_transceiver": (
+            "Restart the Si4467 transceiver.",
+            []
+        ),
         "get_tx_mac_counter": (
             "Get TX MAC counter value.",
             []
@@ -276,6 +287,10 @@ class LBRadioGatewayAPIClient:
         "get_uptime": (
             "Get current uptime in milliseconds.",
             []
+        ),
+        "log": (
+            "Start/stop logging",
+            [("command", "'go' to start, 'halt' to stop logging")]
         ),
         "log_stack_usage": (
             "Print current stack usage to the console.",
@@ -320,6 +335,10 @@ class LBRadioGatewayAPIClient:
         "si4467_start_cw": (
             "Start continuous wave TX on specified channel.",
             [("channel", "Si4467 channel for transmission.")]
+        ),
+        "set_si4467_sdn_pin": (
+            "Set Si4467 SDN (shutdown) pin state.",
+            [("value", "0 (disable shutdown) or 1 (enable shutdown).")]
         ),
         "si4467_stop_tx": (
             "Stop TX.",
@@ -413,6 +432,10 @@ class LBRadioGatewayAPIClient:
         return generic_setter
 
     def open_connection(self):
+        if self._socket is not None:
+            # There is already an open connection, we do not support multiple connections on this TCP endpoint.
+            return
+
         if self._unix_socket is None:  # use TCP API
             cmd = f"ip -6 -json address show dev {self._interface} scope link".split(" ")
             iface = json.loads(subprocess.check_output(cmd))[0]
@@ -428,9 +451,14 @@ class LBRadioGatewayAPIClient:
             self._socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             self._socket.connect(self._unix_socket)
 
-    def close_connection(self):
+    def close_connection(self, delay=True):
         if self._socket is not None:
             self._socket.close()
+            # The socket close needs some time to complete, otherwise tests which quickly reconnect to the TCP API may
+            # fail (e.g. test_tcp_api.py::test_multiple_commands_multiple_connections).
+            # This is required since update to Zephyr 4.2.
+            if delay:
+                time.sleep(0.5)
             self._socket = None
 
     @contextmanager
@@ -505,7 +533,7 @@ class LBRadioGatewayAPIClient:
         with self._connected_socket() as s:
             self._send_command(s, Command.REBOOT)
             # no reply, as device reboots
-        self.close_connection()
+        self.close_connection(delay=False)
 
     def get_stats(self) -> list[StatisticsTLV]:
         with self._connected_socket() as s:
@@ -564,7 +592,7 @@ def main():
         from IPython import embed
         embed()
         # done
-        client.close_connection()
+        client.close_connection(delay=False)
         sys.exit(0)
 
     if args.command is None:
@@ -588,7 +616,7 @@ def main():
         network_key = bytes.fromhex(cmd_args[0])
         client.set_network_key(network_key)
     elif cmd in {"si4467_start_cw", "set_antenna_diversity", "set_antenna_diversity_mode",
-                 "set_antenna_int_ext", "set_tx_mac_counter"}:
+                 "set_antenna_int_ext", "set_tx_mac_counter", "set_si4467_sdn_pin"}:
         # Note: these are generic set commands, but on the command line we get a string, whereas the
         # function expects an integer, so we parse it here.
         function = getattr(client, cmd)
@@ -617,7 +645,7 @@ def main():
     else:
         raise Exception("unsupported command")
 
-    client.close_connection()
+    client.close_connection(delay=False)
 
 
 if __name__ == "__main__":
