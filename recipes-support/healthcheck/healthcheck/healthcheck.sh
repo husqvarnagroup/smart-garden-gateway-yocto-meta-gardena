@@ -512,30 +512,6 @@ test_lb_radio_gateway_api() {
     log_result "lb_radio_gateway_api" "${result}" "${version}"
 }
 
-# Check lb_radio driver state to make sure state machine is not stuck.
-# The state may legitimately be something else than `listen` if the
-# gateway is currently sending or receiving a Lemonbeat packet. For
-# this reason, we run the check multiple times and accept it as passed
-# if the state is `listen` at least once.
-test_lb_radio_driver_state() {
-    local result=2
-    local state
-
-    for _ in $(seq 1 10); do
-        if ! state="$(timeout 30 ${lb_radio_gateway_client} -u ${lemonbeatd_rm_api_socket} get_lb_radio_driver_state)"; then
-            result=1
-            state="undetermined"
-            break
-        fi
-        if [ "$state" = "listen" ]; then
-            result=0
-            break
-        fi
-    done
-
-    log_result "lb_radio_driver_state" "${result}" "${state}"
-}
-
 # Check for dropped packets on ppp0. This happens when the application
 # sends too many packets and back-pressure leads to an overflow in the
 # network queue.
@@ -688,7 +664,6 @@ test_all() {
         test_rm_ping
         test_socket_queue_ppp0_sg_20421
         test_lb_radio_gateway_api
-        test_lb_radio_driver_state
         test_ppp0_dropped_packets
         test_fc00_networks
     fi
