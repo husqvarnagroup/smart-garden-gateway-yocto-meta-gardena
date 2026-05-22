@@ -7,7 +7,6 @@ HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
 
 SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;branch=main"
-S = "${UNPACKDIR}/git"
 CARGO_SRC_DIR = ""
 
 PR = "r1"

@@ -20,7 +20,6 @@ FILES:${PN} += " \
 PV = "2026-07-01"
 PR = "r0"
 
-S = "${UNPACKDIR}/git"
 
 do_install:append() {
     # Ensure registry directories exist

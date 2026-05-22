@@ -22,7 +22,6 @@ PV = "2023-04-17-0+git${SRCPV}"
 
 SRCREV ?= "12bfd1295ce120d9e307575c5ce6d1976bf4fea6"
 
-S = "${UNPACKDIR}/git"
 
 do_install() {
     install -D -m 0755 ${S}/migration/migration-stage3.sh ${D}${bindir}/${BPN}-stage3
