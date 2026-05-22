@@ -27,7 +27,6 @@ SRC_URI = " \
     git://github.com/OpenMobileAlliance/lwm2m-registry.git;protocol=https;nobranch=1;name=lwm2m-registry;destsuffix=third_party/lwm2m-registry \
 "
 
-S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "fwrolloutd"
 
 LIC_FILES_CHKSUM = " \

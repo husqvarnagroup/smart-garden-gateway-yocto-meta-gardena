@@ -25,7 +25,6 @@ SRC_URI = " \
 
 SRCREV_FORMAT = "websocketd"
 
-S = "${UNPACKDIR}/git"
 
 inherit cargo cargo-update-recipe-crates
 

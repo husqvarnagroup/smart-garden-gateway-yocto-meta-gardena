@@ -28,7 +28,6 @@ RDEPENDS:${PN} += " \
     cloudadapter-foss-dependencies \
 "
 
-S = "${UNPACKDIR}/git"
 
 FILES:${PN} += " \
     ${localstatedir}/lib/${PN} \

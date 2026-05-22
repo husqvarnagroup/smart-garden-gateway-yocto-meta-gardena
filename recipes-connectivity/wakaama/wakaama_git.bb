@@ -8,7 +8,6 @@ PV = "2022-01-19+git${SRCPV}"
 PR = "r0"
 SRCREV = "c73b5065d64efe793b3a605beaf63691aa253146"
 
-S = "${UNPACKDIR}/git"
 B = "${WORKDIR}/build"
 
 inherit cmake

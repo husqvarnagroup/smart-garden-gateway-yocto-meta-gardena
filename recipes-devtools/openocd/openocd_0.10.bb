@@ -19,7 +19,6 @@ SRCREV_jimtcl = "dc4ba7770d580800634f90b67a24e077b4a26d98"
 SRCREV_libjaylink = "cfccbc9d6763733f1d14dff3c2dc5b75aaef136b"
 
 PV = "0.10+gitr${SRCPV}"
-S = "${UNPACKDIR}/git"
 
 inherit pkgconfig autotools-brokensep gettext
 

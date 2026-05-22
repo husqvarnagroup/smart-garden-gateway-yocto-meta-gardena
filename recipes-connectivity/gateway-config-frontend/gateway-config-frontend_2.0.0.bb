@@ -10,8 +10,6 @@ PR = "r0"
 
 SRC_URI += "https://github.com/husqvarnagroup/smart-garden-gateway-config-frontend/releases/download/v${PV}/sg-gateway-config-frontend-v${PV}.tar.gz"
 SRC_URI[sha256sum] = "9fa78a2074d3bb71da65a3c5bd918415f647aff630bcd77c54a7082f90b0b32c"
-S = "${WORKDIR}/sources"
-UNPACKDIR = "${S}"
 
 python do_unpack () {
     """Inspired by the default `do_unpack` task.

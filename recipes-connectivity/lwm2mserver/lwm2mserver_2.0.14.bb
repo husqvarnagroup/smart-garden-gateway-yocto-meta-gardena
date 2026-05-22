@@ -32,7 +32,6 @@ RDEPENDS:${PN} += " \
     lemonbeatd \
 "
 
-S = "${UNPACKDIR}/git"
 
 FILES:${PN} += " \
     ${localstatedir}/lib/${PN} \

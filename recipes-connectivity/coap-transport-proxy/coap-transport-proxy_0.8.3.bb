@@ -8,7 +8,6 @@ inherit systemd
 
 SRCREV = "5fc8ad74b56561ef40527ecdf8a4620521b9dd34"
 SRC_URI += "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-coap-transport-proxy;protocol=ssh;branch=main"
-S = "${UNPACKDIR}/git"
 CARGO_SRC_DIR = ""
 
 PR = "r0"
