@@ -1,8 +1,8 @@
 DESCRIPTION = "Brave New World Cloudadapter"
-LICENSE = "Proprietary"
+LICENSE = "GPL-3.0-only"
 
 LIC_FILES_CHKSUM = " \
-    file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
+    file://${COMMON_LICENSE_DIR}/GPL-3.0-only;md5=c79ff39f19dfec6d293b95dea7b07891 \
 "
 
 inherit python_poetry_core
@@ -15,7 +15,7 @@ SRC_URI += " \
     file://keep.d/cloudadapter \
 "
 
-PR = "r0"
+PR = "r1"
 
 DEPENDS = " \
     python3 \
