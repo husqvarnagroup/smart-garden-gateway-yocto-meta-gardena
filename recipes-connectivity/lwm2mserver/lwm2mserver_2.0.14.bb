@@ -46,14 +46,14 @@ do_install:append() {
     rm -r ${D}/${PYTHON_SITEPACKAGES_DIR}/lwm2mserver/wakaama/src
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/lwm2mserver.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/lwm2mserver.service ${D}${systemd_unitdir}/system
 
     # Ensure lwm2mserver data dir exists
     install -d ${D}${localstatedir}/lib/${PN}
 
     # Retain persisted data
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/lwm2mserver ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/lwm2mserver ${D}${base_libdir}/upgrade/keep.d
 
     # Ensure required IPSO directories exist
     install -d ${D}${localstatedir}/lib/ipso_definitions/base

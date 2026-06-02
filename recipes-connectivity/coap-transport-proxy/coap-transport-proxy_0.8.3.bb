@@ -30,11 +30,11 @@ LIC_FILES_CHKSUM += "file://../THIRDPARTY.toml;md5=7b3a5e03405b6c7039a7e9c2acae2
 
 SRCREV_FORMAT .= "_coap-client"
 SRCREV_coap-client = "eb8dc5bb6012cf91e38d87efe033267e01f9d47d"
-EXTRA_OECARGO_PATHS += "${WORKDIR}/coap-client"
+EXTRA_OECARGO_PATHS += "${UNPACKDIR}/coap-client"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/coap-transport-proxy.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/coap-transport-proxy.service ${D}${systemd_unitdir}/system
 }
 
 require coap-transport-proxy-crates.inc

@@ -25,11 +25,11 @@ RDEPENDS:${PN} = " \
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/sshtunnel-check.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/sshtunnel-check.timer ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/sshtunnel-check.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/sshtunnel-check.timer ${D}${systemd_unitdir}/system
 
     install -d ${D}${sbindir}
-    install -m 0755 ${WORKDIR}/sshtunnel-check.sh ${D}${sbindir}/sshtunnel-check
+    install -m 0755 ${UNPACKDIR}/sshtunnel-check.sh ${D}${sbindir}/sshtunnel-check
 }
 
 SYSTEMD_PACKAGES = "${PN}"

@@ -26,11 +26,11 @@ do_install() {
     install -m 755 ${S}/firewall.sh ${D}${sbindir}/firewall
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/firewall.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/firewall.service ${D}${systemd_unitdir}/system
 
     # Keep file that indicates that local SSH access is allowed
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/firewall ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/firewall ${D}${base_libdir}/upgrade/keep.d
 }
 
 inherit systemd

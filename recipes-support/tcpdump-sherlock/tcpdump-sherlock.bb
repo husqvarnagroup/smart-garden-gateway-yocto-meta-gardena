@@ -14,10 +14,10 @@ S = "${UNPACKDIR}"
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/${BPN}-ppp0.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/${BPN}-ppp0.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${nonarch_base_libdir}/udev/rules.d
-    install -m 0644 ${WORKDIR}/99-${BPN}-ppp0.rules ${D}${nonarch_base_libdir}/udev/rules.d/
+    install -m 0644 ${UNPACKDIR}/99-${BPN}-ppp0.rules ${D}${nonarch_base_libdir}/udev/rules.d/
 }
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"

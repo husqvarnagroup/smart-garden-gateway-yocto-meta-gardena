@@ -22,11 +22,11 @@ FILES:${PN} += " \
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/lemonbeatd.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/lemonbeatd.service ${D}${systemd_unitdir}/system/
 
     # Retain network settings and logs (warnings, errors) on update
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/lemonbeatd ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/lemonbeatd ${D}${base_libdir}/upgrade/keep.d
 }
 
 inherit systemd

@@ -33,8 +33,8 @@ CARGO_SRC_DIR = ""
 RUSTFLAGS += "-latomic"
 
 do_install:append() {
-    install -Dm 0644 ${WORKDIR}/websocketd.service ${D}${systemd_unitdir}/system/websocketd.service
-    install -Dm 0644 ${WORKDIR}/keep.d/websocketd ${D}${base_libdir}/upgrade/keep.d/websocketd
+    install -Dm 0644 ${UNPACKDIR}/websocketd.service ${D}${systemd_unitdir}/system/websocketd.service
+    install -Dm 0644 ${UNPACKDIR}/keep.d/websocketd ${D}${base_libdir}/upgrade/keep.d/websocketd
 }
 
 FILES:${PN} += " \

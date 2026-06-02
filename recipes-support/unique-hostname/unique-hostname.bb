@@ -23,10 +23,10 @@ do_install() {
     install -m 755 ${S}/unique-hostname.sh ${D}${bindir}/unique-hostname
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/unique-hostname.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/unique-hostname.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/unique-hostname ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/unique-hostname ${D}${base_libdir}/upgrade/keep.d
 }
 
 inherit systemd

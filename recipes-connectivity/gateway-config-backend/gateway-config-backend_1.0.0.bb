@@ -44,8 +44,8 @@ do_install () {
     ln -s ${sysconfdir}/gateway-config-interface/key.pem ${sysconfdir}/gateway-config-interface/cert.pem ${D}${datadir}/gateway-config-interface
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/gateway-config-backend.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/gateway-config-backend.socket ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/gateway-config-backend.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/gateway-config-backend.socket ${D}${systemd_unitdir}/system
 }
 
 FILES:${PN} += "\

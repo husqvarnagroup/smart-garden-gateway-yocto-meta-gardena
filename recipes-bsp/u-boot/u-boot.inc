@@ -73,7 +73,7 @@ do_compile () {
 
     if [ -n "${UBOOT_ENV}" ] && [ "${UBOOT_ENV_SUFFIX}" = "scr" ]
     then
-        ${UBOOT_MKIMAGE} -C none -A ${UBOOT_ARCH} -T script -d ${WORKDIR}/${UBOOT_ENV_SRC} ${WORKDIR}/${UBOOT_ENV_BINARY}
+        ${UBOOT_MKIMAGE} -C none -A ${UBOOT_ARCH} -T script -d ${UNPACKDIR}/${UBOOT_ENV_SRC} ${UNPACKDIR}/${UBOOT_ENV_BINARY}
     fi
 }
 
@@ -157,9 +157,9 @@ do_install () {
         fi
     fi
 
-    if [ -e ${WORKDIR}/fw_env.config ] ; then
+    if [ -e ${UNPACKDIR}/fw_env.config ] ; then
         install -d ${D}${sysconfdir}
-        install -m 644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
+        install -m 644 ${UNPACKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
     fi
 
     if [ -n "${SPL_BINARY}" ]
@@ -185,7 +185,7 @@ do_install () {
 
     if [ -n "${UBOOT_ENV}" ]
     then
-        install -m 644 ${WORKDIR}/${UBOOT_ENV_BINARY} ${D}/boot/${UBOOT_ENV_IMAGE}
+        install -m 644 ${UNPACKDIR}/${UBOOT_ENV_BINARY} ${D}/boot/${UBOOT_ENV_IMAGE}
         ln -sf ${UBOOT_ENV_IMAGE} ${D}/boot/${UBOOT_ENV_BINARY}
     fi
 
@@ -287,8 +287,8 @@ do_deploy () {
         uboot_deploy
     fi
 
-    if [ -e ${WORKDIR}/fw_env.config ] ; then
-        install -D -m 644 ${WORKDIR}/fw_env.config ${DEPLOYDIR}/fw_env.config-${MACHINE}-${UBOOT_VERSION}
+    if [ -e ${UNPACKDIR}/fw_env.config ] ; then
+        install -D -m 644 ${UNPACKDIR}/fw_env.config ${DEPLOYDIR}/fw_env.config-${MACHINE}-${UBOOT_VERSION}
         cd ${DEPLOYDIR}
         ln -sf fw_env.config-${MACHINE}-${UBOOT_VERSION} fw_env.config-${MACHINE}
         ln -sf fw_env.config-${MACHINE}-${UBOOT_VERSION} fw_env.config
@@ -339,7 +339,7 @@ do_deploy () {
 
     if [ -n "${UBOOT_ENV}" ]
     then
-        install -m 644 ${WORKDIR}/${UBOOT_ENV_BINARY} ${DEPLOYDIR}/${UBOOT_ENV_IMAGE}
+        install -m 644 ${UNPACKDIR}/${UBOOT_ENV_BINARY} ${DEPLOYDIR}/${UBOOT_ENV_IMAGE}
         ln -sf ${UBOOT_ENV_IMAGE} ${DEPLOYDIR}/${UBOOT_ENV_BINARY}
         ln -sf ${UBOOT_ENV_IMAGE} ${DEPLOYDIR}/${UBOOT_ENV_SYMLINK}
     fi

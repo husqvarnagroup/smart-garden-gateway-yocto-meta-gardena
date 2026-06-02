@@ -15,7 +15,7 @@ SRC_URI += " \
 SRCREV_FORMAT = "lemonbeatd"
 
 SRCREV_nix = "0ba2f892186e0d97b192e4d7a5e9ca54bf58cc94"
-EXTRA_OECARGO_PATHS += "${WORKDIR}/nix"
+EXTRA_OECARGO_PATHS += "${UNPACKDIR}/nix"
 
 SUMMARY = "lemonbeatd"
 HOMEPAGE = "https://dev.azure.com/HQV-Gardena/SG-Gateway/_git/sg-lemonbeat-cargo"
