@@ -25,17 +25,17 @@ inherit allarch
 do_install() {
     # Upload files
     install -d ${D}${bindir}/
-    install -m 0755 ${WORKDIR}/stresstest-upload.sh ${D}${bindir}/stresstest-upload
+    install -m 0755 ${UNPACKDIR}/stresstest-upload.sh ${D}${bindir}/stresstest-upload
 
     install -d ${D}${libexecdir}/dhcpcd-hooks
-    install -m 0644 ${WORKDIR}/50-stresstest-upload.sh ${D}${libexecdir}/dhcpcd-hooks/50-stresstest-upload
+    install -m 0644 ${UNPACKDIR}/50-stresstest-upload.sh ${D}${libexecdir}/dhcpcd-hooks/50-stresstest-upload
 
     # Download files
     install -d ${D}${bindir}/
-    install -m 0755 ${WORKDIR}/stresstest-download.sh ${D}${bindir}/stresstest-download
+    install -m 0755 ${UNPACKDIR}/stresstest-download.sh ${D}${bindir}/stresstest-download
 
     install -d ${D}${libexecdir}/dhcpcd-hooks
-    install -m 0644 ${WORKDIR}/50-stresstest-download.sh ${D}${libexecdir}/dhcpcd-hooks/50-stresstest-download
+    install -m 0644 ${UNPACKDIR}/50-stresstest-download.sh ${D}${libexecdir}/dhcpcd-hooks/50-stresstest-download
 }
 
 FILES:${PN}-upload = "\

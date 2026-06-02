@@ -25,7 +25,7 @@ SRC_URI:append:mt7688 = " \
 S = "${UNPACKDIR}"
 
 do_compile() {
-    ${CC} ${CFLAGS} ${LDFLAGS} ${WORKDIR}/led-indicator.c -o led-indicator -Wall -Wextra -Wpedantic -Werror
+    ${CC} ${CFLAGS} ${LDFLAGS} ${UNPACKDIR}/led-indicator.c -o led-indicator -Wall -Wextra -Wpedantic -Werror -Wno-error=unused-result
 }
 
 do_install() {
@@ -34,18 +34,18 @@ do_install() {
     install -m 755 ${S}/internet-ledd.sh ${D}${bindir}/internet-ledd
     install -m 755 ${S}/power-ledd.sh ${D}${bindir}/power-ledd
     install -m 755 ${S}/rf-led-setup.sh ${D}${bindir}/rf-led-setup
-    install -m 755 ${WORKDIR}/led-indicator ${D}${bindir}/
+    install -m 755 ${UNPACKDIR}/led-indicator ${D}${bindir}/
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/power-led.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/internet-led.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/rf-led.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/power-led.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/internet-led.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/rf-led.service ${D}${systemd_unitdir}/system
 }
 
 do_install:append:mt7688() {
     install -m 755 ${S}/ethernet-led-setup.sh ${D}${bindir}/ethernet-led-setup
 
-    install -m 0644 ${WORKDIR}/ethernet-leds.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/ethernet-leds.service ${D}${systemd_unitdir}/system
 }
 
 inherit systemd

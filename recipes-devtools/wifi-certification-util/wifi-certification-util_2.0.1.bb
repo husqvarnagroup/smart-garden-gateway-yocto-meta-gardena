@@ -8,5 +8,5 @@ SRC_URI = "file://wifi-certification-util.py"
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/wifi-certification-util.py ${D}${bindir}/wifi-certification-util
+    install -m 0755 ${UNPACKDIR}/wifi-certification-util.py ${D}${bindir}/wifi-certification-util
 }

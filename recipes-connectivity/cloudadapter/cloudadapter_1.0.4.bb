@@ -36,17 +36,17 @@ FILES:${PN} += " \
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/cloudadapter.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/cloudadapter.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${sysconfdir}/ssl/certs
-    install -m 0644 ${WORKDIR}/aws-root-ca.crt ${D}${sysconfdir}/ssl/certs
+    install -m 0644 ${UNPACKDIR}/aws-root-ca.crt ${D}${sysconfdir}/ssl/certs
 
     # Create work directory for cloudadapter
     install -d ${D}${localstatedir}/lib/${PN}
 
     # Retain persisted data
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/cloudadapter ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/cloudadapter ${D}${base_libdir}/upgrade/keep.d
 }
 
 inherit systemd
