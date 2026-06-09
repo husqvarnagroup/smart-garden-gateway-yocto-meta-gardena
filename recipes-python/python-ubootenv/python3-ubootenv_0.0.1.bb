@@ -1,8 +1,8 @@
 LICENSE = "LGPL-2.1-or-later"
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/LGPL-2.1-or-later;md5=4fbd65380cdd255951079008b364516c"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/LGPL-2.1-or-later;md5=2a4f4fd2128ea2f65047ee63fbca9f68"
 SECTION = "devel/python"
 
-PR = "r1"
+PR = "r2"
 
 S = "${WORKDIR}"
 
