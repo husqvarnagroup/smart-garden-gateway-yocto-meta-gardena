@@ -1,5 +1,6 @@
 DESCRIPTION = "Lemonbeat Python library"
-LICENSE = "CLOSED"
+LICENSE = "GPL-2.0-or-later"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-or-later;md5=fed54355545ffd980b814dab4a3b312c"
 
 inherit python3-dir
 
@@ -7,7 +8,7 @@ SRC_URI += " \
     git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Embedded/sg-lemonbeat-python;protocol=ssh;branch=main \
 "
 
-PR = "r0"
+PR = "r1"
 PV = "2023-05-17+git${SRCPV}"
 
 SRCREV = "c2ae99ac1fd8bb6e0c1c6777f4ed7e5efe390e80"
