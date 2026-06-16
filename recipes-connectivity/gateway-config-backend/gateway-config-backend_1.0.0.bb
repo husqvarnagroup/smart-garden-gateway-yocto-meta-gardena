@@ -10,7 +10,7 @@ SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-con
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r0"
+PR = "r1"
 SRCREV = "57a815f3f1106d50c827ddfe72462d34d748024a"
 SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRC_URI += "\
@@ -42,7 +42,6 @@ do_install () {
     cargo_do_install
 
     install -d ${D}${datadir}/gateway-config-interface/www
-    install -m 0644 ${S}/www/simple.html ${D}${datadir}/gateway-config-interface/www
     ln -s ${sysconfdir}/gateway-config-interface/key.pem ${sysconfdir}/gateway-config-interface/cert.pem ${D}${datadir}/gateway-config-interface
 
     install -d ${D}${systemd_unitdir}/system
