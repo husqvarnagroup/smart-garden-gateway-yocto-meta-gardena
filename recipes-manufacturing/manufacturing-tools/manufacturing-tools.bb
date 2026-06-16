@@ -1,5 +1,6 @@
 SUMMARY = "Device setup and testing during manufacturing"
-LICENSE = "CLOSED"
+LICENSE = "GPL-2.0-or-later"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-or-later;md5=fed54355545ffd980b814dab4a3b312c"
 
 DEPENDS = "python3-native"
 
@@ -31,7 +32,7 @@ SRC_URI = "file://bootstrap.py \
            file://util.py \
 "
 
-PR = "r0"
+PR = "r1"
 
 PV = "2024-08-28"
 PE = "1"
