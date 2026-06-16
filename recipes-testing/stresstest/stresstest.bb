@@ -1,9 +1,9 @@
 DESCRIPTION = "Generate traffic on ifup using Tele2 servers (http://speedtest.tele2.net/)"
-LICENSE = "CLOSED"
+LICENSE = "GPL-2.0-or-later"
 
 PV = "0.1"
 
-PR = "r1"
+PR = "r2"
 
 RDEPENDS:${PN}-upload = "curl systemd-extra-utils"
 RDEPENDS:${PN}-download = "curl systemd-extra-utils"
