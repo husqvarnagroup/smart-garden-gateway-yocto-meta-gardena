@@ -1,8 +1,6 @@
 DESCRIPTION = "Brave New World IPSO Registry"
-LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = " \
-    file://${COMMON_LICENSE_DIR}/Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-"
+LICENSE = "GPL-2.0-or-later"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-or-later;md5=fed54355545ffd980b814dab4a3b312c"
 SRC_URI += " \
     git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-ipso-registry;protocol=ssh;branch=main \
 "
@@ -16,7 +14,7 @@ FILES:${PN} += " \
 
 # The IPSO registry is not versioned. Use non-semantic versioning for this Yocto recipe.
 PV = "2026-04-16"
-PR = "r0"
+PR = "r1"
 
 S = "${WORKDIR}/git"
 
