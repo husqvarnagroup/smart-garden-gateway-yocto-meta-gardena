@@ -1,6 +1,7 @@
 DESCRIPTION = "Tool to migrate a Art. No. 19000 Gateway to the new architecture"
 SUMMARY = "A collection of tools to migrate the old gateway (article number 19000) to the new architecture"
-LICENSE = "CLOSED"
+LICENSE = "GPL-2.0-or-later"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-or-later;md5=fed54355545ffd980b814dab4a3b312c"
 
 inherit systemd allarch
 
@@ -16,7 +17,7 @@ SRC_URI += " \
     file://migration.service \
 "
 
-PR = "r1"
+PR = "r2"
 PV = "2023-04-17-0+git${SRCPV}"
 
 SRCREV ?= "12bfd1295ce120d9e307575c5ce6d1976bf4fea6"
