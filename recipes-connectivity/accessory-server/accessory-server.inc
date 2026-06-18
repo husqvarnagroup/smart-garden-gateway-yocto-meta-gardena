@@ -4,9 +4,9 @@ LICENSE = "CLOSED"
 
 PV = "1.1.3"
 PR = "r0"
-SRCREV = "91226ddab14dacdca65cfed5bb660612ca1de295"
+SRCREV = "${AUTOREV}"
 SRC_URI = " \
-    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=eb/nstd \
+    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=eb/mbedtls \
     file://accessory-server.service \
     file://keep.d/accessory-server \
 "
