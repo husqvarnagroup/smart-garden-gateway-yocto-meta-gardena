@@ -5,9 +5,9 @@ LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=1ebbd3e34237af26da5dc08a4e440464 \
 "
 
-DEPENDS += "openssl pkgconfig-native mdns"
+DEPENDS += "openssl mdns"
 
-PR = "r0"
+PR = "r1"
 SRCREV = "081dd89ad029d1173aa5ab8619184b2cb6ad3cec"
 SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRCREV_sg-ipc = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
@@ -27,7 +27,7 @@ SRCREV_FORMAT = "websocketd"
 
 S = "${WORKDIR}/git"
 
-inherit cargo cargo-update-recipe-crates
+inherit cargo cargo-update-recipe-crates pkgconfig
 
 CARGO_SRC_DIR = ""
 
