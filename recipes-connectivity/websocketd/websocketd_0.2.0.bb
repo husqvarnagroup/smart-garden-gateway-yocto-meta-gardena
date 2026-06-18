@@ -5,18 +5,20 @@ LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=1ebbd3e34237af26da5dc08a4e440464 \
 "
 
-DEPENDS += "openssl pkgconfig-native"
+DEPENDS += "openssl pkgconfig-native mdns"
 
 PR = "r0"
-SRCREV = "d1ac5fb64cc88564b0feda238ac244120af0f2e0"
-SRCREV_gardenalog = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
-SRCREV_sg-ipc = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
-SRCREV_tokioutil = "43e8c7b2784281c3fd37ea0f2e583baad5a018e4"
+SRCREV = "58f9436de23b8c06f5cda936a86b51377685c3e0"
+SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
+SRCREV_sg-ipc = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
+SRCREV_tokioutil = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
+SRCREV_astro-dnssd = "cffb3a70725e52ed7cc684f114a0586ec5dea7b6"
 SRC_URI = " \
     git://github.com/husqvarnagroup/smart-garden-gateway-websocketd.git;protocol=https;branch=main \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=gardenalog;subpath=gardenalog;destsuffix=gardenalog \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=sg-ipc;subpath=sg-ipc;destsuffix=sg-ipc \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=tokioutil;subpath=tokioutil;destsuffix=tokioutil \
+    git://github.com/AstroHQ/astro-dnssd.git;protocol=https;nobranch=1;name=astro-dnssd;destsuffix=astro-dnssd \
     file://websocketd.service \
     file://keep.d/websocketd \
 "
@@ -53,7 +55,7 @@ SRC_URI += " \
 "
 
 LIC_FILES_CHKSUM += " \
-    file://../THIRDPARTY.toml;md5=6a0cdba1bcafb493cbee0bb179cdad97 \
+    file://../THIRDPARTY.toml;md5=802475b37f4b7bc2b8ab41bd69e52d8f \
 "
 
 include websocketd-crates.inc
