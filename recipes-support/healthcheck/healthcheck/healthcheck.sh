@@ -619,6 +619,26 @@ test_excessive_button_presses() {
     log_result "excessive_button_presses" "${result}" "count=${button_presses}"
 }
 
+test_local_ssh_disabled() {
+    local result=0
+
+    if [ -f /etc/allow-local-ssh ] || /sbin/fw_printenv dev_debug_allow_local_ssh >/dev/null 2>&1; then
+        result=2
+    fi
+
+    log_result "local_ssh_disabled" "${result}" "omitted"
+}
+
+test_websocketd_disabled() {
+    local result=0
+
+    if [ -f /etc/enable-websocketd ]; then
+        result=2
+    fi
+
+    log_result "websocketd_disabled" "${result}" "omitted"
+}
+
 test_all() {
     if ping -c1 gateway.iot.sg.dss.husqvarnagroup.net >/dev/null 2>&1 \
        || ping -c1 www.husqvarnagroup.com >/dev/null 2>&1; then
@@ -652,6 +672,8 @@ test_all() {
     test_cloudadapter_rate_limiting
     test_fwrolloutd_alive
     test_excessive_button_presses
+    test_local_ssh_disabled
+    test_websocketd_disabled
 
     # Dependency on ppp0 interface
     test_ppp0_interface_up
