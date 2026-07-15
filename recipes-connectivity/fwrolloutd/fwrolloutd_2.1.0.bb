@@ -64,7 +64,7 @@ FILES:${PN} += " \
 # revision different from `SRCREV`.
 python fwrolloutd_fixup_cargo_config() {
     import re
-    cargo_config = os.path.join(d.getVar("CARGO_HOME"), "config")
+    cargo_config = os.path.join(d.getVar("CARGO_HOME"), "config.toml")
     with open(cargo_config) as f:
         content = f.read()
     content = re.sub(
@@ -84,7 +84,7 @@ do_configure[postfuncs] += "fwrolloutd_fixup_cargo_config"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/fwrolloutd.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/fwrolloutd.service ${D}${systemd_unitdir}/system/
 
     install -d ${D}${sysconfdir}
     install -m 0644 ${S}/fwrolloutd/config.yml ${D}${sysconfdir}/fwrolloutd.yml
