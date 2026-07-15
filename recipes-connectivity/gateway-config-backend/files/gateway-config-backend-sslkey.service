@@ -16,3 +16,6 @@ ExecStart=/bin/sync
 ExecStart=/bin/mv ${SSLKEY_DIR}/key.pem.tmp ${SSLKEY_DIR}/key.pem
 ExecStart=/bin/mv ${SSLKEY_DIR}/cert.pem.tmp ${SSLKEY_DIR}/cert.pem
 RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
