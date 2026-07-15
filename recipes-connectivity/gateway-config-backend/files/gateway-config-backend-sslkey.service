@@ -3,15 +3,18 @@ Description=SSL Key Generation for the GARDENA smart Gateway config interface
 RequiresMountsFor=/var /var/lib
 ConditionFileNotEmpty=|!/etc/gateway-config-interface/key.pem
 ConditionFileNotEmpty=|!/etc/gateway-config-interface/cert.pem
-After=systemd-random-seed.service
+After=systemd-random-seed.service unique-hostname.service
 Requires=systemd-random-seed.service
+# Not in `Requires` to not block the config backend from starting up.
+# With or without unique-hostname.service a valid certificate is generated.
+Wants=unique-hostname.service
 
 [Service]
 Environment="SSLKEY_DIR=/etc/gateway-config-interface"
 Type=oneshot
 ExecStart=/bin/mkdir -p ${SSLKEY_DIR}
 ExecStart=/bin/rm -f ${SSLKEY_DIR}/key.pem ${SSLKEY_DIR}/cert.pem
-ExecStart=/usr/bin/openssl req -x509 -newkey rsa:3072 -keyout ${SSLKEY_DIR}/key.pem.tmp -out ${SSLKEY_DIR}/cert.pem.tmp -sha256 -days 36524 -nodes -subj '/CN=10.0.0.1'
+ExecStart=/bin/sh -c 'openssl req -x509 -newkey rsa:3072 -keyout "${SSLKEY_DIR}/key.pem.tmp" -out "${SSLKEY_DIR}/cert.pem.tmp" -sha256 -days 36524 -nodes -subj "/CN=10.0.0.1" -addext "subjectAltName=IP:10.0.0.1,DNS:$(hostname).local"'
 ExecStart=/bin/sync
 ExecStart=/bin/mv ${SSLKEY_DIR}/key.pem.tmp ${SSLKEY_DIR}/key.pem
 ExecStart=/bin/mv ${SSLKEY_DIR}/cert.pem.tmp ${SSLKEY_DIR}/cert.pem
