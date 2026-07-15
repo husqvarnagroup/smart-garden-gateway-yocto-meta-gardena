@@ -32,4 +32,5 @@ RDEPENDS:${PN} += " \
     openssl \
     openssl-bin \
     openssl-conf \
+    unique-hostname \
 "
