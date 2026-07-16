@@ -33,10 +33,12 @@ uboot_configure_config () {
     config=$1
     type=$2
 
-    oe_runmake -C ${S} O=${B}/${config} ${config}
+    builddir="${config}-${type}"
+
+    oe_runmake -C ${S} O=${B}/${builddir} ${config}
     if [ -n "${@' '.join(find_cfgs(d))}" ]; then
-        merge_config.sh -m -O ${B}/${config} ${B}/${config}/.config ${@" ".join(find_cfgs(d))}
-        oe_runmake -C ${S} O=${B}/${config} oldconfig
+        merge_config.sh -m -O ${B}/${builddir} ${B}/${builddir}/.config ${@" ".join(find_cfgs(d))}
+        oe_runmake -C ${S} O=${B}/${builddir} oldconfig
     fi
 }
 
