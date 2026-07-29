@@ -36,8 +36,6 @@
 inherit swupdate-common-legacy
 inherit image-artifact-names
 
-S = "${UNPACKDIR}/${PN}"
-
 IMAGE_DEPENDS ?= ""
 
 do_configure[noexec] = "1"
