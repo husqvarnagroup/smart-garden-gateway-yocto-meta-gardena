@@ -24,7 +24,7 @@ SRC_URI = "\
     file://lb_radio_gateway.py \
 "
 
-INC_PR = "r10"
+INC_PR = "r11"
 
 PE = "1"
 
@@ -32,6 +32,7 @@ RDEPENDS:${PN} = " \
     python3-io \
     python3-json \
     reset-rm \
+    sim3u-flasher \
 "
 
 do_install () {
