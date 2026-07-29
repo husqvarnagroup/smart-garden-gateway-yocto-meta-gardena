@@ -32,6 +32,7 @@ RDEPENDS:${PN} = " \
     python3-io \
     python3-json \
     reset-rm \
+    sim3u-flasher \
 "
 
 do_install () {
