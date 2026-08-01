@@ -4,8 +4,8 @@ SUMMARY = "SiM3U GPIO SWD flash programmer"
 MAINTAINER = "Gardena GmbH"
 HOMEPAGE = "https://github.com/husqvarnagroup/sim3u-flasher"
 
-LICENSE = "GPL-3.0-or-later"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=75d892af193fd5a298f724c4377d8f62"
+LICENSE = "GPL-2.0-or-later"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=3d26203303a722dedc6bf909d95ba815"
 
 PV = "0.1.0"
 PR = "r0"
