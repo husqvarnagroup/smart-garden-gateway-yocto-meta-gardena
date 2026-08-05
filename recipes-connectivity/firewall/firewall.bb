@@ -4,10 +4,10 @@ HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-PV = "1.4.0"
-PR = "r1"
+PV = "2.0.0"
+PR = "r0"
 
-RDEPENDS:${PN} = "iptables iptables-modules kernel-module-xt-dscp"
+RDEPENDS:${PN} = "nftables kernel-module-nft-ct kernel-module-nft-reject-inet"
 
 SRC_URI = "\
     file://firewall.sh \
