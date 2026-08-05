@@ -50,8 +50,13 @@ fi
 echo "Starting socat commands"
 
 # open firewall ports
-iptables -w 10 -I INPUT -p tcp --dport "$EVENT_TCP_PORT" -j ACCEPT
-iptables -w 10 -I INPUT -p tcp --dport "$COMMAND_TCP_PORT" -j ACCEPT
+FIREWALL_COMMENT="ipcforward-${SERVICE_NAME}"
+if nft list chain inet filter input >/dev/null 2>&1; then
+  nft insert rule inet filter input tcp dport "{ $EVENT_TCP_PORT, $COMMAND_TCP_PORT }" \
+    accept comment "\"$FIREWALL_COMMENT\""
+else
+  echo "No firewall installed, not opening any ports."
+fi
 
 # run socat in the background
 socat "TCP-LISTEN:$EVENT_TCP_PORT,reuseaddr,fork" "UNIX-CONNECT:${EVENTBUS_LOCATION}/${SERVICE_NAME}-event.ipc" & EVENT_PID=$!
@@ -72,8 +77,11 @@ IP=$(ip -o route get to 1.0.0.0 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
 wait $EVENT_PID
 wait $COMMAND_PID
 
-# close firewall ports
-iptables -w 10 -D INPUT -p tcp --dport "$EVENT_TCP_PORT" -j ACCEPT
-iptables -w 10 -D INPUT -p tcp --dport "$COMMAND_TCP_PORT" -j ACCEPT
+# close firewall ports, the rule can only be deleted by its handle
+HANDLE=$(nft --handle list chain inet filter input 2>/dev/null \
+  | sed -n "s/.*comment \"$FIREWALL_COMMENT\" # handle \([0-9]\+\)/\1/p")
+if [ -n "$HANDLE" ]; then
+  nft delete rule inet filter input handle "$HANDLE"
+fi
 
 echo "Socat commands stopped."
