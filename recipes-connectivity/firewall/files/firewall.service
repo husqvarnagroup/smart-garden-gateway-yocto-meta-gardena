@@ -1,5 +1,5 @@
 [Unit]
-Description=install simple iptable rules
+Description=install simple nftables rules
 Before=network.target
 After=network-pre.target
 

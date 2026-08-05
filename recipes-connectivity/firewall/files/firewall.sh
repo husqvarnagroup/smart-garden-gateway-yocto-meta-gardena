@@ -11,92 +11,84 @@ set -eu -o pipefail
 
 hap_port="8001"
 ws_port="8443"
-allowed_tcp_ports="http https $hap_port"
+allowed_tcp_ports="http, https, $hap_port"
 allowed_udp_ports="mdns"
 
 if [ -f "/etc/enable-websocketd" ]; then
-    allowed_tcp_ports="$ws_port $allowed_tcp_ports"
+    allowed_tcp_ports="$ws_port, $allowed_tcp_ports"
 fi
 
 # always allow SSH during development and manufacturing
 if [ "$(fw_printenv -n dev_debug_allow_local_ssh 2>/dev/null || true)" = "1" ] \
     || [ "$(fw_printenv -n eol_test_passed 2>/dev/null || true)" != "1" ] \
     || [ -f "/etc/allow-local-ssh" ]; then
-    allowed_tcp_ports="ssh $allowed_tcp_ports"
+    allowed_tcp_ports="ssh, $allowed_tcp_ports"
 fi
 
-# a convenience function for ipv4 and ipv6
-ip46tables() {
-    iptables "$@"
-    ip6tables "$@"
-}
+# The ruleset is loaded as a single transaction, so it either applies as a
+# whole or leaves the previously loaded one in place.
+if ! nft -f - <<EOF
+# Create the table first, so that deleting it succeeds on an empty ruleset.
+table inet filter
+delete table inet filter
 
-# clear all on error
-cleanup_error() {
-    trap - EXIT TERM INT
-    set +e
-    ip46tables -P INPUT ACCEPT
-    ip46tables -P FORWARD ACCEPT
-    ip46tables -P OUTPUT ACCEPT
-    ip46tables -F
-    ip46tables -X
+table inet filter {
+	# rules to reject with appropriate protocol
+	chain rejectclosed {
+		meta l4proto tcp reject with tcp reset
+		# rejects with ICMP resp. ICMPv6 port unreachable
+		meta l4proto udp reject
+		meta nfproto ipv4 reject with icmp type prot-unreachable
+		meta nfproto ipv6 reject with icmpv6 type admin-prohibited
+	}
+
+	chain input {
+		type filter hook input priority filter; policy drop;
+
+		# loopback is always allowed
+		iif lo accept
+
+		# allow open connections and their related packets
+		ct state established,related accept
+
+		# Traffic Class based filtering on ppp0. Only allow unencrypted traffic on specific ports.
+		# 0x0c -> unencrypted (default key)
+		# 0x1c -> encrypted with network key
+		# More information: https://confluence-husqvarna.riada.se/display/SGS/Brave+New+World+Development+Radio+Module+Ports
+		iifname "ppp0" ip6 dscp 0x03 ip6 ecn not-ect udp dport { 20001, 20003, 20017 } accept
+		iifname "ppp0" ip6 dscp 0x07 ip6 ecn not-ect meta l4proto udp accept
+		iifname "ppp0" ip6 dscp 0x03 ip6 ecn not-ect meta l4proto udp drop
+
+		# allow ICMP
+		ip protocol icmp accept
+		meta l4proto ipv6-icmp accept
+
+		# allow TCP
+		tcp dport { $allowed_tcp_ports } accept
+
+		# allow UDP
+		udp dport { $allowed_udp_ports } accept
+
+		# allow DHCPv4 server access in AP mode
+		meta nfproto ipv4 udp dport bootps accept
+
+		# allow DHCPv6 server(547)->client(546) communication in client mode
+		ip6 daddr fe80::/64 udp dport dhcpv6-client accept
+
+		# reject the rest
+		jump rejectclosed
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+	}
+
+	chain output {
+		type filter hook output priority filter; policy accept;
+	}
+}
+EOF
+then
     echo "Failed to install firewall." >&2
     exit 1
-}
-trap cleanup_error EXIT TERM INT
-
-# default policies
-ip46tables -P INPUT DROP
-ip46tables -P FORWARD DROP
-ip46tables -P OUTPUT ACCEPT
-
-# clear all
-ip46tables -F
-ip46tables -X
-
-# rules to reject with appropriate protocol
-ip46tables -N rejectclosed
-ip46tables -A rejectclosed -p tcp -j REJECT --reject-with tcp-reset
-iptables -A rejectclosed -p udp -j REJECT --reject-with icmp-port-unreachable
-ip6tables -A rejectclosed -p udp -j REJECT --reject-with icmp6-port-unreachable
-iptables -A rejectclosed -j REJECT --reject-with icmp-proto-unreachable
-ip6tables -A rejectclosed -j REJECT --reject-with icmp6-adm-prohibited
-
-# loopback is always allowed
-ip46tables -A INPUT -i lo -j ACCEPT
-
-# allow open connections and their related packets
-ip46tables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# Traffic Class based filtering on ppp0. Only allow unencrypted traffic on specific ports.
-# 0x0c -> unencrypted (default key)
-# 0x1c -> encrypted with network key
-# More information: https://confluence-husqvarna.riada.se/display/SGS/Brave+New+World+Development+Radio+Module+Ports
-ip6tables -A INPUT -i ppp0 -p udp --match multiport --dport 20001,20003,20017 -m tos --tos 0x0c -j ACCEPT
-ip6tables -A INPUT -i ppp0 -p udp -m tos --tos 0x1c -j ACCEPT
-ip6tables -A INPUT -i ppp0 -p udp -m tos --tos 0x0c -j DROP
-
-# allow ICMP
-iptables -A INPUT -p icmp -j ACCEPT
-ip6tables -A INPUT -p icmpv6 -j ACCEPT
-
-# allow TCP
-for port in $allowed_tcp_ports; do
-    ip46tables -A INPUT -p tcp -m tcp --dport "$port" -j ACCEPT
-done
-
-# allow UDP
-for port in $allowed_udp_ports; do
-    ip46tables -A INPUT -p udp -m udp --dport "$port" -j ACCEPT
-done
-
-# allow DHCPv4 server access in AP mode
-iptables -A INPUT -p udp -m udp --dport bootps -j ACCEPT
-
-# allow DHCPv6 server(547)->client(546) communication in client mode
-ip6tables -A INPUT -p udp -m udp --dport dhcpv6-client -d fe80::/64 -j ACCEPT
-
-# reject the rest
-ip46tables -A INPUT -j rejectclosed
-
-trap - EXIT TERM INT
+fi
