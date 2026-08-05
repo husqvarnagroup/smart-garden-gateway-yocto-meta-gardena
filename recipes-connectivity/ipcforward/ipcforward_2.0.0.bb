@@ -25,6 +25,7 @@ do_install:append() {
 }
 
 RDEPENDS:${PN} += " \
+    nftables \
     socat \
 "
 PACKAGE_ARCH = "${MACHINE_ARCH}"
