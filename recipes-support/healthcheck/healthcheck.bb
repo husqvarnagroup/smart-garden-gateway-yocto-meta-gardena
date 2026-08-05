@@ -5,7 +5,16 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 PV = "0.36.0"
 PR = "r1"
 
-RDEPENDS:${PN} = "curl openssl systemd"
+RDEPENDS:${PN} = "\
+    curl \
+    gateway-firmware-zephyr \
+    iproute2-tc \
+    jq \
+    libubootenv-bin \
+    net-tools \
+    openssl \
+    systemd \
+"
 
 SRC_URI = "\
     file://healthcheck.service \
