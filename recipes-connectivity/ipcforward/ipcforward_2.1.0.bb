@@ -10,7 +10,6 @@ SRC_URI += " \
     file://ipcforward.sh \
 "
 
-SRCREV = "${AUTOREV}"
 PR = "r0"
 
 do_install:append() {
@@ -25,6 +24,7 @@ do_install:append() {
 }
 
 RDEPENDS:${PN} += " \
+    nftables \
     socat \
 "
 PACKAGE_ARCH = "${MACHINE_ARCH}"
