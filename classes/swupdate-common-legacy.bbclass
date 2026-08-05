@@ -172,6 +172,13 @@ def prepare_sw_description(d):
     import subprocess
 
     s = d.getVar('S', True)
+
+    # The placeholders are expanded in place. Restore the pristine file, as
+    # do_unpack does not necessarily run before every do_swuimage.
+    sw_description = bb.utils.which(d.getVar('FILESPATH', True), 'sw-description')
+    if sw_description:
+        shutil.copyfile(sw_description, os.path.join(s, 'sw-description'))
+
     swupdate_expand_bitbake_variables(d, s)
 
     swupdate_write_sha256(s)
