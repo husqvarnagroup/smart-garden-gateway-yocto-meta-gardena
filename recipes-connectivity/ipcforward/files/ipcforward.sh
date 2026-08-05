@@ -50,15 +50,20 @@ fi
 echo "Starting socat commands"
 
 # open firewall ports
-iptables -w 10 -I INPUT -p tcp --dport "$EVENT_TCP_PORT" -j ACCEPT
-iptables -w 10 -I INPUT -p tcp --dport "$COMMAND_TCP_PORT" -j ACCEPT
+FIREWALL_COMMENT="ipcforward-${SERVICE_NAME}"
+if nft list chain inet filter input >/dev/null 2>&1; then
+  nft insert rule inet filter input tcp dport "{ $EVENT_TCP_PORT, $COMMAND_TCP_PORT }" \
+    accept comment "\"$FIREWALL_COMMENT\""
+else
+  echo "No firewall installed, not opening any ports."
+fi
 
 # run socat in the background
 socat "TCP-LISTEN:$EVENT_TCP_PORT,reuseaddr,fork" "UNIX-CONNECT:${EVENTBUS_LOCATION}/${SERVICE_NAME}-event.ipc" & EVENT_PID=$!
 socat "TCP-LISTEN:$COMMAND_TCP_PORT,reuseaddr,fork" "UNIX-CONNECT:${EVENTBUS_LOCATION}/${SERVICE_NAME}-command.ipc" & COMMAND_PID=$!
 
 # install signal trap
-trap 'kill $EVENT_PID; kill $COMMAND_PID' INT TERM
+trap 'kill $EVENT_PID || true; kill $COMMAND_PID || true' INT TERM
 
 [ "$QUIET" = false ] && echo "Socat commands started. Use the following commands on your client:"
 [ "$QUIET" = false ] && echo "==="
@@ -72,8 +77,11 @@ IP=$(ip -o route get to 1.0.0.0 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
 wait $EVENT_PID
 wait $COMMAND_PID
 
-# close firewall ports
-iptables -w 10 -D INPUT -p tcp --dport "$EVENT_TCP_PORT" -j ACCEPT
-iptables -w 10 -D INPUT -p tcp --dport "$COMMAND_TCP_PORT" -j ACCEPT
+# close firewall ports, the rule can only be deleted by its handle
+HANDLES=$(nft --handle list chain inet filter input 2>/dev/null \
+  | sed -n "s/.*comment \"$FIREWALL_COMMENT\" # handle \([0-9]\+\)/\1/p")
+for HANDLE in $HANDLES; do
+  nft delete rule inet filter input handle "$HANDLE"
+done
 
 echo "Socat commands stopped."
