@@ -693,4 +693,10 @@ test_all() {
     return "${something_failed}"
 }
 
-test_all
+if [ $# -gt 0 ]; then
+    for test in "$@"; do
+        $test
+    done
+else
+    test_all
+fi
