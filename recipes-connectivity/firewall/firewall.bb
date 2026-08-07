@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 PV = "2.0.0"
 PR = "r0"
 
-RDEPENDS:${PN} = "nftables kernel-module-nft-ct kernel-module-nft-reject-inet"
+RDEPENDS:${PN} = "nftables"
 
 SRC_URI = "\
     file://firewall.sh \
