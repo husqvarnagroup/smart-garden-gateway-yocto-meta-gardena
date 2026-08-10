@@ -14,7 +14,7 @@ SRC_URI = "\
     file://snapshot.sh \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_install() {
     install -d ${D}${sbindir}

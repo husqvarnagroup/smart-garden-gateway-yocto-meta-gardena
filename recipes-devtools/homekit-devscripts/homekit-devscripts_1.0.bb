@@ -14,9 +14,9 @@ SRC_URI = " \
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/changeMdnsName.sh ${D}${bindir}/changeMdnsName
-    install -m 0755 ${WORKDIR}/forgetWifiCredentials.sh ${D}${bindir}/forgetWifiCredentials
-    install -m 0755 ${WORKDIR}/resetHomeKitPairings.sh ${D}${bindir}/resetHomeKitPairings
-    install -m 0755 ${WORKDIR}/resetMdnsName.sh ${D}${bindir}/resetMdnsName
-    install -m 0755 ${WORKDIR}/stopSleepStartWifi.sh ${D}${bindir}/stopSleepStartWifi
+    install -m 0755 ${UNPACKDIR}/changeMdnsName.sh ${D}${bindir}/changeMdnsName
+    install -m 0755 ${UNPACKDIR}/forgetWifiCredentials.sh ${D}${bindir}/forgetWifiCredentials
+    install -m 0755 ${UNPACKDIR}/resetHomeKitPairings.sh ${D}${bindir}/resetHomeKitPairings
+    install -m 0755 ${UNPACKDIR}/resetMdnsName.sh ${D}${bindir}/resetMdnsName
+    install -m 0755 ${UNPACKDIR}/stopSleepStartWifi.sh ${D}${bindir}/stopSleepStartWifi
 }

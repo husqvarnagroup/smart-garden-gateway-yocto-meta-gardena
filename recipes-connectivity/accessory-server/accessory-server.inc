@@ -4,14 +4,13 @@ LICENSE = "CLOSED"
 
 PV = "1.1.3"
 PR = "r0"
-SRCREV = "39359e2afa91d3942cb777638b51f142fe2b5ca8"
+SRCREV = "${AUTOREV}"
 SRC_URI = " \
-    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=main \
+    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-homekit-accessory-server;protocol=ssh;branch=eb/mbedtls \
     file://accessory-server.service \
     file://keep.d/accessory-server \
 "
 
-S = "${WORKDIR}/git"
 
 inherit cmake systemd pkgconfig
 
@@ -38,11 +37,11 @@ do_install() {
     install -m 0644 ${S}/main/include/wifiapi_public.h ${D}${includedir}/accessoryserver/
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/accessory-server.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/accessory-server.service ${D}${systemd_unitdir}/system/
 
     # Keep HomeKit data from being erased on update
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/accessory-server ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/accessory-server ${D}${base_libdir}/upgrade/keep.d
 }
 
 SYSTEMD_PACKAGES = "${PN}"

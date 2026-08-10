@@ -20,7 +20,6 @@ RDEPENDS:${PN} = "\
   wpa-supplicant-cli \
 "
 
-S = "${WORKDIR}/git"
 FILES:${PN} += "\
     /usr/local/sbin/ \
     ${systemd_unitdir}/network \
@@ -30,7 +29,7 @@ do_install () {
     install -d ${D}${bindir}
     install -m 0755 ${S}/ca/wfa_ca ${D}${bindir}
     install -m 0755 ${S}/dut/wfa_dut ${D}${bindir}
-    install -m 0755 ${WORKDIR}/wifi-testsuite-install.sh ${D}${bindir}/wifi-testsuite-install
+    install -m 0755 ${UNPACKDIR}/wifi-testsuite-install.sh ${D}${bindir}/wifi-testsuite-install
     install -m 0755 -D ${S}/scripts/*.sh ${D}${bindir}
     # Workaround for the hardcoded paths
     install -d ${D}/usr/local/sbin
@@ -39,5 +38,5 @@ do_install () {
 
     # Configure static address on eth0
     install -d 0755 ${D}${systemd_unitdir}/network
-    install -m 0644 ${WORKDIR}/eth0.network.disabled ${D}${systemd_unitdir}/network
+    install -m 0644 ${UNPACKDIR}/eth0.network.disabled ${D}${systemd_unitdir}/network
 }

@@ -92,12 +92,12 @@ for s in \
     accessory-server.service \
     cloudadapter.service \
     environment.service \
+    firewall.service \
     fwrolloutd.service \
     gateway-config-backend.service \
     gateway-config-backend.socket \
     healthcheck.service \
     internet-led.service \
-    iptables.service \
     lemonbeatd.service \
     lwm2mserver.service \
     mdns.service \

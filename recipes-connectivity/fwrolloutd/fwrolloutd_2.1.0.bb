@@ -27,7 +27,6 @@ SRC_URI = " \
     git://github.com/OpenMobileAlliance/lwm2m-registry.git;protocol=https;nobranch=1;name=lwm2m-registry;destsuffix=third_party/lwm2m-registry \
 "
 
-S = "${WORKDIR}/git"
 CARGO_SRC_DIR = "fwrolloutd"
 
 LIC_FILES_CHKSUM = " \
@@ -65,7 +64,7 @@ FILES:${PN} += " \
 # revision different from `SRCREV`.
 python fwrolloutd_fixup_cargo_config() {
     import re
-    cargo_config = os.path.join(d.getVar("CARGO_HOME"), "config")
+    cargo_config = os.path.join(d.getVar("CARGO_HOME"), "config.toml")
     with open(cargo_config) as f:
         content = f.read()
     content = re.sub(
@@ -85,7 +84,7 @@ do_configure[postfuncs] += "fwrolloutd_fixup_cargo_config"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/fwrolloutd.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/fwrolloutd.service ${D}${systemd_unitdir}/system/
 
     install -d ${D}${sysconfdir}
     install -m 0644 ${S}/fwrolloutd/config.yml ${D}${sysconfdir}/fwrolloutd.yml

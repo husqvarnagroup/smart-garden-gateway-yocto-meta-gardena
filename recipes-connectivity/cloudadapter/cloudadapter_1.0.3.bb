@@ -7,9 +7,9 @@ LIC_FILES_CHKSUM = " \
 
 inherit python_poetry_core
 
-SRCREV = "7e60f0ab4337dfe17e9812c2207f396056145850"
+SRCREV = "${AUTOREV}"
 SRC_URI += " \
-    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-cloud-adapter;protocol=ssh;branch=main \
+    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-cloud-adapter;protocol=ssh;branch=eb/wrynose \
     file://cloudadapter.service \
     file://aws-root-ca.crt \
     file://keep.d/cloudadapter \
@@ -28,7 +28,6 @@ RDEPENDS:${PN} += " \
     cloudadapter-foss-dependencies \
 "
 
-S = "${WORKDIR}/git"
 
 FILES:${PN} += " \
     ${localstatedir}/lib/${PN} \
@@ -37,17 +36,17 @@ FILES:${PN} += " \
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/cloudadapter.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/cloudadapter.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${sysconfdir}/ssl/certs
-    install -m 0644 ${WORKDIR}/aws-root-ca.crt ${D}${sysconfdir}/ssl/certs
+    install -m 0644 ${UNPACKDIR}/aws-root-ca.crt ${D}${sysconfdir}/ssl/certs
 
     # Create work directory for cloudadapter
     install -d ${D}${localstatedir}/lib/${PN}
 
     # Retain persisted data
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/cloudadapter ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/cloudadapter ${D}${base_libdir}/upgrade/keep.d
 }
 
 inherit systemd

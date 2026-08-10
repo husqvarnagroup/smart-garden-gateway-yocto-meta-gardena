@@ -18,5 +18,5 @@ FILES:${PN} += " \
 
 do_install () {
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/list_devices.sh ${D}${bindir}/list-lemonbeat-devices
+    install -m 0755 ${UNPACKDIR}/list_devices.sh ${D}${bindir}/list-lemonbeat-devices
 }

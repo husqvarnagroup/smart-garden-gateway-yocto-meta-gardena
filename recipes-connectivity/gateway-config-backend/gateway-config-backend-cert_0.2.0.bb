@@ -9,7 +9,7 @@ SRC_URI = "\
     file://keep.d/gateway-config-backend \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit systemd
 
@@ -17,10 +17,10 @@ SYSTEMD_SERVICE:${PN} = "gateway-config-backend-sslkey.service"
 
 do_install () {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/gateway-config-backend-sslkey.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/gateway-config-backend-sslkey.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/gateway-config-backend ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/gateway-config-backend ${D}${base_libdir}/upgrade/keep.d
 }
 
 FILES:${PN} += "\

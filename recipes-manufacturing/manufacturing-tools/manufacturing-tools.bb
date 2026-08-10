@@ -63,32 +63,32 @@ RDEPENDS:${PN} += " \
 
 do_install () {
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/eoltest-check.sh ${D}${bindir}/eoltest-check
-    install -m 0755 ${WORKDIR}/eoltest-run.sh ${D}${bindir}/eoltest-run
-    install -m 0755 ${WORKDIR}/eoltest.py ${D}${bindir}/eoltest
-    install -m 0755 ${WORKDIR}/errorhandler.py ${D}${bindir}/cpms-errorhandler
-    install -m 0755 ${WORKDIR}/fct-tool.py ${D}${bindir}/fct-tool
-    install -m 0755 ${WORKDIR}/homekit-setup ${D}${bindir}
-    install -m 0755 ${WORKDIR}/homekit-tool.py ${D}${bindir}/homekit-tool
-    install -m 0755 ${WORKDIR}/ipr-setup ${D}${bindir}
-    install -m 0755 ${WORKDIR}/ipr-tool.py ${D}${bindir}/ipr-tool
-    install -m 0755 ${WORKDIR}/selftest-check ${D}${bindir}
-    install -m 0755 ${WORKDIR}/selftest.py ${D}${bindir}/selftest
+    install -m 0755 ${UNPACKDIR}/eoltest-check.sh ${D}${bindir}/eoltest-check
+    install -m 0755 ${UNPACKDIR}/eoltest-run.sh ${D}${bindir}/eoltest-run
+    install -m 0755 ${UNPACKDIR}/eoltest.py ${D}${bindir}/eoltest
+    install -m 0755 ${UNPACKDIR}/errorhandler.py ${D}${bindir}/cpms-errorhandler
+    install -m 0755 ${UNPACKDIR}/fct-tool.py ${D}${bindir}/fct-tool
+    install -m 0755 ${UNPACKDIR}/homekit-setup ${D}${bindir}
+    install -m 0755 ${UNPACKDIR}/homekit-tool.py ${D}${bindir}/homekit-tool
+    install -m 0755 ${UNPACKDIR}/ipr-setup ${D}${bindir}
+    install -m 0755 ${UNPACKDIR}/ipr-tool.py ${D}${bindir}/ipr-tool
+    install -m 0755 ${UNPACKDIR}/selftest-check ${D}${bindir}
+    install -m 0755 ${UNPACKDIR}/selftest.py ${D}${bindir}/selftest
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/eoltest-check.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/eoltest.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/homekit-setup.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/ipr.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/selftest.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/eoltest-check.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/eoltest.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/homekit-setup.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/ipr.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/selftest.service ${D}${systemd_unitdir}/system
 
     install -d 0755 ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${WORKDIR}/bootstrap.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${WORKDIR}/cpms_client.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${WORKDIR}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${WORKDIR}/radio_module_test.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${WORKDIR}/testing.py ${D}${PYTHON_SITEPACKAGES_DIR}
-    install -m 0755 ${WORKDIR}/util.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${UNPACKDIR}/bootstrap.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${UNPACKDIR}/cpms_client.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${UNPACKDIR}/cpms_config.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${UNPACKDIR}/radio_module_test.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${UNPACKDIR}/testing.py ${D}${PYTHON_SITEPACKAGES_DIR}
+    install -m 0755 ${UNPACKDIR}/util.py ${D}${PYTHON_SITEPACKAGES_DIR}
 }
 
 pkg_postinst:${PN} () {
