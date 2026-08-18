@@ -6,12 +6,12 @@ SUMMARY = "Backend component for the GARDENA smart Gateway config interface"
 HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
 
-SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;branch=main"
+SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;branch=lw/dbus-wifi"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r1"
-SRCREV = "57a815f3f1106d50c827ddfe72462d34d748024a"
+PR = "r2"
+SRCREV = "024f8b99be4fbf3d2db7d7d59f9618c2784def86"
 SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRC_URI += "\
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=gardenalog;subpath=gardenalog;destsuffix=gardenalog \
@@ -24,10 +24,10 @@ SRCREV_FORMAT = "gateway-config-backend"
 
 LIC_FILES_CHKSUM = " \
     file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://../THIRDPARTY.toml;md5=4a75ade2984289bb97022571aa4aab51 \
+    file://../THIRDPARTY.toml;md5=922a7ae764224a90e8450a194a3065a2 \
 "
 
-DEPENDS += "openssl accessory-server"
+DEPENDS += "openssl dbus"
 RDEPENDS:${PN} += "gateway-config-frontend gateway-config-backend-cert"
 
 
