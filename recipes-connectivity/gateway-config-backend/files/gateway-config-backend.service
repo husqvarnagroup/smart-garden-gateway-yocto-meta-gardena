@@ -5,6 +5,7 @@ After=network.target gateway-config-backend-sslkey.service environment.service
 ConditionPathExists=/etc/fct_finalized
 
 [Service]
+Environment=RUST_LOG=debug
 ExecStart=/usr/bin/gateway-config-backend
 WorkingDirectory=/usr/share/gateway-config-interface
 Restart=on-failure
