@@ -10,9 +10,9 @@ SRC_URI += "git://file:///home/lukas/projects/sg-gateway-config-backend;branch=l
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r3"
-#SRCREV = "024f8b99be4fbf3d2db7d7d59f9618c2784def86"
-SRCREV = "${AUTOREV}"
+PR = "r4"
+#SRCREV = "a59ee388f526cc3241e90ab29f2a5bfbd2dfd18a"
+SRCREV = "a59ee388f526cc3241e90ab29f2a5bfbd2dfd18a"
 PV = "1.0+git${SRCPV}"
 
 SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
@@ -27,10 +27,10 @@ SRCREV_FORMAT = "gateway-config-backend"
 
 LIC_FILES_CHKSUM = " \
     file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
-    file://../THIRDPARTY.toml;md5=922a7ae764224a90e8450a194a3065a2 \
+    file://../THIRDPARTY.toml;md5=9a7eaec6c665e3dc52849dff4cc017ad \
 "
 
-DEPENDS += "openssl accessory-server dbus"
+DEPENDS += "openssl dbus"
 
 RDEPENDS:${PN} += "gateway-config-frontend gateway-config-backend-cert"
 
