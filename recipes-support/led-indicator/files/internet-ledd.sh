@@ -8,6 +8,7 @@ set -eu -o pipefail
 readonly debug=1
 readonly led=/usr/bin/led-indicatorc
 readonly cloudadapter_status_file=/run/cloudadapter/led_status
+readonly disable_cloudadapter_file=/etc/disable-cloudadapter
 
 info() {
     if [ $debug -ne 0 ]; then
@@ -63,11 +64,17 @@ cloudadapter_status() {
     [ -f "$cloudadapter_status_file" ] && [ "$(cat $cloudadapter_status_file)" = "GREEN" ]
 }
 
+cloudadapter_disabled() {
+    [ -f "$disable_cloudadapter_file" ]
+}
+
 last_state=""
 
 while true; do
     if is_hotspot; then
         state=led_yellow_on
+    elif cloudadapter_disabled; then
+        state=led_green_on
     elif has_ip eth0 || has_ip wlan0; then
         if cloudadapter_status; then
             state=led_green_on
