@@ -2,6 +2,7 @@
 Description=BNW cloudadapter
 After=update-hw-revision.service environment.service
 Wants=update-hw-revision.service environment.service
+ConditionPathExists=!/etc/disable-cloudadapter
 StartLimitIntervalSec=24h
 StartLimitBurst=60
 
