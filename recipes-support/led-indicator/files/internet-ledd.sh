@@ -23,6 +23,13 @@ led_green_on() {
     $led smartgw:internet:blue off
 }
 
+led_blue_on() {
+    info "Steady blue"
+    $led smartgw:internet:red off
+    $led smartgw:internet:green off
+    $led smartgw:internet:blue on
+}
+
 led_red_on() {
     info "Steady red"
     $led smartgw:internet:red on
@@ -68,13 +75,21 @@ cloudadapter_disabled() {
     [ -f "$disable_cloudadapter_file" ]
 }
 
+websocketd_running() {
+    [ -f /etc/enable-websocketd ] && systemctl is-active --quiet websocketd
+}
+
 last_state=""
 
 while true; do
     if is_hotspot; then
         state=led_yellow_on
     elif cloudadapter_disabled; then
-        state=led_green_on
+        if websocketd_running; then
+            state=led_blue_on
+        else
+            state=led_red_blink
+        fi
     elif has_ip eth0 || has_ip wlan0; then
         if cloudadapter_status; then
             state=led_green_on
