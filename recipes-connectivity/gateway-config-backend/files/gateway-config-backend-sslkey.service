@@ -1,8 +1,6 @@
 [Unit]
 Description=SSL Key Generation for the GARDENA smart Gateway config interface
 RequiresMountsFor=/var /var/lib
-ConditionFileNotEmpty=|!/etc/gateway-config-interface/key.pem
-ConditionFileNotEmpty=|!/etc/gateway-config-interface/cert.pem
 After=systemd-random-seed.service unique-hostname.service
 Requires=systemd-random-seed.service
 # Not in `Requires` to not block the config backend from starting up.
@@ -12,6 +10,8 @@ Wants=unique-hostname.service
 [Service]
 Environment="SSLKEY_DIR=/etc/gateway-config-interface"
 Type=oneshot
+# (Re)generate only if key or certificate is missing, or the certificate has no DNS name in its SAN.
+ExecCondition=/bin/sh -c '! { test -s /etc/gateway-config-interface/key.pem && test -s /etc/gateway-config-interface/cert.pem && openssl x509 -text -noout -in /etc/gateway-config-interface/cert.pem | grep -q DNS; }'
 ExecStart=/bin/mkdir -p ${SSLKEY_DIR}
 ExecStart=/bin/rm -f ${SSLKEY_DIR}/key.pem ${SSLKEY_DIR}/cert.pem
 ExecStart=/bin/sh -c 'openssl req -x509 -newkey rsa:3072 -keyout "${SSLKEY_DIR}/key.pem.tmp" -out "${SSLKEY_DIR}/cert.pem.tmp" -sha256 -days 36524 -nodes -subj "/CN=10.0.0.1" -addext "subjectAltName=IP:10.0.0.1,DNS:$(hostname).local"'
