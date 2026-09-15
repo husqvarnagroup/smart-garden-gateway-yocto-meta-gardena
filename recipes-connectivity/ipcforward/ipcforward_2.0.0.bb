@@ -16,15 +16,16 @@ PR = "r0"
 do_install:append() {
     # copy systemd files
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/ipcforward-lwm2mserver.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/ipcforward-lemonbeatd.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/ipcforward-lwm2mserver.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/ipcforward-lemonbeatd.service ${D}${systemd_unitdir}/system
 
     # copy forwarder script
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/ipcforward.sh ${D}${bindir}/ipcforward
+    install -m 0755 ${UNPACKDIR}/ipcforward.sh ${D}${bindir}/ipcforward
 }
 
 RDEPENDS:${PN} += " \
+    nftables \
     socat \
 "
 PACKAGE_ARCH = "${MACHINE_ARCH}"

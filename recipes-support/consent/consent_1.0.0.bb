@@ -17,7 +17,7 @@ do_install() {
 
     # Keep the files after update if the client allows us to collect data.
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/consent ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/consent ${D}${base_libdir}/upgrade/keep.d
 }
 
 FILES:${PN} += " \

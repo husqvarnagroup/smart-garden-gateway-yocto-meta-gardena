@@ -12,7 +12,7 @@ SRC_URI = "\
     file://reset-rm.cfg \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 DEPENDS += " \
     libcyaml \
@@ -25,19 +25,19 @@ RDEPENDS:${PN} += " \
 "
 
 do_compile() {
-    ${CC} ${CFLAGS} ${LDFLAGS} ${WORKDIR}/reset-rm.c -lcyaml -lyaml -lgpiod -o reset-rm -Wall -Wextra -Wpedantic -Werror
+    ${CC} ${CFLAGS} ${LDFLAGS} ${UNPACKDIR}/reset-rm.c -lcyaml -lyaml -lgpiod -o reset-rm -Wall -Wextra -Wpedantic -Werror
 }
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 755 ${WORKDIR}/reset-rm ${D}${bindir}/
+    install -m 755 ${UNPACKDIR}/reset-rm ${D}${bindir}/
     ln -s reset-rm ${D}${bindir}/rm-reset
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/reset-rm.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/reset-rm.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${sysconfdir}
-    install -m 0644 ${WORKDIR}/reset-rm.cfg ${D}${sysconfdir}/reset-rm.cfg
+    install -m 0644 ${UNPACKDIR}/reset-rm.cfg ${D}${sysconfdir}/reset-rm.cfg
 }
 
 inherit systemd

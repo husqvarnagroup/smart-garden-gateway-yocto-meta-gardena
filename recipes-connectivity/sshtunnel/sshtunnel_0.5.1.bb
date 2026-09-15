@@ -37,17 +37,17 @@ RDEPENDS:${PN} = " \
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/sshtunnel.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/sshtunnel-button.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/sshtunnel-shutdown.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/sshtunnel-shutdown.timer ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/sshtunnel.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/sshtunnel-button.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/sshtunnel-shutdown.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/sshtunnel-shutdown.timer ${D}${systemd_unitdir}/system
 
     install -d ${D}${sbindir}
-    install -m 0755 ${WORKDIR}/sshtunnel.sh ${D}${sbindir}/sshtunnel
-    install -m 0755 ${WORKDIR}/sshtunnel-button.sh ${D}${sbindir}/sshtunnel-button
+    install -m 0755 ${UNPACKDIR}/sshtunnel.sh ${D}${sbindir}/sshtunnel
+    install -m 0755 ${UNPACKDIR}/sshtunnel-button.sh ${D}${sbindir}/sshtunnel-button
 
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/sshtunnel ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/sshtunnel ${D}${base_libdir}/upgrade/keep.d
 }
 
 SYSTEMD_PACKAGES = "${PN}"
