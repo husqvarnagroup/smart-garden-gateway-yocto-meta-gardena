@@ -1,7 +1,9 @@
 #!/bin/sh
 # shellcheck shell=dash
 #
-# Checking for known problems, reporting failing checks to syslog and stderr.
+# Checks for known problems, reports failing checks to syslog and stderr.
+#
+# To only run specific checks, pass the function names as arguments.
 #
 # Note: The used log name must be the name of the test without the
 # prefix "test_".
@@ -693,4 +695,10 @@ test_all() {
     return "${something_failed}"
 }
 
-test_all
+if [ $# -gt 0 ]; then
+    for test in "$@"; do
+        $test
+    done
+else
+    test_all
+fi
