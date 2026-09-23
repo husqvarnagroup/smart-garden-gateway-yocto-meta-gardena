@@ -3,21 +3,21 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 PV = "0.6"
-PR = "r0"
+PR = "r1"
 
 SRC_URI = "\
     file://${BPN}-ppp0.service \
     file://99-${BPN}-ppp0.rules \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/${BPN}-ppp0.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/${BPN}-ppp0.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${nonarch_base_libdir}/udev/rules.d
-    install -m 0644 ${WORKDIR}/99-${BPN}-ppp0.rules ${D}${nonarch_base_libdir}/udev/rules.d/
+    install -m 0644 ${UNPACKDIR}/99-${BPN}-ppp0.rules ${D}${nonarch_base_libdir}/udev/rules.d/
 }
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"

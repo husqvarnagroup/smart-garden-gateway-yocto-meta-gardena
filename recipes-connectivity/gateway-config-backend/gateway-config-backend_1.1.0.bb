@@ -7,10 +7,9 @@ HOMEPAGE = "https://www.gardena.com/"
 LICENSE = "Proprietary"
 
 SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;branch=main"
-S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
-PR = "r0"
+PR = "r1"
 SRCREV = "7d8b88247fcc3b9c047f509239fcf5551d38e44b"
 SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRC_URI += "\
@@ -46,8 +45,8 @@ do_install () {
     ln -s ${sysconfdir}/gateway-config-interface/key.pem ${sysconfdir}/gateway-config-interface/cert.pem ${D}${datadir}/gateway-config-interface
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/gateway-config-backend.service ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/gateway-config-backend.socket ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/gateway-config-backend.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/gateway-config-backend.socket ${D}${systemd_unitdir}/system
 }
 
 FILES:${PN} += "\

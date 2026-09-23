@@ -6,8 +6,7 @@ import tempfile
 
 FIRMWARE_PATH = "/usr/share/gardena/firmware/current/"
 FIRMWARE_STACK_FILE = "gateway.bin"
-FIRMWARE_STACK_ADDRESS = 0x0
-FLASH_COMMAND_TEMPLATE = "openocd -f board/gardena_radio.cfg -c 'program %s verify exit %s'"
+FLASH_COMMAND = "sim3u-flasher"
 
 
 def get_fw_printenv():
@@ -25,10 +24,9 @@ def fw_getenv(variable):
     return None
 
 
-def do_openocd_program(filename, address):
-    """Call openocd to program given file at given address."""
-    flash_command = FLASH_COMMAND_TEMPLATE % (filename, hex(address))
-    process = subprocess.Popen(flash_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+def do_program(filename):
+    """Call sim3u-flasher to erase, program and verify the given file."""
+    process = subprocess.Popen([FLASH_COMMAND, filename], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = process.communicate()
     if process.returncode != 0:
         print("Stdout: %s" % out.decode('ascii'))
@@ -62,7 +60,7 @@ def flash_rm_firmware():
     # reset RM
     reset_rm()
     # flash firmware
-    do_openocd_program(FIRMWARE_PATH + FIRMWARE_STACK_FILE, FIRMWARE_STACK_ADDRESS)
+    do_program(FIRMWARE_PATH + FIRMWARE_STACK_FILE)
     # reset RM
     reset_rm()
     # restart pppd if it was stopped
