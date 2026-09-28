@@ -3,6 +3,7 @@ root_name = "overlayfs-purge"
 [[third_party_libraries]]
 package_name = "bitflags"
 package_version = "1.0.4"
+repository = "https://github.com/bitflags/bitflags"
 license = "MIT/Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -244,6 +245,7 @@ limitations under the License.
 [[third_party_libraries]]
 package_name = "cfg-if"
 package_version = "0.1.6"
+repository = "https://github.com/alexcrichton/cfg-if"
 license = "MIT/Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -485,6 +487,7 @@ limitations under the License.
 [[third_party_libraries]]
 package_name = "glob"
 package_version = "0.3.1"
+repository = "https://github.com/rust-lang/glob"
 license = "MIT OR Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -726,6 +729,7 @@ limitations under the License.
 [[third_party_libraries]]
 package_name = "libc"
 package_version = "0.2.48"
+repository = "https://github.com/rust-lang/libc"
 license = "MIT OR Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -967,6 +971,7 @@ limitations under the License.
 [[third_party_libraries]]
 package_name = "nix"
 package_version = "0.13.0"
+repository = "https://github.com/nix-rust/nix"
 license = "MIT"
 
 [[third_party_libraries.licenses]]
@@ -998,6 +1003,7 @@ THE SOFTWARE.
 [[third_party_libraries]]
 package_name = "proc-macro2"
 package_version = "1.0.83"
+repository = "https://github.com/dtolnay/proc-macro2"
 license = "MIT OR Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -1212,6 +1218,7 @@ END OF TERMS AND CONDITIONS
 [[third_party_libraries]]
 package_name = "quote"
 package_version = "1.0.36"
+repository = "https://github.com/dtolnay/quote"
 license = "MIT OR Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -1426,6 +1433,7 @@ END OF TERMS AND CONDITIONS
 [[third_party_libraries]]
 package_name = "syn"
 package_version = "2.0.65"
+repository = "https://github.com/dtolnay/syn"
 license = "MIT OR Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -1640,6 +1648,7 @@ END OF TERMS AND CONDITIONS
 [[third_party_libraries]]
 package_name = "thiserror"
 package_version = "1.0.61"
+repository = "https://github.com/dtolnay/thiserror"
 license = "MIT OR Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -1854,6 +1863,7 @@ END OF TERMS AND CONDITIONS
 [[third_party_libraries]]
 package_name = "thiserror-impl"
 package_version = "1.0.61"
+repository = "https://github.com/dtolnay/thiserror"
 license = "MIT OR Apache-2.0"
 
 [[third_party_libraries.licenses]]
@@ -2068,6 +2078,7 @@ END OF TERMS AND CONDITIONS
 [[third_party_libraries]]
 package_name = "unicode-ident"
 package_version = "1.0.12"
+repository = "https://github.com/dtolnay/unicode-ident"
 license = "(MIT OR Apache-2.0) AND Unicode-DFS-2016"
 
 [[third_party_libraries.licenses]]
@@ -2281,11 +2292,59 @@ END OF TERMS AND CONDITIONS
 
 [[third_party_libraries.licenses]]
 license = "Unicode-DFS-2016"
-text = "NOT FOUND"
+text = """
+UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+
+See Terms of Use <https://www.unicode.org/copyright.html>
+for definitions of Unicode Inc.’s Data Files and Software.
+
+NOTICE TO USER: Carefully read the following legal agreement.
+BY DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING UNICODE INC.'S
+DATA FILES (\"DATA FILES\"), AND/OR SOFTWARE (\"SOFTWARE\"),
+YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
+TERMS AND CONDITIONS OF THIS AGREEMENT.
+IF YOU DO NOT AGREE, DO NOT DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE
+THE DATA FILES OR SOFTWARE.
+
+COPYRIGHT AND PERMISSION NOTICE
+
+Copyright © 1991-2022 Unicode, Inc. All rights reserved.
+Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Unicode data files and any associated documentation
+(the \"Data Files\") or Unicode software and any associated documentation
+(the \"Software\") to deal in the Data Files or Software
+without restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, and/or sell copies of
+the Data Files or Software, and to permit persons to whom the Data Files
+or Software are furnished to do so, provided that either
+(a) this copyright and permission notice appear with all copies
+of the Data Files or Software, or
+(b) this copyright and permission notice appear in associated
+Documentation.
+
+THE DATA FILES AND SOFTWARE ARE PROVIDED \"AS IS\", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT OF THIRD PARTY RIGHTS.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
+NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+
+Except as contained in this notice, the name of a copyright holder
+shall not be used in advertising or otherwise to promote the sale,
+use or other dealings in these Data Files or Software without prior
+written authorization of the copyright holder.
+"""
 
 [[third_party_libraries]]
 package_name = "void"
 package_version = "1.0.2"
+repository = "https://github.com/reem/rust-void.git"
 license = "MIT"
 
 [[third_party_libraries.licenses]]
@@ -2295,6 +2354,7 @@ text = "NOT FOUND"
 [[third_party_libraries]]
 package_name = "xattr"
 package_version = "0.2.2"
+repository = "https://github.com/Stebalien/xattr"
 license = "MIT/Apache-2.0"
 
 [[third_party_libraries.licenses]]
