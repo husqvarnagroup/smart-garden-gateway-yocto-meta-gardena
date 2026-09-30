@@ -2,6 +2,8 @@ DESCRIPTION = "Allow the user to provide consent for support data collection on 
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
+PR = "r1"
+
 FILESEXTRAPATHS:append := "${THISDIR}/files:"
 
 SRC_URI = "\
@@ -17,7 +19,7 @@ do_install() {
 
     # Keep the files after update if the client allows us to collect data.
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/consent ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/consent ${D}${base_libdir}/upgrade/keep.d
 }
 
 FILES:${PN} += " \

@@ -8,13 +8,13 @@ RDEPENDS:${PN} += "\
     healthcheck \
 "
 
-PR = "r0"
+PR = "r1"
 
 SRC_URI = "\
     file://snapshot.sh \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_install() {
     install -d ${D}${sbindir}

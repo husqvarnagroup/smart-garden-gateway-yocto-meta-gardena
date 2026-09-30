@@ -7,9 +7,8 @@ SRC_URI = " \
 
 SRCREV = "ec56850a47eb539a677f35b428a1db4880be7452"
 
-INC_PR = "r4"
+INC_PR = "r5"
 
-S = "${WORKDIR}/git"
 
 EXTRA_OECMAKE = " -DBUILD_SHARED_LIBS=y"
 

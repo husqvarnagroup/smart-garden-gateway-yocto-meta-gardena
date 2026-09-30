@@ -8,12 +8,11 @@ SRC_URI += " \
     git://ssh.dev.azure.com/v3/HQV-Gardena/SG-Embedded/sg-lemonbeat-python;protocol=ssh;branch=main \
 "
 
-PR = "r1"
+PR = "r2"
 PV = "2023-05-17+git${SRCPV}"
 
 SRCREV = "c2ae99ac1fd8bb6e0c1c6777f4ed7e5efe390e80"
 
-S = "${WORKDIR}/git"
 
 RDEPENDS:${PN} += " \
     lsdl-serializer-lib \

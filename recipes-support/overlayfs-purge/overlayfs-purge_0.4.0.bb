@@ -5,13 +5,11 @@ LIC_FILES_CHKSUM = " \
     file://LICENSE-MIT;md5=a3e3fd141148f23107ef1b2019ff1ff6 \
 "
 
-PR = "r0"
+PR = "r1"
 SRCREV = "a5e3582df0b4ebfd2fc723f3ee9de6d189faa77a"
 SRC_URI = " \
     git://github.com/husqvarnagroup/overlayfs-purge.git;protocol=https;branch=main \
 "
-
-S = "${WORKDIR}/git"
 
 inherit cargo cargo-update-recipe-crates
 
