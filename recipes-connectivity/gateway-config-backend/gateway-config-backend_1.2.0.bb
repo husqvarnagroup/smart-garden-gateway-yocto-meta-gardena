@@ -11,7 +11,7 @@ S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
 PR = "r0"
-SRCREV = "7d8b88247fcc3b9c047f509239fcf5551d38e44b"
+SRCREV = "d66852a7f0e0181c23c484af8cda209c7c6db863"
 SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRC_URI += "\
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=gardenalog;subpath=gardenalog;destsuffix=gardenalog \
