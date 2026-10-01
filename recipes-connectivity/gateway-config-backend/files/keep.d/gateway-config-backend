@@ -1,2 +1,3 @@
 /etc/gateway-config-interface/key.pem
 /etc/gateway-config-interface/cert.pem
+/etc/gateway-config-interface/password
