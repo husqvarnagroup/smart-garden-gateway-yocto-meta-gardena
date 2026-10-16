@@ -5,11 +5,10 @@ LIC_FILES_CHKSUM = "file://coap/er-coap-13/LICENSE;md5=bd9db1399d32da2d482fb0afb
 SRC_URI = "gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/wakaama;protocol=ssh;branch=master"
 
 PV = "2022-01-19+git${SRCPV}"
-PR = "r0"
+PR = "r1"
 SRCREV = "c73b5065d64efe793b3a605beaf63691aa253146"
 
-S = "${WORKDIR}/git"
-B = "${WORKDIR}/build"
+B = "${UNPACKDIR}/build"
 
 inherit cmake
 

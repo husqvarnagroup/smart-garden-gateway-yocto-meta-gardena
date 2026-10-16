@@ -24,7 +24,7 @@ SRC_URI = "\
     file://lb_radio_gateway.py \
 "
 
-INC_PR = "r10"
+INC_PR = "r11"
 
 PE = "1"
 
@@ -32,29 +32,30 @@ RDEPENDS:${PN} = " \
     python3-io \
     python3-json \
     reset-rm \
+    sim3u-flasher \
 "
 
 do_install () {
-    strings ${WORKDIR}/zephyr.bin | grep --quiet ^${PV}\$ || bbfatal 'Version mismatch in zephyr.bin'
-    strings ${WORKDIR}/zephyr.elf | grep --quiet ^${PV}\$ || bbfatal 'Version mismatch in zephyr.elf'
+    strings ${UNPACKDIR}/zephyr.bin | grep --quiet ^${PV}\$ || bbfatal 'Version mismatch in zephyr.bin'
+    strings ${UNPACKDIR}/zephyr.elf | grep --quiet ^${PV}\$ || bbfatal 'Version mismatch in zephyr.elf'
 
     install -d ${D}${datadir}/gardena/firmware/${PV}
-    install -m 0644 ${WORKDIR}/zephyr.bin ${D}${datadir}/gardena/firmware/${PV}/gateway.bin
+    install -m 0644 ${UNPACKDIR}/zephyr.bin ${D}${datadir}/gardena/firmware/${PV}/gateway.bin
 
     cd ${D}${datadir}/gardena/firmware/
     rm -f current
     ln -s ${PV} current
 
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/rm-flashing.sh ${D}${bindir}/rm-flashing
-    install -m 0755 ${WORKDIR}/rm-flashtool.py ${D}${bindir}/rm-flashtool
-    install -m 0755 ${WORKDIR}/lb_radio_gateway.py ${D}${bindir}/lb_radio_gateway
+    install -m 0755 ${UNPACKDIR}/rm-flashing.sh ${D}${bindir}/rm-flashing
+    install -m 0755 ${UNPACKDIR}/rm-flashtool.py ${D}${bindir}/rm-flashtool
+    install -m 0755 ${UNPACKDIR}/lb_radio_gateway.py ${D}${bindir}/lb_radio_gateway
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/rm-flashing.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/rm-flashing.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${base_libdir}/upgrade/keep.d
-    install -m 0644 ${WORKDIR}/keep.d/rm-flashing ${D}${base_libdir}/upgrade/keep.d
+    install -m 0644 ${UNPACKDIR}/keep.d/rm-flashing ${D}${base_libdir}/upgrade/keep.d
 
     install -d ${D}${sysconfdir}
     echo ${PV} > ${D}${sysconfdir}/rm-firmware-version.latest
