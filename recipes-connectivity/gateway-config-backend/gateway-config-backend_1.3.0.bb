@@ -3,15 +3,15 @@ inherit systemd
 inherit pkgconfig
 
 SUMMARY = "Backend component for the GARDENA smart Gateway config interface"
-HOMEPAGE = "https://www.gardena.com/"
-LICENSE = "Proprietary"
+HOMEPAGE = "https://github.com/husqvarnagroup/smart-garden-gateway-config-backend"
+LICENSE = "GPL-3.0-or-later"
 
-SRC_URI += "git://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-gateway-config-backend;protocol=ssh;branch=main"
+SRC_URI += "git://github.com/husqvarnagroup/smart-garden-gateway-config-backend;protocol=https;branch=main"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
 
 PR = "r0"
-SRCREV = "d66852a7f0e0181c23c484af8cda209c7c6db863"
+SRCREV = "61069d1e8c0b28f21146dd2df998077c451b32b1"
 SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRC_URI += "\
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=gardenalog;subpath=gardenalog;destsuffix=gardenalog \
@@ -23,7 +23,7 @@ SRC_URI += "\
 SRCREV_FORMAT = "gateway-config-backend"
 
 LIC_FILES_CHKSUM = " \
-    file://Proprietary;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
+    file://LICENSE;md5=75d892af193fd5a298f724c4377d8f62 \
     file://../THIRDPARTY.toml;md5=9a7eaec6c665e3dc52849dff4cc017ad \
 "
 
