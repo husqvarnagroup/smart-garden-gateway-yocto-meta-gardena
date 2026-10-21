@@ -7,8 +7,8 @@ LIC_FILES_CHKSUM = " \
 
 DEPENDS += "openssl mdns"
 
-PR = "r1"
-SRCREV = "081dd89ad029d1173aa5ab8619184b2cb6ad3cec"
+PR = "r0"
+SRCREV = "1ab0ca7170a9863c54468330f46845ef8544d453"
 SRCREV_gardenalog = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRCREV_sg-ipc = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
 SRCREV_tokioutil = "687e6cfeb79f62735dd47e74a0fa387b7f58c8c6"
