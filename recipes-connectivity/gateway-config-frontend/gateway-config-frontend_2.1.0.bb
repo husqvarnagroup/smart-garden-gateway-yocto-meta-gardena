@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = " \
 PR = "r0"
 
 SRC_URI += "https://github.com/husqvarnagroup/smart-garden-gateway-config-frontend/releases/download/v${PV}/sg-gateway-config-frontend-v${PV}.tar.gz"
-SRC_URI[sha256sum] = "9fa78a2074d3bb71da65a3c5bd918415f647aff630bcd77c54a7082f90b0b32c"
+SRC_URI[sha256sum] = "122f0528d7ca5961e763c011ee866cbb5d65261b5b9714a38457adfc0c8404b7"
 S = "${WORKDIR}/sources"
 UNPACKDIR = "${S}"
 
