@@ -24,7 +24,7 @@ SRC_URI = "\
     file://lb_radio_gateway.py \
 "
 
-INC_PR = "r10"
+INC_PR = "r11"
 
 PE = "1"
 
@@ -59,6 +59,15 @@ do_install () {
     install -d ${D}${sysconfdir}
     echo ${PV} > ${D}${sysconfdir}/rm-firmware-version.latest
 }
+
+# On QEMU, the radio module cannot be flashed. Marking the shipped firmware
+# version as installed makes rm-flashing.service skip flashing. Otherwise, it
+# would fail and ppp.service, which requires it, would not start.
+do_install:append:qemuarmv5 () {
+    echo ${PV} > ${D}${sysconfdir}/rm-firmware-version
+}
+
+FILES:${PN}:append:qemuarmv5 = " ${sysconfdir}/rm-firmware-version"
 
 FILES:${PN} += "\
     ${datadir}/gardena/firmware/${PV}/gateway.bin \
