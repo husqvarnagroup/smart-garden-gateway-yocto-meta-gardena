@@ -3,11 +3,6 @@
 
 The script (SUT) is run as separate process so that the implementation
 can be replaced and the tests can be rerun.
-
-The script to test needs to be set as environment variable: RM_FLASHTOOL.
-
-Run the tests like:
-RM_FLASHTOOL=files/rm-flashtool.py tests/test_rm_flashtool.py
 """
 
 import os
@@ -17,6 +12,7 @@ import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+RM_FLASHTOOL = os.path.join(HERE, "..", "files", "rm-flashtool.sh")
 FAKE_COMMAND = os.path.join(HERE, "fake_command.sh")
 COMMANDS = ["fw_printenv", "ps", "systemctl", "reset-rm", "openocd"]
 SGTIN = "a" * 24
@@ -30,7 +26,7 @@ FLASH_CALLS = ["reset-rm ", OPENOCD_CALL, "reset-rm "]
 
 class RmFlashtoolTestCase(unittest.TestCase):
     def setUp(self):
-        self.script = os.environ["RM_FLASHTOOL"]
+        self.script = RM_FLASHTOOL
         self.fake_dir = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.fake_dir)
         for command in COMMANDS:
