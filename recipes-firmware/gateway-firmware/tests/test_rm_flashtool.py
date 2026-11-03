@@ -118,6 +118,7 @@ class TestFlash(RmFlashtoolTestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("out text", result.stdout)
         self.assertIn("err text", result.stdout)
+        self.assertEqual(self.calls()[-1], "systemctl start ppp")
 
     def test_openocd_failure_without_ppp_does_not_touch_systemctl(self):
         self.set_exit("openocd", 1)
