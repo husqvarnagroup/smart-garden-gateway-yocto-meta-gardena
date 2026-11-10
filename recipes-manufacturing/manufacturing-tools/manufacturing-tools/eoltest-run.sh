@@ -38,8 +38,7 @@ fi
 touch /run/eol_test_network
 
 # Enable SSH access to allow remote debugging
-iptables -I INPUT 1 -p tcp -m tcp --dport ssh -j ACCEPT
-ip6tables -I INPUT 1 -p tcp -m tcp --dport ssh -j ACCEPT
+nft insert rule inet filter input tcp dport ssh accept
 
 # indicate with LEDs that EOL test is running now
 fct-tool --set-leds blue
