@@ -6,25 +6,30 @@ SUMMARY = "fwrolloutd"
 HOMEPAGE = "git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout"
 LICENSE = "Proprietary"
 
-SRCREV = "179a57c85d0c40328fb27336f127cf3f0cb4f5d6"
+# Named, so that SRCREV_fwrolloutd applies. A plain SRCREV would clash with the rev=
+# values of the unnamed entries below.
+SRCREV_fwrolloutd = "179a57c85d0c40328fb27336f127cf3f0cb4f5d6"
 SRCREV_gardenalog = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_lwm2m = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_lwm2m-types = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_lwm2m-objgen = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_sg-ipc = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_tokioutil = "15298a2b49cc1f905d064ea931255026984407c5"
-SRCREV_bnw-ipso-registry = "d44b3dc672e2374dc9a22705f23abde840c576e7"
-SRCREV_lwm2m-registry = "7572ada63973156e21ce3634e274161b7d7b8e31"
 SRC_URI = " \
-    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;branch=main \
+    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;branch=main;name=fwrolloutd \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=gardenalog;subpath=gardenalog;destsuffix=gardenalog \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=lwm2m;subpath=lwm2m;destsuffix=lwm2m \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=lwm2m-types;subpath=lwm2m-types;destsuffix=lwm2m-types \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=lwm2m-objgen;subpath=lwm2m-objgen;destsuffix=lwm2m-objgen \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=sg-ipc;subpath=sg-ipc;destsuffix=sg-ipc \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=tokioutil;subpath=tokioutil;destsuffix=tokioutil \
-    git://github.com/husqvarnagroup/smart-garden-ipso-registry.git;protocol=https;nobranch=1;name=bnw-ipso-registry;destsuffix=third_party/bnw-ipso-registry \
-    git://github.com/OpenMobileAlliance/lwm2m-registry.git;protocol=https;nobranch=1;name=lwm2m-registry;destsuffix=third_party/lwm2m-registry \
+"
+
+# Third-party repos which are not crates. Use `rev=` instead of `name=` (unnamed entries), as otherwise
+# `cargo_common.bbclass` will add Cargo patch entries. This would fail on these because they are not crates.
+SRC_URI += " \
+    git://github.com/husqvarnagroup/smart-garden-ipso-registry.git;protocol=https;nobranch=1;rev=d44b3dc672e2374dc9a22705f23abde840c576e7;destsuffix=third_party/bnw-ipso-registry \
+    git://github.com/OpenMobileAlliance/lwm2m-registry.git;protocol=https;nobranch=1;rev=7572ada63973156e21ce3634e274161b7d7b8e31;destsuffix=third_party/lwm2m-registry \
 "
 
 S = "${WORKDIR}/git"
@@ -58,30 +63,6 @@ export CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1"
 FILES:${PN} += " \
     ${systemd_unitdir}/system/ \
 "
-
-# Remove patch entries for third-party repos which are not crates or else the build will fail with:
-#   failed to read `.../third_party/bnw-ipso-registry/Cargo.toml`
-# This workaround is necessary as we need to use the `name` fetcher parameter to be able to pass a
-# revision different from `SRCREV`.
-python fwrolloutd_fixup_cargo_config() {
-    import re
-    cargo_config = os.path.join(d.getVar("CARGO_HOME"), "config")
-    with open(cargo_config) as f:
-        content = f.read()
-    content = re.sub(
-        r'\n\[patch\."https://github\.com/husqvarnagroup/smart-garden-ipso-registry\.git"\][^\[]*',
-        '',
-        content,
-    )
-    content = re.sub(
-        r'\n\[patch\."https://github\.com/OpenMobileAlliance/lwm2m-registry\.git"\][^\[]*',
-        '',
-        content,
-    )
-    with open(cargo_config, 'w') as f:
-        f.write(content)
-}
-do_configure[postfuncs] += "fwrolloutd_fixup_cargo_config"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
