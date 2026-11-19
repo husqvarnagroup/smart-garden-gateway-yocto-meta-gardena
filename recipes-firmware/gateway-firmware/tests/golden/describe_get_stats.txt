@@ -1,0 +1,2 @@
+get_stats <format> – Get statistics for packets received and sent on RF interface.
+- format: 'H' for human-readable (default), 'M' for machine readable.
