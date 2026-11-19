@@ -37,9 +37,10 @@ fi
 # started in EOL mode. Needed to be idempotent.
 touch /run/eol_test_network
 
-# Enable SSH access to allow remote debugging
-iptables -I INPUT 1 -p tcp -m tcp --dport ssh -j ACCEPT
-ip6tables -I INPUT 1 -p tcp -m tcp --dport ssh -j ACCEPT
+# Enable SSH access to allow remote debugging, only once
+if ! nft list chain inet filter input | grep -q 'comment "eoltest-ssh"'; then
+    nft insert rule inet filter input tcp dport ssh accept comment '"eoltest-ssh"'
+fi
 
 # indicate with LEDs that EOL test is running now
 fct-tool --set-leds blue

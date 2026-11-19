@@ -11,7 +11,7 @@ SRC_URI += " \
 "
 
 SRCREV = "${AUTOREV}"
-PR = "r0"
+PR = "r1"
 
 do_install:append() {
     # copy systemd files
@@ -25,6 +25,7 @@ do_install:append() {
 }
 
 RDEPENDS:${PN} += " \
+    nftables \
     socat \
 "
 PACKAGE_ARCH = "${MACHINE_ARCH}"
