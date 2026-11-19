@@ -19,7 +19,7 @@ SRC_URI = "\
     file://zephyr.elf \
     file://rm-flashing.service \
     file://rm-flashing.sh \
-    file://rm-flashtool.py \
+    file://rm-flashtool.sh \
     file://keep.d/rm-flashing \
     file://lb_radio_gateway.py \
 "
@@ -29,8 +29,6 @@ INC_PR = "r11"
 PE = "1"
 
 RDEPENDS:${PN} = " \
-    python3-io \
-    python3-json \
     reset-rm \
 "
 
@@ -47,7 +45,7 @@ do_install () {
 
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/rm-flashing.sh ${D}${bindir}/rm-flashing
-    install -m 0755 ${WORKDIR}/rm-flashtool.py ${D}${bindir}/rm-flashtool
+    install -m 0755 ${WORKDIR}/rm-flashtool.sh ${D}${bindir}/rm-flashtool
     install -m 0755 ${WORKDIR}/lb_radio_gateway.py ${D}${bindir}/lb_radio_gateway
 
     install -d ${D}${systemd_unitdir}/system
