@@ -5,6 +5,9 @@
 # <name>.exit files. <name>.<arg1>.exit takes precedence over <name>.exit.
 name=$(basename "$0")
 echo "$name $*" >> "$FAKE_DIR/calls.log"
+if [ -n "${FAKE_RECORD_STDIN:-}" ]; then
+    echo "stdin $(od -An -v -tx1 | tr -s ' \n' ' ' | sed 's/^ *//; s/ *$//')" >> "$FAKE_DIR/calls.log"
+fi
 [ -f "$FAKE_DIR/$name.stdout" ] && cat "$FAKE_DIR/$name.stdout"
 [ -f "$FAKE_DIR/$name.stderr" ] && cat "$FAKE_DIR/$name.stderr" >&2
 for exit_file in "$FAKE_DIR/$name.${1:-}.exit" "$FAKE_DIR/$name.exit"; do
