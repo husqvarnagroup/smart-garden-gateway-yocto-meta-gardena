@@ -4,12 +4,13 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 
 inherit systemd allarch
 
-# Note: lb_radio_gateway.py is an unmodified copy of the file 'api_client'
-# from the directory 'application/lb_radio_gateway/' in the
-# sg-zephyr-firmware repository. As long as the API version remains at
-# one, the client is backwards-compatible and the latest version can
-# always be used. Changes to this file should be done only in the
-# sg-zephyr-firmware repository.
+# Note: lb_radio_gateway.sh is a re-implementation in shell of the original
+# client: gateway-firmware-zephyr-3.6.2/lb_radio_gateway.py is the unmodified
+# copy of the file 'api_client' from the directory 
+# 'application/lb_radio_gateway/' in the sg-zephyr-firmware repository.
+# This way there is one less dependency to Python. Possibly this also reduces
+# the memory footprint on the gateway.
+# The original Python script is not installed anymore to the target.
 #
 # While not installed on the gateway, the file zephyr.elf is stored in this
 # repository to ensure we have something to feed GDB with even once CI dropped
@@ -21,7 +22,7 @@ SRC_URI = "\
     file://rm-flashing.sh \
     file://rm-flashtool.sh \
     file://keep.d/rm-flashing \
-    file://lb_radio_gateway.py \
+    file://lb_radio_gateway.sh \
 "
 
 INC_PR = "r11"
@@ -30,6 +31,7 @@ PE = "1"
 
 RDEPENDS:${PN} = " \
     reset-rm \
+    socat \
 "
 
 do_install () {
@@ -46,7 +48,7 @@ do_install () {
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/rm-flashing.sh ${D}${bindir}/rm-flashing
     install -m 0755 ${WORKDIR}/rm-flashtool.sh ${D}${bindir}/rm-flashtool
-    install -m 0755 ${WORKDIR}/lb_radio_gateway.py ${D}${bindir}/lb_radio_gateway
+    install -m 0755 ${WORKDIR}/lb_radio_gateway.sh ${D}${bindir}/lb_radio_gateway
 
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/rm-flashing.service ${D}${systemd_unitdir}/system
