@@ -10,6 +10,8 @@ PR = "r1"
 RDEPENDS:${PN} = "\
     iptables \
     iptables-modules \
+    kernel-module-ip6t-reject \
+    kernel-module-ipt-reject \
     kernel-module-nft-reject \
     kernel-module-nft-reject-inet \
     kernel-module-nft-reject-ipv4 \
