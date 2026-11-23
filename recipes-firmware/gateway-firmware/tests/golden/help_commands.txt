@@ -1,0 +1,29 @@
+Commands:
+get_antenna_diversity – Get antenna diversity state (only relevant if mode is 0).
+get_antenna_diversity_mode – Get antenna diversity mode (0: MCU, 1: TRX).
+get_antenna_int_ext – Get antenna configuration (0: external, 1: internal; only relevant for HCGW).
+get_app_version – Get lb_radio_gateway application version.
+get_lb_radio_driver_state – Get state of lb_radio driver state machine.
+get_mac_address – Get Lemonbeat radio MAC address of gateway.
+get_network_key – Get current network key.
+get_si4467_gpio <index> – Get state of Si4467 GPIO pin.
+get_stack_usage – Get thread with the (relatively) biggest stack usage.
+get_stats <format> – Get statistics for packets received and sent on RF interface.
+restart_transceiver – Restart the Si4467 transceiver.
+get_tx_mac_counter – Get TX MAC counter value.
+get_uptime – Get current uptime in milliseconds.
+log <command> – Start/stop logging
+log_stack_usage – Print current stack usage to the console.
+reboot – Reboot the device.
+reset_device_nonce <mac_address> – Reset device nonce.
+reset_device_nonces – Reset all device nonces.
+set_antenna_diversity <state> – Set antenna diversity state (only relevant if mode is 0).
+set_antenna_diversity_mode <mode> – Set antenna diversity mode.
+set_antenna_int_ext <int_ext> – Set antenna configuration (only relevant for HCGW).
+set_mac_address <mac_address> – Set Lemonbeat radio MAC address of gateway.
+set_network_key <network_key> – Set the network key.
+set_tx_mac_counter <counter_value> – Set the TX MAC counter.
+si4467_start_cw <channel> – Start continuous wave TX on specified channel.
+set_si4467_sdn_pin <value> – Set Si4467 SDN (shutdown) pin state.
+si4467_stop_tx – Stop TX.
+wakeup <mac_address> <duration_ms> <channel> <req_mac_ack> – Send a wakeup frame.
