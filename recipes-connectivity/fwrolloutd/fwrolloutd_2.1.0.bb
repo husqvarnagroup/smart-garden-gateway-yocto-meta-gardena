@@ -3,10 +3,10 @@ inherit pkgconfig
 inherit systemd
 
 SUMMARY = "fwrolloutd"
-HOMEPAGE = "git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout"
-LICENSE = "Proprietary"
+HOMEPAGE = "https://github.com/husqvarnagroup/smart-garden-gateway-fwrolloutd"
+LICENSE = "GPL-3.0-or-later"
 
-SRCREV = "179a57c85d0c40328fb27336f127cf3f0cb4f5d6"
+SRCREV = "2479734d1ab59a4a507fd81099c7394f2a59cec5"
 SRCREV_gardenalog = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_lwm2m = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_lwm2m-types = "15298a2b49cc1f905d064ea931255026984407c5"
@@ -16,7 +16,7 @@ SRCREV_tokioutil = "15298a2b49cc1f905d064ea931255026984407c5"
 SRCREV_bnw-ipso-registry = "d44b3dc672e2374dc9a22705f23abde840c576e7"
 SRCREV_lwm2m-registry = "7572ada63973156e21ce3634e274161b7d7b8e31"
 SRC_URI = " \
-    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-firmware-rollout;protocol=ssh;branch=main \
+    git://github.com/husqvarnagroup/smart-garden-gateway-fwrolloutd.git;protocol=https;branch=main \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=gardenalog;subpath=gardenalog;destsuffix=gardenalog \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=lwm2m;subpath=lwm2m;destsuffix=lwm2m \
     git://github.com/husqvarnagroup/smart-garden-gateway-crates.git;protocol=https;nobranch=1;name=lwm2m-types;subpath=lwm2m-types;destsuffix=lwm2m-types \
@@ -28,14 +28,13 @@ SRC_URI = " \
 "
 
 S = "${WORKDIR}/git"
-CARGO_SRC_DIR = "fwrolloutd"
 
 LIC_FILES_CHKSUM = " \
-    file://LICENSE;md5=0557f9d92cf58f2ccdd50f62f8ac0b28 \
+    file://LICENSE;md5=75d892af193fd5a298f724c4377d8f62 \
     file://../THIRDPARTY.toml;md5=2bb77560e3698ee50662acc7ba4bab20 \
 "
 
-PR = "r0"
+PR = "r1"
 
 SRCREV_FORMAT = "fwrolloutd"
 
@@ -88,7 +87,7 @@ do_install:append() {
     install -m 0644 ${WORKDIR}/fwrolloutd.service ${D}${systemd_unitdir}/system/
 
     install -d ${D}${sysconfdir}
-    install -m 0644 ${S}/fwrolloutd/config.yml ${D}${sysconfdir}/fwrolloutd.yml
+    install -m 0644 ${S}/config.yml ${D}${sysconfdir}/fwrolloutd.yml
 
     # Ensure required IPSO directories exist
     install -d ${D}${localstatedir}/lib/ipso_definitions/base
