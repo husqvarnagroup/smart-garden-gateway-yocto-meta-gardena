@@ -8,9 +8,9 @@ LIC_FILES_CHKSUM = " \
 
 inherit python_poetry_core python3-dir
 
-SRCREV = "455cfc40fb1746415d710d547c36c259791681c3"
+SRCREV = "5d43be2cede7a36ea1d88f0b32252184873971ed"
 SRC_URI += " \
-    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-lwm2m-server;protocol=ssh;branch=main \
+    gitsm://git@ssh.dev.azure.com/v3/HQV-Gardena/SG-Gateway/sg-bnw-lwm2m-server;protocol=ssh;branch=lw/check-expired-clients \
     file://lwm2mserver.service \
     file://keep.d/lwm2mserver \
 "
@@ -41,7 +41,6 @@ FILES:${PN} += " \
 
 do_install:append() {
     # Remove IPSO registry Python module only used during development
-    rm -r ${D}/${PYTHON_SITEPACKAGES_DIR}/lwm2mserver/wakaama/ipso_definitions
     rm -r ${D}/${PYTHON_SITEPACKAGES_DIR}/lwm2mserver_registry/ipso_registry
     # Remove Wakaama source not needed in the final build
     rm -r ${D}/${PYTHON_SITEPACKAGES_DIR}/lwm2mserver/wakaama/src
